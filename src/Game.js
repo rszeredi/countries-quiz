@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import ScoreCard from './ScoreCard';
 
 import './Game.css';
 import QuestionBox from './QuestionBox';
+
+const COUNTRIES_API_URL = 'https://restcountries.com/v3.1/all?fields=name,capital';
 
 const countryCapitalPairs = [
 	{ country: 'Australia', capitalCity: 'Canberra' },
@@ -19,7 +23,7 @@ class Game extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			questions: countryCapitalPairs,
+			questions: {},
 			correct: 0,
 			incorrect: 0,
 			currentQuestionIdx: 0
@@ -29,7 +33,19 @@ class Game extends Component {
 		this.isCorrectAnswer = this.isCorrectAnswer.bind(this);
 		this.handleAnswerSubmit = this.handleAnswerSubmit.bind(this);
 		this.resetQuestions = this.resetQuestions.bind(this);
-		// this.getNumRemainingQuestions = this.getNumRemainingQuestions.bind(this);
+	}
+
+	async componentDidMount() {
+		const response = await axios.get(COUNTRIES_API_URL);
+		const countryData = this.parseCountryData(response.data);
+		this.setState({ questions: countryData.sort(() => Math.random() - 0.5) });
+	}
+
+	parseCountryData(data) {
+		return data.map((country) => ({
+			country: country.name.common,
+			capitalCity: country.capital[0]
+		}));
 	}
 
 	getCurrentQuestion() {
