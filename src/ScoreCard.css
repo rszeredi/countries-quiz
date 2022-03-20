@@ -1,0 +1,7 @@
+.ScoreCard {
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+
+	/* border: 1px dotted white; */
+}

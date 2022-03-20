@@ -1,0 +1,38 @@
+.AnswerForm {
+	width: 100%;
+	margin-top: 3rem;
+}
+
+.AnswerForm form {
+	width: 100%;
+	display: flex;
+	align-items: flex-end;
+}
+
+.AnswerForm-input {
+	width: 70%;
+	background-color: inherit;
+	outline: none;
+	border: none;
+	border-bottom: 1.6px solid white;
+	font-size: 1.6rem;
+	padding: 0.5rem 0;
+	color: white;
+	font-family: inherit;
+}
+
+.AnswerForm-input:focus {
+	border-color: yellow;
+}
+
+.AnswerForm-btn {
+	margin-left: auto;
+	outline: none;
+	border: none;
+	font-family: inherit;
+	/* font-weight: 600; */
+	/* font-size: 0.8rem; */
+	border-radius: 0.2rem;
+	padding: 0.8rem 1.4rem;
+	background-color: rgb(159, 146, 249);
+}
