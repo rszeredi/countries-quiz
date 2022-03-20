@@ -19,7 +19,9 @@ class Game extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			scores: { remaining: 5, correct: 0, incorrect: 0 },
+			remaining: 5,
+			correct: 0,
+			incorrect: 0,
 			currentQuestionIdx: 0
 		};
 
@@ -37,7 +39,7 @@ class Game extends Component {
 
 	isCorrectAnswer(answer) {
 		const correctAnswer = countryCapitalPairs[this.state.currentQuestionIdx].capitalCity;
-		return correctAnswer === answer;
+		return correctAnswer.toLowerCase() === answer.toLowerCase();
 	}
 
 	updateScore(answer) {
@@ -59,11 +61,12 @@ class Game extends Component {
 
 	render() {
 		const questionAnswer = this.getCurrentQuestion();
+		const { correct, incorrect, remaining } = this.state;
 		return (
 			<div className="Game">
 				<h1>Capital Cities Quiz</h1>
-				<ScoreCard {...this.state.scores} />
-				<QuestionBox {...questionAnswer} />
+				<ScoreCard correct={correct} incorrect={incorrect} remaining={remaining} />
+				<QuestionBox {...questionAnswer} handleAnswerSubmit={this.handleAnswerSubmit} />
 			</div>
 		);
 	}

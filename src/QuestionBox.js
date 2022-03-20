@@ -10,7 +10,7 @@ class QuestionBox extends Component {
 			<div className="QuestionBox">
 				<div className="QuestionBox-content">
 					<div className="QuestionBox-question">{questionText}</div>
-					<AnswerForm />
+					<AnswerForm handleAnswerSubmit={this.props.handleAnswerSubmit} />
 				</div>
 			</div>
 		);

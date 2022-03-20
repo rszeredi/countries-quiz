@@ -8,16 +8,23 @@ class AnswerForm extends Component {
 		super(props);
 		this.state = { answer: '' };
 		this.handleChange = this.handleChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleChange(e) {
 		this.setState({ [e.target.name]: e.target.value });
 	}
 
+	handleSubmit(e) {
+		e.preventDefault();
+		this.props.handleAnswerSubmit(this.state.answer);
+		this.setState({ answer: '' });
+	}
+
 	render() {
 		return (
 			<div className="AnswerForm">
-				<form>
+				<form onSubmit={this.handleSubmit}>
 					<input
 						className="AnswerForm-input"
 						type="text"
@@ -25,7 +32,9 @@ class AnswerForm extends Component {
 						name="answer"
 						onChange={this.handleChange}
 					/>
-					<button className="AnswerForm-btn">Answer</button>
+					<button type="submit" className="AnswerForm-btn">
+						Answer
+					</button>
 				</form>
 			</div>
 		);
