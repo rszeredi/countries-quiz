@@ -36,3 +36,15 @@
 	padding: 0.7rem 0.7rem;
 	background-color: rgb(159, 146, 249);
 }
+
+.AnswerForm-input-correct,
+.AnswerForm-input-correct:focus {
+	color: green;
+	border-color: green;
+}
+
+.AnswerForm-input-incorrect,
+.AnswerForm-input-incorrect:focus {
+	color: red;
+	border-color: red;
+}

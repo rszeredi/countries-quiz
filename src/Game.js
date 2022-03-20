@@ -33,11 +33,11 @@ class Game extends Component {
 			currentQuestionIdx: 0,
 			learningMode: true,
 			practiceMode: false,
-			showAnswer: false
+			showAnswer: false,
+			answerStatus: 'none'
 		};
 
 		this.getCurrentQuestion = this.getCurrentQuestion.bind(this);
-		this.isCorrectAnswer = this.isCorrectAnswer.bind(this);
 		this.handleAnswerSubmit = this.handleAnswerSubmit.bind(this);
 		this.resetQuestions = this.resetQuestions.bind(this);
 	}
@@ -75,16 +75,6 @@ class Game extends Component {
 		return this.state.questions.length - this.state.currentQuestionIdx;
 	}
 
-	isCorrectAnswer(answer) {
-		const correctAnswer = this.state.questions[this.state.currentQuestionIdx].capitalCity;
-		console.log(
-			'correctAnswer',
-			correctAnswer,
-			correctAnswer.toLowerCase() === answer.toLowerCase()
-		);
-		return correctAnswer.toLowerCase() === answer.toLowerCase();
-	}
-
 	updateScore(answerIsCorrect) {
 		if (answerIsCorrect) {
 			this.setState((curSt) => ({ correct: curSt.correct + 1 }));
@@ -93,9 +83,7 @@ class Game extends Component {
 		}
 	}
 
-	handleAnswerSubmit(answer) {
-		const answerIsCorrect = this.isCorrectAnswer(answer);
-
+	handleAnswerSubmit(answerIsCorrect) {
 		// Only update the score if we're not in practice mode
 		if (!this.state.practiceMode) {
 			this.updateScore(answerIsCorrect);
@@ -106,8 +94,10 @@ class Game extends Component {
 			this.setState({ practiceMode: true });
 		} else {
 			// if the answer is correct, switch off practice mode and proceed to the next question
-			this.setState({ practiceMode: false });
-			this.setState((curSt) => ({ currentQuestionIdx: curSt.currentQuestionIdx + 1 }));
+			this.setState((curSt) => ({
+				practiceMode: false,
+				currentQuestionIdx: curSt.currentQuestionIdx + 1
+			}));
 		}
 	}
 
@@ -121,7 +111,7 @@ class Game extends Component {
 	}
 
 	getDisplay(remaining) {
-		const { loadingData, practiceMode } = this.state;
+		const { loadingData, practiceMode, answerStatus } = this.state;
 		if (remaining > 0) {
 			return (
 				<QuestionBox
@@ -129,6 +119,7 @@ class Game extends Component {
 					{...{ questionPrefix, questionSuffix }}
 					handleAnswerSubmit={this.handleAnswerSubmit}
 					practiceMode={practiceMode}
+					answerStatus={answerStatus}
 				/>
 			);
 		} else if (loadingData) {

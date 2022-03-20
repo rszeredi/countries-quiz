@@ -10,7 +10,9 @@ class QuestionBox extends Component {
 			questionPrefix,
 			questionSuffix,
 			practiceMode,
-			answer
+			answer,
+			answerStatus,
+			handleAnswerSubmit
 		} = this.props;
 		return (
 			<div className="QuestionBox">
@@ -26,7 +28,11 @@ class QuestionBox extends Component {
 					>
 						Correct answer: {practiceMode ? answer : ''}
 					</div>
-					<AnswerForm handleAnswerSubmit={this.props.handleAnswerSubmit} />
+					<AnswerForm
+						handleAnswerSubmit={handleAnswerSubmit}
+						answerStatus={answerStatus}
+						correctAnswer={answer}
+					/>
 					<div
 						className="QuestionBox-prompt"
 						style={{ visibility: practiceMode ? 'visible' : 'hidden' }}
