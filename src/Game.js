@@ -30,7 +30,10 @@ class Game extends Component {
 			loadingData: true,
 			correct: 0,
 			incorrect: 0,
-			currentQuestionIdx: 0
+			currentQuestionIdx: 0,
+			learningMode: true,
+			practiceMode: false,
+			showAnswer: false
 		};
 
 		this.getCurrentQuestion = this.getCurrentQuestion.bind(this);
@@ -40,13 +43,13 @@ class Game extends Component {
 	}
 
 	async componentDidMount() {
-		const response = await axios.get(COUNTRIES_API_URL);
-		const countryData = this.parseCountryData(response.data);
-		this.setState({
-			questions: countryData.sort(() => Math.random() - 0.5).slice(0, numQuestions),
-			loadingData: false
-		});
-		// this.setState({ questions: [] });
+		// const response = await axios.get(COUNTRIES_API_URL);
+		// const countryData = this.parseCountryData(response.data);
+		// this.setState({
+		// 	questions: countryData.sort(() => Math.random() - 0.5).slice(0, numQuestions),
+		// 	loadingData: false
+		// });
+		this.setState({ questions: countryCapitalPairs, loadingData: false });
 	}
 
 	parseCountryData(data, unMembersOnly = true, continent = 'europe') {
@@ -64,9 +67,8 @@ class Game extends Component {
 
 	getCurrentQuestion() {
 		const { country, capitalCity } = this.state.questions[this.state.currentQuestionIdx];
-		const questionText = `${questionPrefix}${country}${questionSuffix}`;
 
-		return { questionText, answer: capitalCity };
+		return { questionMainText: country, answer: capitalCity };
 	}
 
 	getNumRemainingQuestions() {
@@ -83,8 +85,7 @@ class Game extends Component {
 		return correctAnswer.toLowerCase() === answer.toLowerCase();
 	}
 
-	updateScore(answer) {
-		const answerIsCorrect = this.isCorrectAnswer(answer);
+	updateScore(answerIsCorrect) {
 		if (answerIsCorrect) {
 			this.setState((curSt) => ({ correct: curSt.correct + 1 }));
 		} else {
@@ -93,10 +94,21 @@ class Game extends Component {
 	}
 
 	handleAnswerSubmit(answer) {
-		this.updateScore(answer);
+		const answerIsCorrect = this.isCorrectAnswer(answer);
 
-		// todo: check if end of questions
-		this.setState((curSt) => ({ currentQuestionIdx: curSt.currentQuestionIdx + 1 }));
+		// Only update the score if we're not in practice mode
+		if (!this.state.practiceMode) {
+			this.updateScore(answerIsCorrect);
+		}
+
+		// if the answer is not correct, show the answer prompt the user to type the correct answer
+		if (!answerIsCorrect) {
+			this.setState({ practiceMode: true });
+		} else {
+			// if the answer is correct, switch off practice mode and proceed to the next question
+			this.setState({ practiceMode: false });
+			this.setState((curSt) => ({ currentQuestionIdx: curSt.currentQuestionIdx + 1 }));
+		}
 	}
 
 	resetScores() {
@@ -109,12 +121,14 @@ class Game extends Component {
 	}
 
 	getDisplay(remaining) {
-		const { loadingData } = this.state;
+		const { loadingData, practiceMode } = this.state;
 		if (remaining > 0) {
 			return (
 				<QuestionBox
 					{...this.getCurrentQuestion()}
+					{...{ questionPrefix, questionSuffix }}
 					handleAnswerSubmit={this.handleAnswerSubmit}
+					practiceMode={practiceMode}
 				/>
 			);
 		} else if (loadingData) {

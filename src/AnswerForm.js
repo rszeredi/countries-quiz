@@ -31,6 +31,7 @@ class AnswerForm extends Component {
 						value={this.state.answer}
 						name="answer"
 						onChange={this.handleChange}
+						autoComplete="off"
 					/>
 					<button type="submit" className="AnswerForm-btn">
 						Answer

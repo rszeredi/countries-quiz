@@ -5,12 +5,34 @@ import './QuestionBox.css';
 
 class QuestionBox extends Component {
 	render() {
-		const { questionText } = this.props;
+		const {
+			questionMainText,
+			questionPrefix,
+			questionSuffix,
+			practiceMode,
+			answer
+		} = this.props;
 		return (
 			<div className="QuestionBox">
 				<div className="QuestionBox-content">
-					<div className="QuestionBox-question">{questionText}</div>
+					<div className="QuestionBox-question">
+						{questionPrefix}
+						<b>{questionMainText}</b>
+						{questionSuffix}
+					</div>
+					<div
+						className="QuestionBox-answer"
+						style={{ visibility: practiceMode ? 'visible' : 'hidden' }}
+					>
+						Correct answer: {practiceMode ? answer : ''}
+					</div>
 					<AnswerForm handleAnswerSubmit={this.props.handleAnswerSubmit} />
+					<div
+						className="QuestionBox-prompt"
+						style={{ visibility: practiceMode ? 'visible' : 'hidden' }}
+					>
+						Type the correct answer
+					</div>
 				</div>
 			</div>
 		);
