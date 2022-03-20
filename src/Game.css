@@ -25,4 +25,12 @@
 	padding: 1rem 1.6rem;
 	font-family: inherit;
 	box-shadow: none;
+	cursor: pointer;
+}
+
+.Game-loading {
+	margin: 2rem auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }

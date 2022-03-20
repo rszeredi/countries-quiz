@@ -5,8 +5,11 @@ import ScoreCard from './ScoreCard';
 
 import './Game.css';
 import QuestionBox from './QuestionBox';
+import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
 
-const COUNTRIES_API_URL = 'https://restcountries.com/v3.1/all?fields=name,capital';
+const COUNTRIES_API_URL =
+	'https://restcountries.com/v3.1/all?fields=name,capital,unMember,continents';
+const numQuestions = 2000;
 
 const countryCapitalPairs = [
 	{ country: 'Australia', capitalCity: 'Canberra' },
@@ -23,7 +26,8 @@ class Game extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			questions: {},
+			questions: [],
+			loadingData: true,
 			correct: 0,
 			incorrect: 0,
 			currentQuestionIdx: 0
@@ -38,14 +42,24 @@ class Game extends Component {
 	async componentDidMount() {
 		const response = await axios.get(COUNTRIES_API_URL);
 		const countryData = this.parseCountryData(response.data);
-		this.setState({ questions: countryData.sort(() => Math.random() - 0.5) });
+		this.setState({
+			questions: countryData.sort(() => Math.random() - 0.5).slice(0, numQuestions),
+			loadingData: false
+		});
+		// this.setState({ questions: [] });
 	}
 
-	parseCountryData(data) {
-		return data.map((country) => ({
-			country: country.name.common,
-			capitalCity: country.capital[0]
-		}));
+	parseCountryData(data, unMembersOnly = true, continent = 'europe') {
+		return data
+			.filter((country) => !unMembersOnly || country.unMember)
+			.filter(
+				(country) =>
+					continent === 'all' || country.continents[0].toLowerCase() === continent
+			)
+			.map((country) => ({
+				country: country.name.common,
+				capitalCity: country.capital[0]
+			}));
 	}
 
 	getCurrentQuestion() {
@@ -61,6 +75,11 @@ class Game extends Component {
 
 	isCorrectAnswer(answer) {
 		const correctAnswer = this.state.questions[this.state.currentQuestionIdx].capitalCity;
+		console.log(
+			'correctAnswer',
+			correctAnswer,
+			correctAnswer.toLowerCase() === answer.toLowerCase()
+		);
 		return correctAnswer.toLowerCase() === answer.toLowerCase();
 	}
 
@@ -89,28 +108,44 @@ class Game extends Component {
 		this.resetScores();
 	}
 
+	getDisplay(remaining) {
+		const { loadingData } = this.state;
+		if (remaining > 0) {
+			return (
+				<QuestionBox
+					{...this.getCurrentQuestion()}
+					handleAnswerSubmit={this.handleAnswerSubmit}
+				/>
+			);
+		} else if (loadingData) {
+			return (
+				<div className="Game-loading">
+					<h1>Loading...</h1>
+				</div>
+			);
+		} else {
+			return (
+				<div className="Game-restart">
+					{/* <i className="fa-solid fa-arrow-rotate-left" /> */}
+					<i className="fa-solid arrow-left" />
+					Finished all questions!
+					<button className="Game-restart-btn" onClick={this.resetQuestions}>
+						Start Over
+					</button>
+				</div>
+			);
+		}
+	}
+
 	render() {
 		const { correct, incorrect } = this.state;
 		const remaining = this.getNumRemainingQuestions();
+
 		return (
 			<div className="Game">
 				<h1>Capital Cities Quiz</h1>
 				<ScoreCard correct={correct} incorrect={incorrect} remaining={remaining} />
-				{remaining > 0 ? (
-					<QuestionBox
-						{...this.getCurrentQuestion()}
-						handleAnswerSubmit={this.handleAnswerSubmit}
-					/>
-				) : (
-					<div className="Game-restart">
-						{/* <i className="fa-solid fa-arrow-rotate-left" /> */}
-						<i className="fa-solid arrow-left" />
-						Finished all questions!
-						<button className="Game-restart-btn" onClick={this.resetQuestions}>
-							Start Over
-						</button>
-					</div>
-				)}
+				{this.getDisplay(remaining)}
 			</div>
 		);
 	}
