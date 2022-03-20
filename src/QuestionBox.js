@@ -5,8 +5,7 @@ import './QuestionBox.css';
 
 class QuestionBox extends Component {
 	render() {
-		// const {questionText} = this.props;
-		const questionText = 'What is the capital city of France?';
+		const { questionText } = this.props;
 		return (
 			<div className="QuestionBox">
 				<div className="QuestionBox-content">
