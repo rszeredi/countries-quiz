@@ -5,11 +5,12 @@ import './ScoreCard.css';
 
 class ScoreCard extends Component {
 	render() {
+		const { remaining, correct, incorrect } = this.props;
 		return (
 			<div className="ScoreCard">
-				<ScoreBox scoreValue={10} scoreName="Remaining" />
-				<ScoreBox scoreValue={1} scoreName="Incorrect" />
-				<ScoreBox scoreValue={6} scoreName="Correct" />
+				<ScoreBox scoreValue={remaining} scoreName="Remaining" />
+				<ScoreBox scoreValue={correct} scoreName="Incorrect" />
+				<ScoreBox scoreValue={incorrect} scoreName="Correct" />
 			</div>
 		);
 	}
