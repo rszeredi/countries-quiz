@@ -19,7 +19,7 @@ class Game extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			remaining: 5,
+			questions: countryCapitalPairs,
 			correct: 0,
 			incorrect: 0,
 			currentQuestionIdx: 0
@@ -28,17 +28,23 @@ class Game extends Component {
 		this.getCurrentQuestion = this.getCurrentQuestion.bind(this);
 		this.isCorrectAnswer = this.isCorrectAnswer.bind(this);
 		this.handleAnswerSubmit = this.handleAnswerSubmit.bind(this);
+		this.resetQuestions = this.resetQuestions.bind(this);
+		// this.getNumRemainingQuestions = this.getNumRemainingQuestions.bind(this);
 	}
 
 	getCurrentQuestion() {
-		const { country, capitalCity } = countryCapitalPairs[this.state.currentQuestionIdx];
+		const { country, capitalCity } = this.state.questions[this.state.currentQuestionIdx];
 		const questionText = `${questionPrefix}${country}${questionSuffix}`;
 
 		return { questionText, answer: capitalCity };
 	}
 
+	getNumRemainingQuestions() {
+		return this.state.questions.length - this.state.currentQuestionIdx;
+	}
+
 	isCorrectAnswer(answer) {
-		const correctAnswer = countryCapitalPairs[this.state.currentQuestionIdx].capitalCity;
+		const correctAnswer = this.state.questions[this.state.currentQuestionIdx].capitalCity;
 		return correctAnswer.toLowerCase() === answer.toLowerCase();
 	}
 
@@ -49,7 +55,6 @@ class Game extends Component {
 		} else {
 			this.setState((curSt) => ({ incorrect: curSt.incorrect + 1 }));
 		}
-		this.setState((curSt) => ({ remaining: curSt.remaining - 1 }));
 	}
 
 	handleAnswerSubmit(answer) {
@@ -59,14 +64,37 @@ class Game extends Component {
 		this.setState((curSt) => ({ currentQuestionIdx: curSt.currentQuestionIdx + 1 }));
 	}
 
+	resetScores() {
+		this.setState({ correct: 0, incorrect: 0 });
+	}
+
+	resetQuestions() {
+		this.setState({ currentQuestionIdx: 0 });
+		this.resetScores();
+	}
+
 	render() {
-		const questionAnswer = this.getCurrentQuestion();
-		const { correct, incorrect, remaining } = this.state;
+		const { correct, incorrect } = this.state;
+		const remaining = this.getNumRemainingQuestions();
 		return (
 			<div className="Game">
 				<h1>Capital Cities Quiz</h1>
 				<ScoreCard correct={correct} incorrect={incorrect} remaining={remaining} />
-				<QuestionBox {...questionAnswer} handleAnswerSubmit={this.handleAnswerSubmit} />
+				{remaining > 0 ? (
+					<QuestionBox
+						{...this.getCurrentQuestion()}
+						handleAnswerSubmit={this.handleAnswerSubmit}
+					/>
+				) : (
+					<div className="Game-restart">
+						{/* <i className="fa-solid fa-arrow-rotate-left" /> */}
+						<i className="fa-solid arrow-left" />
+						Finished all questions!
+						<button className="Game-restart-btn" onClick={this.resetQuestions}>
+							Start Over
+						</button>
+					</div>
+				)}
 			</div>
 		);
 	}

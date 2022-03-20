@@ -9,8 +9,8 @@ class ScoreCard extends Component {
 		return (
 			<div className="ScoreCard">
 				<ScoreBox scoreValue={remaining} scoreName="Remaining" />
-				<ScoreBox scoreValue={correct} scoreName="Incorrect" />
-				<ScoreBox scoreValue={incorrect} scoreName="Correct" />
+				<ScoreBox scoreValue={incorrect} scoreName="Incorrect" />
+				<ScoreBox scoreValue={correct} scoreName="Correct" />
 			</div>
 		);
 	}
