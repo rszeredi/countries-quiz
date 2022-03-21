@@ -34,3 +34,15 @@
 	align-items: center;
 	justify-content: center;
 }
+
+@media (min-width: 600px) {
+	.Game {
+		width: 65%;
+	}
+}
+
+@media (min-width: 1000px) {
+	.Game {
+		width: 50%;
+	}
+}
