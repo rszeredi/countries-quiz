@@ -53,19 +53,17 @@ class Game extends Component {
 	}
 
 	parseCountryData(data, unMembersOnly = true, continent = 'asia') {
-		return (
-			data
-				.filter((country) => !unMembersOnly || country.unMember)
-				// .filter((country) => country.name.common === 'Kazakhstan')
-				.filter(
-					(country) =>
-						continent === 'all' || country.continents[0].toLowerCase() === continent
-				)
-				.map((country) => ({
-					country: country.name.common,
-					capitalCity: country.capital[0]
-				}))
-		);
+		return data
+			.filter((country) => !unMembersOnly || country.unMember)
+			.filter((country) => country.name.common === 'Yemen')
+			.filter(
+				(country) =>
+					continent === 'all' || country.continents[0].toLowerCase() === continent
+			)
+			.map((country) => ({
+				country: country.name.common,
+				capitalCity: country.capital[0]
+			}));
 	}
 
 	getCurrentQuestion() {

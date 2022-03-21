@@ -26,11 +26,12 @@ class AnswerForm extends Component {
 			.normalize('NFD')
 			.replace(/[\u0300-\u036f]/g, '')
 			.toLowerCase()
-			.replace('-', '')
-			.replace(' ', '');
+			.replace(' ', '')
+			.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'-]/g, '');
 	}
 
 	isCorrectAnswer() {
+		console.log(this.normalizeAnswer(this.state.answer));
 		return (
 			this.normalizeAnswer(this.props.correctAnswer) ===
 			this.normalizeAnswer(this.state.answer)
