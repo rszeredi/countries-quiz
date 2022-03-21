@@ -23,11 +23,12 @@ class AnswerForm extends Component {
 
 	normalizeAnswer(a) {
 		return a
+			.trim()
 			.normalize('NFD')
 			.replace(/[\u0300-\u036f]/g, '')
-			.toLowerCase()
-			.replace(' ', '')
-			.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'-]/g, '');
+			.replace(/\s/g, '')
+			.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()'-]/g, '')
+			.toLowerCase();
 	}
 
 	isCorrectAnswer() {

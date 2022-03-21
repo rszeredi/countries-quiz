@@ -56,7 +56,7 @@ class Game extends Component {
 		return (
 			data
 				.filter((country) => !unMembersOnly || country.unMember)
-				// .filter((country) => country.name.common === 'Yemen')
+				// .filter((country) => country.name.common === 'Vatican City')
 				.filter(
 					(country) =>
 						continent === 'all' || country.continents[0].toLowerCase() === continent
