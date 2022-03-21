@@ -22,7 +22,11 @@ class AnswerForm extends Component {
 	}
 
 	isCorrectAnswer() {
-		return this.props.correctAnswer.toLowerCase() === this.state.answer.toLowerCase();
+		const normalizedCorrectAnswer = this.props.correctAnswer
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.toLowerCase();
+		return normalizedCorrectAnswer === this.state.answer.toLowerCase();
 	}
 
 	handleSubmit(e) {
