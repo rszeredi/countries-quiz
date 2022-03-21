@@ -43,13 +43,13 @@ class Game extends Component {
 	}
 
 	async componentDidMount() {
-		// const response = await axios.get(COUNTRIES_API_URL);
-		// const countryData = this.parseCountryData(response.data);
-		// this.setState({
-		// 	questions: countryData.sort(() => Math.random() - 0.5).slice(0, numQuestions),
-		// 	loadingData: false
-		// });
-		this.setState({ questions: countryCapitalPairs, loadingData: false });
+		const response = await axios.get(COUNTRIES_API_URL);
+		const countryData = this.parseCountryData(response.data);
+		this.setState({
+			questions: countryData.sort(() => Math.random() - 0.5).slice(0, numQuestions),
+			loadingData: false
+		});
+		// this.setState({ questions: countryCapitalPairs, loadingData: false });
 	}
 
 	parseCountryData(data, unMembersOnly = true, continent = 'europe') {
