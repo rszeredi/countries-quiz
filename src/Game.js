@@ -9,7 +9,7 @@ import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
 
 const COUNTRIES_API_URL =
 	'https://restcountries.com/v3.1/all?fields=name,capital,unMember,continents';
-const numQuestions = 20;
+const numQuestions = 100;
 
 const countryCapitalPairs = [
 	{ country: 'Australia', capitalCity: 'Canberra' },
