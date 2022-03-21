@@ -21,12 +21,20 @@ class AnswerForm extends Component {
 		this.setState({ [e.target.name]: e.target.value });
 	}
 
-	isCorrectAnswer() {
-		const normalizedCorrectAnswer = this.props.correctAnswer
+	normalizeAnswer(a) {
+		return a
 			.normalize('NFD')
 			.replace(/[\u0300-\u036f]/g, '')
-			.toLowerCase();
-		return normalizedCorrectAnswer === this.state.answer.toLowerCase();
+			.toLowerCase()
+			.replace('-', '')
+			.replace(' ', '');
+	}
+
+	isCorrectAnswer() {
+		return (
+			this.normalizeAnswer(this.props.correctAnswer) ===
+			this.normalizeAnswer(this.state.answer)
+		);
 	}
 
 	handleSubmit(e) {
