@@ -19,6 +19,7 @@
 .ScoreBox-score-bar {
 	height: 10px;
 	width: 100%;
+	transition: width 0.5s;
 }
 @media (min-width: 575px) {
 	.ScoreBox div {
