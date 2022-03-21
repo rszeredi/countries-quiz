@@ -1,24 +1,58 @@
 .QuestionBox {
 	width: 100%;
-	margin: 2rem 0;
+	margin: 0.4rem 0;
 	background-color: rgba(68, 68, 130, 0.5);
 	border-radius: 1rem;
 }
 
 .QuestionBox-content {
-	padding: 2rem;
+	padding: 1rem;
 }
 
 .QuestionBox-question {
-	padding-bottom: 1rem;
-	font-size: 1.5rem;
+	padding-bottom: 0.5rem;
+	font-size: 1.2rem;
 	border-bottom: 1.8px solid rgb(12, 12, 62);
 }
 
 .QuestionBox-answer {
-	margin: 1rem 0;
+	margin: 0.4rem 0;
 }
 
 .QuestionBox-prompt {
 	margin-top: 0.4rem;
+}
+
+@media (min-width: 575px) {
+	.QuestionBox {
+		margin-top: 1rem;
+	}
+
+	.QuestionBox-content {
+		padding: 1.5rem;
+	}
+
+	.QuestionBox-question {
+		font-size: 1.4rem;
+	}
+}
+
+@media (min-width: 1000px) {
+	.QuestionBox {
+		/* width: 50%; */
+		margin-top: 2rem;
+	}
+
+	.QuestionBox-content {
+		padding: 2rem;
+	}
+
+	.QuestionBox-question {
+		font-size: 1.5rem;
+		padding-bottom: 1rem;
+	}
+
+	.QuestionBox-answer {
+		margin: 1rem 0;
+	}
 }

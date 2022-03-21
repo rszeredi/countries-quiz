@@ -1,8 +1,12 @@
 .Game {
-	width: 90%;
-	margin: 50px auto;
+	width: 92%;
+	margin: 10px auto;
 
 	/* border: 2px solid white; */
+}
+
+.Game h1 {
+	margin: 10px 0;
 }
 
 .Game-restart {
@@ -35,14 +39,20 @@
 	justify-content: center;
 }
 
-@media (min-width: 600px) {
+@media (min-width: 575px) {
 	.Game {
-		width: 65%;
+		width: 60%;
+		margin-top: 50px;
 	}
 }
 
 @media (min-width: 1000px) {
 	.Game {
 		width: 50%;
+		margin-top: 50px;
+	}
+
+	.Game h1 {
+		margin: 0.67em 0;
 	}
 }

@@ -9,7 +9,7 @@ import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
 
 const COUNTRIES_API_URL =
 	'https://restcountries.com/v3.1/all?fields=name,capital,unMember,continents';
-const numQuestions = 2000;
+const numQuestions = 20;
 
 const countryCapitalPairs = [
 	{ country: 'Australia', capitalCity: 'Canberra' },
@@ -52,7 +52,7 @@ class Game extends Component {
 		// this.setState({ questions: countryCapitalPairs, loadingData: false });
 	}
 
-	parseCountryData(data, unMembersOnly = true, continent = 'asia') {
+	parseCountryData(data, unMembersOnly = true, continent = 'europe') {
 		return (
 			data
 				.filter((country) => !unMembersOnly || country.unMember)
