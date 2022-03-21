@@ -20,6 +20,7 @@
 	color: white;
 	font-family: inherit;
 	-webkit-appearance: none;
+	border-radius: 0;
 }
 
 .AnswerForm-input:focus {
