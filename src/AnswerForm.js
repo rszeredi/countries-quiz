@@ -42,22 +42,39 @@ class AnswerForm extends Component {
 	handleSubmit(e) {
 		e.preventDefault();
 		const answerIsCorrect = this.isCorrectAnswer();
+		this.setState({ answerStatus: answerIsCorrect ? 'correct' : 'incorrect' });
 
-		if (answerIsCorrect) {
-			this.setState({ answerStatus: 'correct' });
-		} else {
-			this.setState({ answerStatus: 'incorrect' });
-		}
 		setTimeout(() => {
 			this.props.handleAnswerSubmit(answerIsCorrect);
-			this.setState({ answer: '', answerStatus: 'none' });
+			if (answerIsCorrect || !this.props.practiceMode) {
+				this.setState({ answer: '', answerStatus: 'none' });
+			} else {
+				this.setState({ answer: '', answerStatus: 'practising' });
+			}
 		}, 700);
 	}
 
 	render() {
-		const { answerStatus } = this.state;
+		const { answerStatus, answer } = this.state;
+		const { correctAnswer } = this.props;
 		return (
 			<div className="AnswerForm">
+				<div
+					className="AnswerForm-answer"
+					style={{
+						visibility:
+							answerStatus === 'practising' || answerStatus === 'incorrect'
+								? 'visible'
+								: 'hidden'
+					}}
+				>
+					Correct answer:{' '}
+					{answerStatus === 'practising' || answerStatus === 'incorrect' ? (
+						correctAnswer
+					) : (
+						''
+					)}
+				</div>
 				<form onSubmit={this.handleSubmit}>
 					<input
 						className={classNames('AnswerForm-input', {
@@ -65,17 +82,28 @@ class AnswerForm extends Component {
 							'AnswerForm-input-incorrect': answerStatus === 'incorrect'
 						})}
 						type="text"
-						value={this.state.answer}
+						value={answer}
 						name="answer"
 						onChange={this.handleChange}
 						autoComplete="off"
-						disabled={this.state.answerStatus !== 'none'}
+						disabled={answerStatus === 'correct' || answerStatus === 'incorrect'}
 						ref={(input) => (this.inputValue = input)}
 					/>
 					<button type="submit" className="AnswerForm-btn">
 						Answer
 					</button>
 				</form>
+				<div
+					className="QuestionBox-prompt"
+					style={{
+						visibility:
+							answerStatus === 'practising' || answerStatus === 'incorrect'
+								? 'visible'
+								: 'hidden'
+					}}
+				>
+					Type the correct answer
+				</div>
 			</div>
 		);
 	}

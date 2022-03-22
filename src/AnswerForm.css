@@ -51,6 +51,10 @@
 	border-color: red;
 }
 
+.QuestionBox-answer {
+	margin: 0.4rem 0;
+}
+
 @media (min-width: 575px) {
 	.AnswerForm {
 		margin-top: 3rem;
@@ -63,5 +67,11 @@
 
 	.AnswerForm-btn {
 		padding: 0.7rem 0.7rem;
+	}
+}
+
+@media (min-width: 1000px) {
+	.QuestionBox-answer {
+		margin: 1rem 0;
 	}
 }

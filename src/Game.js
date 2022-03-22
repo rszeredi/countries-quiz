@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+
 import ScoreCard from './ScoreCard';
 
 import './Game.css';
@@ -31,8 +35,8 @@ class Game extends Component {
 			correct: 0,
 			incorrect: 0,
 			currentQuestionIdx: 0,
-			learningMode: true,
-			practiceMode: false,
+			repeatCorrectAnswerMode: false,
+			practiceMode: true,
 			showAnswer: false,
 			answerStatus: 'none'
 		};
@@ -40,16 +44,17 @@ class Game extends Component {
 		this.getCurrentQuestion = this.getCurrentQuestion.bind(this);
 		this.handleAnswerSubmit = this.handleAnswerSubmit.bind(this);
 		this.resetQuestions = this.resetQuestions.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
 	async componentDidMount() {
-		const response = await axios.get(COUNTRIES_API_URL);
-		const countryData = this.parseCountryData(response.data);
-		this.setState({
-			questions: countryData.sort(() => Math.random() - 0.5).slice(0, numQuestions),
-			loadingData: false
-		});
-		// this.setState({ questions: countryCapitalPairs, loadingData: false });
+		// const response = await axios.get(COUNTRIES_API_URL);
+		// const countryData = this.parseCountryData(response.data);
+		// this.setState({
+		// 	questions: countryData.sort(() => Math.random() - 0.5).slice(0, numQuestions),
+		// 	loadingData: false
+		// });
+		this.setState({ questions: countryCapitalPairs, loadingData: false });
 	}
 
 	parseCountryData(data, unMembersOnly = true, continent = 'europe') {
@@ -87,18 +92,26 @@ class Game extends Component {
 	}
 
 	handleAnswerSubmit(answerIsCorrect) {
-		// Only update the score if we're not in practice mode
-		if (!this.state.practiceMode) {
+		// need to pass answerStatus to the QuestionBox
+		if (answerIsCorrect) {
+			this.setState({ answerStatus: 'correct' });
+		} else {
+			this.setState({ answerStatus: 'incorrect' });
+		}
+
+		// Only update the score if we're not in repeatCorrectAnswerMode mode
+		if (!this.state.repeatCorrectAnswerMode) {
 			this.updateScore(answerIsCorrect);
 		}
 
 		// if the answer is not correct, show the answer prompt the user to type the correct answer
-		if (!answerIsCorrect) {
-			this.setState({ practiceMode: true });
+		if (!answerIsCorrect && this.state.practiceMode) {
+			this.setState({ repeatCorrectAnswerMode: true });
 		} else {
-			// if the answer is correct, switch off practice mode and proceed to the next question
+			// if the answer is correct, switch off repeatCorrectAnswerMode= and proceed to the next question
 			this.setState((curSt) => ({
-				practiceMode: false,
+				repeatCorrectAnswerMode: false,
+				answerStatus: 'none',
 				currentQuestionIdx: curSt.currentQuestionIdx + 1
 			}));
 		}
@@ -145,6 +158,23 @@ class Game extends Component {
 		}
 	}
 
+	handleChange(event) {
+		this.setState((curSt) => ({ practiceMode: event.target.checked }));
+	}
+
+	getSwitch() {
+		return (
+			<FormGroup>
+				<FormControlLabel
+					control={<Switch checked={this.state.practiceMode} />}
+					label="Practice Mode"
+					labelPlacement="start"
+					onChange={this.handleChange}
+				/>
+			</FormGroup>
+		);
+	}
+
 	render() {
 		const { correct, incorrect } = this.state;
 		const remaining = this.getNumRemainingQuestions();
@@ -152,6 +182,7 @@ class Game extends Component {
 		return (
 			<div className="Game">
 				<h1>Capital Cities Quiz</h1>
+				<div className="Game-switch-container">{this.getSwitch()}</div>
 				<ScoreCard correct={correct} incorrect={incorrect} remaining={remaining} />
 				{this.getDisplay(remaining)}
 			</div>

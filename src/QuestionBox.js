@@ -14,6 +14,7 @@ class QuestionBox extends Component {
 			answerStatus,
 			handleAnswerSubmit
 		} = this.props;
+		console.log('QuestionBox answerStatus', answerStatus === 'incorrect');
 		return (
 			<div className="QuestionBox">
 				<div className="QuestionBox-content">
@@ -22,23 +23,12 @@ class QuestionBox extends Component {
 						<b>{questionMainText}</b>
 						{questionSuffix}
 					</div>
-					<div
-						className="QuestionBox-answer"
-						style={{ visibility: practiceMode ? 'visible' : 'hidden' }}
-					>
-						Correct answer: {practiceMode ? answer : ''}
-					</div>
 					<AnswerForm
 						handleAnswerSubmit={handleAnswerSubmit}
+						practiceMode={practiceMode}
 						answerStatus={answerStatus}
 						correctAnswer={answer}
 					/>
-					<div
-						className="QuestionBox-prompt"
-						style={{ visibility: practiceMode ? 'visible' : 'hidden' }}
-					>
-						Type the correct answer
-					</div>
 				</div>
 			</div>
 		);

@@ -15,10 +15,6 @@
 	border-bottom: 1.8px solid rgb(12, 12, 62);
 }
 
-.QuestionBox-answer {
-	margin: 0.4rem 0;
-}
-
 .QuestionBox-prompt {
 	margin-top: 0.4rem;
 }
@@ -50,9 +46,5 @@
 	.QuestionBox-question {
 		font-size: 1.5rem;
 		padding-bottom: 1rem;
-	}
-
-	.QuestionBox-answer {
-		margin: 1rem 0;
 	}
 }
