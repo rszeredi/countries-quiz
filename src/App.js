@@ -1,4 +1,5 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import NavBar from './NavBar';
 import Game from './Game';
 import QuizMenu from './QuizMenu';
 import QuizRoutes from './QuizRoutes';
@@ -20,7 +21,7 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="App">
-				{/* <Game /> */}
+				<NavBar />
 				<QuizRoutes />
 			</div>
 		</ThemeProvider>
