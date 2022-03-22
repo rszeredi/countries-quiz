@@ -8,8 +8,9 @@ questionGetter: returns a list of objects with question and answer properties, s
 the full question is: questionPrefix + question + questionSuffix
 */
 class QuizProps {
-	constructor(title, questionPrefix, questionSuffix, questionGetter) {
+	constructor(title, route, questionPrefix, questionSuffix, questionGetter) {
 		this.title = title;
+		this.route = route;
 		this.questionPrefix = questionPrefix;
 		this.questionSuffix = questionSuffix;
 		this.questionGetter = questionGetter;
@@ -49,15 +50,54 @@ function parseCountryData(data, continent, unMembersOnly = true) {
 }
 
 const quizzes = [
-	new QuizProps('Capital Cities: test', 'What is the capital city of ', '?', getTestData),
-	new QuizProps('Capital Cities: Europe', 'What is the capital city of ', '?', () =>
-		getCapitalCityQuizData(COUNTRIES_API_URL, 'europe')
+	// new QuizProps(
+	// 	'Capital Cities: test',
+	// 	'capital-cities-test',
+	// 	'What is the capital city of ',
+	// 	'?',
+	// 	getTestData
+	// ),
+	new QuizProps(
+		'Capital Cities: Europe',
+		'capital-cities-europe',
+		'What is the capital city of ',
+		'?',
+		() => getCapitalCityQuizData(COUNTRIES_API_URL, 'europe')
 	),
-	new QuizProps('Capital Cities: Asia', 'What is the capital city of ', '?', () =>
-		getCapitalCityQuizData(COUNTRIES_API_URL, 'asia')
+	new QuizProps(
+		'Capital Cities: Asia',
+		'capital-cities-asia',
+		'What is the capital city of ',
+		'?',
+		() => getCapitalCityQuizData(COUNTRIES_API_URL, 'asia')
 	),
-	new QuizProps('Capital Cities: Africa', 'What is the capital city of ', '?', () =>
-		getCapitalCityQuizData(COUNTRIES_API_URL, 'africa')
+	new QuizProps(
+		'Capital Cities: Africa',
+		'capital-cities-africa',
+		'What is the capital city of ',
+		'?',
+		() => getCapitalCityQuizData(COUNTRIES_API_URL, 'africa')
+	),
+	new QuizProps(
+		'Capital Cities: North America',
+		'capital-cities-north-america',
+		'What is the capital city of ',
+		'?',
+		() => getCapitalCityQuizData(COUNTRIES_API_URL, 'north america')
+	),
+	new QuizProps(
+		'Capital Cities: South America',
+		'capital-cities-south-america',
+		'What is the capital city of ',
+		'?',
+		() => getCapitalCityQuizData(COUNTRIES_API_URL, 'south america')
+	),
+	new QuizProps(
+		'Capital Cities: Oceania',
+		'capital-cities-oceania',
+		'What is the capital city of ',
+		'?',
+		() => getCapitalCityQuizData(COUNTRIES_API_URL, 'oceania')
 	)
 ];
 

@@ -3,14 +3,23 @@ import { Route, Routes } from 'react-router';
 import Quiz from './Quiz';
 import QuizMenu from './QuizMenu';
 
+import quizzes from './QuizProps';
+
 export default function QuizRoutes() {
+	console.log(quizzes);
 	return (
 		<Routes>
 			<Route path="/" element={<QuizMenu />} />
-			<Route path="/capital-cities-europe" element={<Quiz continent="europe" />} />
-			<Route path="/capital-cities-africa" element={<Quiz continent="africa" />} />
-			<Route path="/capital-cities-asia" element={<Quiz continent="asia" />} />
-			<Route path="/capital-cities-test" element={<Quiz continent="test" />} />
+			{quizzes.map((quiz) => {
+				console.log('quiz.route', '/' + quiz.route);
+				return (
+					<Route
+						path={'/' + quiz.route}
+						element={<Quiz quizProps={quiz} />}
+						key={quiz.route}
+					/>
+				);
+			})}
 		</Routes>
 	);
 }
