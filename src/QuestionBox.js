@@ -14,7 +14,7 @@ class QuestionBox extends Component {
 			answerStatus,
 			handleAnswerSubmit
 		} = this.props;
-		console.log('QuestionBox answerStatus', answerStatus === 'incorrect');
+
 		return (
 			<div className="QuestionBox">
 				<div className="QuestionBox-content">

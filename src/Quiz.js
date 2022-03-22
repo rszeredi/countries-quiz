@@ -7,7 +7,7 @@ import Switch from '@mui/material/Switch';
 
 import ScoreCard from './ScoreCard';
 
-import './Game.css';
+import './Quiz.css';
 import QuestionBox from './QuestionBox';
 
 const COUNTRIES_API_URL =
@@ -25,7 +25,7 @@ const countryCapitalPairs = [
 const questionPrefix = 'What is the capital city of ';
 const questionSuffix = '?';
 
-class Game extends Component {
+class Quiz extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -142,17 +142,17 @@ class Game extends Component {
 			);
 		} else if (loadingData) {
 			return (
-				<div className="Game-loading">
+				<div className="Quiz-loading">
 					<h1>Loading...</h1>
 				</div>
 			);
 		} else {
 			return (
-				<div className="Game-restart">
+				<div className="Quiz-restart">
 					{/* <i className="fa-solid fa-arrow-rotate-left" /> */}
 					<i className="fa-solid arrow-left" />
 					Finished all questions!
-					<button className="Game-restart-btn" onClick={this.resetQuestions}>
+					<button className="Quiz-restart-btn" onClick={this.resetQuestions}>
 						Start Over
 					</button>
 				</div>
@@ -182,9 +182,9 @@ class Game extends Component {
 		const remaining = this.getNumRemainingQuestions();
 
 		return (
-			<div className="Game">
+			<div className="Quiz">
 				<h1>Capital Cities Quiz</h1>
-				<div className="Game-switch-container">{this.getSwitch()}</div>
+				<div className="Quiz-switch-container">{this.getSwitch()}</div>
 				<ScoreCard correct={correct} incorrect={incorrect} remaining={remaining} />
 				{this.getDisplay(remaining)}
 			</div>
@@ -192,4 +192,4 @@ class Game extends Component {
 	}
 }
 
-export default Game;
+export default Quiz;

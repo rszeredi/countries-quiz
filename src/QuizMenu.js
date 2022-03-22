@@ -19,7 +19,7 @@ export default function QuizMenu() {
 function QuizLink(props) {
 	return (
 		<Link className="QuizMenu-quiz-link" to={props.route}>
-			<a>{props.quizName}</a>
+			{props.quizName}
 		</Link>
 	);
 }

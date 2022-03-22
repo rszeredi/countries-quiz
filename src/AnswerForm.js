@@ -32,7 +32,6 @@ class AnswerForm extends Component {
 	}
 
 	isCorrectAnswer() {
-		console.log(this.normalizeAnswer(this.state.answer));
 		return (
 			this.normalizeAnswer(this.props.correctAnswer) ===
 			this.normalizeAnswer(this.state.answer)

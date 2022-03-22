@@ -1,15 +1,15 @@
-.Game {
+.Quiz {
 	width: 92%;
 	margin: 10px auto;
 
 	/* border: 2px solid white; */
 }
 
-.Game h1 {
+.Quiz h1 {
 	margin: 10px 0;
 }
 
-.Game-restart {
+.Quiz-restart {
 	font-size: 2rem;
 	color: white;
 	display: flex;
@@ -19,7 +19,7 @@
 	width: 100%;
 }
 
-.Game-restart-btn {
+.Quiz-restart-btn {
 	margin: 2rem auto;
 	outline: none;
 	background-color: white;
@@ -32,14 +32,14 @@
 	cursor: pointer;
 }
 
-.Game-loading {
+.Quiz-loading {
 	margin: 2rem auto;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 }
 
-.Game-switch-container {
+.Quiz-switch-container {
 	width: 100%;
 	display: flex;
 	justify-content: flex-end;
@@ -47,23 +47,23 @@
 }
 
 @media (min-width: 575px) {
-	.Game {
+	.Quiz {
 		width: 60%;
 		margin-top: 50px;
 	}
 }
 
 @media (min-width: 1000px) {
-	.Game {
+	.Quiz {
 		width: 50%;
 		margin-top: 50px;
 	}
 
-	.Game h1 {
+	.Quiz h1 {
 		margin: 0.67em 0;
 	}
 
-	.Game-switch-container {
+	.Quiz-switch-container {
 		padding-bottom: 1rem;
 	}
 }
