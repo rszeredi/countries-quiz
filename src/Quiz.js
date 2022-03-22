@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -10,22 +9,12 @@ import ScoreCard from './ScoreCard';
 import './Quiz.css';
 import QuestionBox from './QuestionBox';
 
-const COUNTRIES_API_URL =
-	'https://restcountries.com/v3.1/all?fields=name,capital,unMember,continents';
-const numQuestions = 100;
-
-const countryCapitalPairs = [
-	{ country: 'Australia', capitalCity: 'Canberra' },
-	{ country: 'France', capitalCity: 'Paris' },
-	{ country: 'Spain', capitalCity: 'Madrid' },
-	{ country: 'Malaysia', capitalCity: 'Kuala Lumpur' },
-	{ country: 'Hungary', capitalCity: 'Budapest' }
-];
-
-const questionPrefix = 'What is the capital city of ';
-const questionSuffix = '?';
+import quizzes from './QuizProps';
 
 class Quiz extends Component {
+	static defaultProps = {
+		quizProps: quizzes[0]
+	};
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -47,38 +36,15 @@ class Quiz extends Component {
 	}
 
 	async componentDidMount() {
-		if (this.props.continent === 'test') {
-			this.setState({ questions: countryCapitalPairs, loadingData: false });
-		} else {
-			const response = await axios.get(COUNTRIES_API_URL);
-			const countryData = this.parseCountryData(response.data, this.props.continent);
-			this.setState({
-				questions: countryData.sort(() => Math.random() - 0.5).slice(0, numQuestions),
-				loadingData: false
-			});
-		}
-	}
-
-	parseCountryData(data, continent, unMembersOnly = true) {
-		return (
-			data
-				.filter((country) => !unMembersOnly || country.unMember)
-				// .filter((country) => country.name.common === 'Vatican City')
-				.filter(
-					(country) =>
-						continent === 'all' || country.continents[0].toLowerCase() === continent
-				)
-				.map((country) => ({
-					country: country.name.common,
-					capitalCity: country.capital[0]
-				}))
-		);
+		this.setState({
+			questions: await this.props.quizProps.questionGetter(),
+			loadingData: false
+		});
 	}
 
 	getCurrentQuestion() {
-		const { country, capitalCity } = this.state.questions[this.state.currentQuestionIdx];
-
-		return { questionMainText: country, answer: capitalCity };
+		const { question, answer } = this.state.questions[this.state.currentQuestionIdx];
+		return { questionMainText: question, answer: answer };
 	}
 
 	getNumRemainingQuestions() {
@@ -130,11 +96,13 @@ class Quiz extends Component {
 
 	getDisplay(remaining) {
 		const { loadingData, practiceMode, answerStatus } = this.state;
+		const { questionPrefix, questionSuffix } = this.props.quizProps;
 		if (remaining > 0) {
 			return (
 				<QuestionBox
 					{...this.getCurrentQuestion()}
-					{...{ questionPrefix, questionSuffix }}
+					questionPrefix={questionPrefix}
+					questionSuffix={questionSuffix}
 					handleAnswerSubmit={this.handleAnswerSubmit}
 					practiceMode={practiceMode}
 					answerStatus={answerStatus}
@@ -183,7 +151,7 @@ class Quiz extends Component {
 
 		return (
 			<div className="Quiz">
-				<h1>Capital Cities Quiz</h1>
+				<h1>{this.props.quizProps.title}</h1>
 				<div className="Quiz-switch-container">{this.getSwitch()}</div>
 				<ScoreCard correct={correct} incorrect={incorrect} remaining={remaining} />
 				{this.getDisplay(remaining)}
