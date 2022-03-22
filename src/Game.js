@@ -9,7 +9,6 @@ import ScoreCard from './ScoreCard';
 
 import './Game.css';
 import QuestionBox from './QuestionBox';
-import { toHaveDisplayValue } from '@testing-library/jest-dom/dist/matchers';
 
 const COUNTRIES_API_URL =
 	'https://restcountries.com/v3.1/all?fields=name,capital,unMember,continents';
