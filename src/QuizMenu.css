@@ -2,20 +2,35 @@
 	display: flex;
 	justify-content: center;
 }
+
+.QuizMenu-category-heading {
+	color: rgb(244, 162, 175);
+}
+
 .QuizMenu-links {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
+.QuizMenu-variant-buttons {
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
 .QuizMenu-quiz-link {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	padding: 1.2rem 0.6rem;
 	text-decoration: none;
 	color: white;
 
 	font-size: 1.2rem;
 	border: 1px solid white;
-	width: 70%;
+	width: 30%;
 	text-align: center;
 	margin: 1rem;
 	border-radius: 0.5rem;
@@ -37,11 +52,11 @@
 	color: black;
 }
 
-@media (min-width: 800px) {
+/* @media (min-width: 800px) {
 	.QuizMenu-quiz-link {
-		width: 50%;
+		width: 40%;
 	}
-}
+} */
 
 @media (min-width: 1000px) {
 	.QuizMenu-quiz-link {

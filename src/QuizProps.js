@@ -9,14 +9,17 @@ the full question is: questionPrefix + question + questionSuffix
 */
 class QuizProps {
 	constructor(
-		title,
+		category,
+		variant,
 		route,
 		questionPrefix,
 		questionSuffix,
 		questionGetter,
 		subsetCountsAsCorrect
 	) {
-		this.title = title;
+		this.category = category;
+		this.variant = variant;
+		this.title = `${category}: ${variant}`;
 		this.route = route;
 		this.questionPrefix = questionPrefix;
 		this.questionSuffix = questionSuffix;
@@ -79,7 +82,8 @@ const continents = [ 'Europe', 'Asia', 'Africa', 'North America', 'South America
 
 function makeCapitalCityQuizProps(continent) {
 	return new QuizProps(
-		`Capital Cities: ${continent}`,
+		'Capital Cities',
+		continent,
 		`capital-cities-${continent.toLowerCase().replace(' ', '-')}`,
 		'What is the capital city of ',
 		'?',
@@ -89,7 +93,8 @@ function makeCapitalCityQuizProps(continent) {
 
 function makeCurrencyQuizProps(continent) {
 	return new QuizProps(
-		`Currencies: ${continent}`,
+		'Currencies',
+		continent,
 		`currencies-${continent.toLowerCase().replace(' ', '-')}`,
 		'What is the official currency of ',
 		'?',
@@ -98,8 +103,9 @@ function makeCurrencyQuizProps(continent) {
 	);
 }
 
-const quizzes = continents
-	.map((c) => makeCapitalCityQuizProps(c))
-	.concat(continents.map((c) => makeCurrencyQuizProps(c)));
+const quizzes = {
+	'Capital Cities': continents.map((c) => makeCapitalCityQuizProps(c)),
+	Currencies: continents.map((c) => makeCurrencyQuizProps(c))
+};
 
 export default quizzes;

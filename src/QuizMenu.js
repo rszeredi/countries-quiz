@@ -6,14 +6,34 @@ import './QuizMenu.css';
 import quizzes from './QuizProps';
 
 export default function QuizMenu() {
+	const buildLinks = () => {
+		let links = [];
+		Object.keys(quizzes).forEach((category) => {
+			links.push(
+				<h2 key={category} className="QuizMenu-category-heading">
+					{category}
+				</h2>
+			);
+			const buttons = (
+				<div className="QuizMenu-variant-buttons">
+					{quizzes[category].map((quiz) => (
+						<QuizLink
+							route={'/' + quiz.route}
+							key={quiz.route}
+							quizLabelName={quiz.variant}
+						/>
+					))}
+				</div>
+			);
+			links.push(buttons);
+		});
+		return links;
+	};
+
 	return (
 		<div>
 			<h1 className="QuizMenu">Choose a Quiz!</h1>
-			<div className="QuizMenu-links">
-				{quizzes.map((quiz) => (
-					<QuizLink route={'/' + quiz.route} key={quiz.route} quizName={quiz.title} />
-				))}
-			</div>
+			<div className="QuizMenu-links">{buildLinks()}</div>
 		</div>
 	);
 }
@@ -21,7 +41,7 @@ export default function QuizMenu() {
 function QuizLink(props) {
 	return (
 		<Link className="QuizMenu-quiz-link" to={props.route}>
-			{props.quizName}
+			{props.quizLabelName}
 		</Link>
 	);
 }
