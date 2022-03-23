@@ -31,16 +31,19 @@ class AnswerForm extends Component {
 			.toLowerCase();
 	}
 
-	isCorrectAnswer() {
-		return (
-			this.normalizeAnswer(this.props.correctAnswer) ===
-			this.normalizeAnswer(this.state.answer)
-		);
+	isCorrectAnswer(subsetCountsAsCorrect = false) {
+		const normalizedCorrectAnswer = this.normalizeAnswer(this.props.correctAnswer);
+		const normalizedUserAnswer = this.normalizeAnswer(this.state.answer);
+		if (subsetCountsAsCorrect) {
+			return normalizedCorrectAnswer.includes(normalizedUserAnswer);
+		} else {
+			return normalizedCorrectAnswer === normalizedUserAnswer;
+		}
 	}
 
 	handleSubmit(e) {
 		e.preventDefault();
-		const answerIsCorrect = this.isCorrectAnswer();
+		const answerIsCorrect = this.isCorrectAnswer(this.props.subsetCountsAsCorrect);
 		this.setState({ answerStatus: answerIsCorrect ? 'correct' : 'incorrect' });
 
 		setTimeout(() => {

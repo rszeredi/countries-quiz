@@ -11,7 +11,6 @@ export default function QuizRoutes() {
 		<Routes>
 			<Route path="/" element={<QuizMenu />} />
 			{quizzes.map((quiz) => {
-				console.log('quiz.route', '/' + quiz.route);
 				return (
 					<Route
 						path={'/' + quiz.route}

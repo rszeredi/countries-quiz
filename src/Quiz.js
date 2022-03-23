@@ -96,7 +96,7 @@ class Quiz extends Component {
 
 	getDisplay(remaining) {
 		const { loadingData, practiceMode, answerStatus } = this.state;
-		const { questionPrefix, questionSuffix } = this.props.quizProps;
+		const { questionPrefix, questionSuffix, subsetCountsAsCorrect } = this.props.quizProps;
 		if (remaining > 0) {
 			return (
 				<QuestionBox
@@ -106,6 +106,7 @@ class Quiz extends Component {
 					handleAnswerSubmit={this.handleAnswerSubmit}
 					practiceMode={practiceMode}
 					answerStatus={answerStatus}
+					subsetCountsAsCorrect={subsetCountsAsCorrect}
 				/>
 			);
 		} else if (loadingData) {

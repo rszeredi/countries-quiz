@@ -10,7 +10,9 @@ export default function QuizMenu() {
 		<div>
 			<h1 className="QuizMenu">Choose a Quiz!</h1>
 			<div className="QuizMenu-links">
-				{quizzes.map((quiz) => <QuizLink route={'/' + quiz.route} quizName={quiz.title} />)}
+				{quizzes.map((quiz) => (
+					<QuizLink route={'/' + quiz.route} key={quiz.route} quizName={quiz.title} />
+				))}
 			</div>
 		</div>
 	);

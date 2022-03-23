@@ -12,7 +12,8 @@ class QuestionBox extends Component {
 			practiceMode,
 			answer,
 			answerStatus,
-			handleAnswerSubmit
+			handleAnswerSubmit,
+			subsetCountsAsCorrect
 		} = this.props;
 
 		return (
@@ -28,6 +29,7 @@ class QuestionBox extends Component {
 						practiceMode={practiceMode}
 						answerStatus={answerStatus}
 						correctAnswer={answer}
+						subsetCountsAsCorrect={subsetCountsAsCorrect}
 					/>
 				</div>
 			</div>
