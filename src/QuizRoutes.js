@@ -7,21 +7,6 @@ import quizzes from './QuizProps';
 
 export default function QuizRoutes() {
 	console.log(quizzes);
-
-	// let routes = []
-	// quizzes
-	// 			.foreach((_, categoryQuizzes) =>
-	// 				categoryQuizzes.map((quiz) => {
-	// 					return (
-	// 						<Route
-	// 							path={'/' + quiz.route}
-	// 							element={<Quiz quizProps={quiz} />}
-	// 							key={quiz.route}
-	// 						/>
-	// 					);
-	// 				})
-	// 			)
-	console.log(Object.values(quizzes));
 	return (
 		<Routes>
 			<Route path="/" element={<QuizMenu />} />
@@ -29,9 +14,9 @@ export default function QuizRoutes() {
 				categoryQuizzes.map((quiz) => {
 					return (
 						<Route
-							path={'/' + quiz.route}
+							path={'/' + quiz.quizId}
 							element={<Quiz quizProps={quiz} />}
-							key={quiz.route}
+							key={quiz.quizId}
 						/>
 					);
 				})

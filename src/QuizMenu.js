@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './QuizMenu.css';
@@ -10,16 +10,16 @@ export default function QuizMenu() {
 		let links = [];
 		Object.keys(quizzes).forEach((category) => {
 			links.push(
-				<h2 key={category} className="QuizMenu-category-heading">
+				<h2 key={`h2-${category}`} className="QuizMenu-category-heading">
 					{category}
 				</h2>
 			);
 			const buttons = (
-				<div className="QuizMenu-variant-buttons">
+				<div key={`buttons-${category}`} className="QuizMenu-variant-buttons">
 					{quizzes[category].map((quiz) => (
 						<QuizLink
-							route={'/' + quiz.route}
-							key={quiz.route}
+							quizId={quiz.quizId}
+							key={quiz.quizId}
 							quizLabelName={quiz.variant}
 						/>
 					))}
@@ -40,7 +40,7 @@ export default function QuizMenu() {
 
 function QuizLink(props) {
 	return (
-		<Link className="QuizMenu-quiz-link" to={props.route}>
+		<Link className="QuizMenu-quiz-link" to={'/' + props.quizId}>
 			{props.quizLabelName}
 		</Link>
 	);

@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+const INCLUDE_TEST_QUIZ = false;
 const COUNTRIES_API_URL =
 	'https://restcountries.com/v3.1/all?fields=name,capital,unMember,continents,currencies';
 
@@ -11,7 +12,7 @@ class QuizProps {
 	constructor(
 		category,
 		variant,
-		route,
+		quizId,
 		questionPrefix,
 		questionSuffix,
 		questionGetter,
@@ -19,8 +20,8 @@ class QuizProps {
 	) {
 		this.category = category;
 		this.variant = variant;
+		this.quizId = quizId;
 		this.title = `${category}: ${variant}`;
-		this.route = route;
 		this.questionPrefix = questionPrefix;
 		this.questionSuffix = questionSuffix;
 		this.questionGetter = questionGetter;
@@ -33,7 +34,6 @@ function getTestData() {
 		{ question: 'Australia', answer: 'Canberra' },
 		{ question: 'France', answer: 'Paris' },
 		{ question: 'Spain', answer: 'Madrid' },
-		{ question: 'Malaysia', answer: 'Kuala Lumpur' },
 		{ question: 'Hungary', answer: 'Budapest' }
 	];
 }
@@ -103,9 +103,22 @@ function makeCurrencyQuizProps(continent) {
 	);
 }
 
-const quizzes = {
+let quizzes = {
 	'Capital Cities': continents.map((c) => makeCapitalCityQuizProps(c)),
 	Currencies: continents.map((c) => makeCurrencyQuizProps(c))
 };
+
+if (INCLUDE_TEST_QUIZ) {
+	quizzes['For Testing'] = [
+		new QuizProps(
+			'Capital Cities',
+			'Test',
+			'test',
+			'What is the capital city of ',
+			'?',
+			getTestData
+		)
+	];
+}
 
 export default quizzes;

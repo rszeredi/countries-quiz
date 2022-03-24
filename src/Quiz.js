@@ -11,6 +11,8 @@ import QuestionBox from './QuestionBox';
 
 import quizzes from './QuizProps';
 
+const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = 'incorrectCounter';
+
 class Quiz extends Component {
 	static defaultProps = {
 		quizProps: quizzes[0]
@@ -18,7 +20,8 @@ class Quiz extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			questions: [],
+			questionsAll: [],
+			questions: [], // might be better (ie. more space efficient) to just store the desired indices
 			loadingData: true,
 			correct: 0,
 			incorrect: 0,
@@ -26,20 +29,66 @@ class Quiz extends Component {
 			repeatCorrectAnswerMode: false,
 			practiceMode: true,
 			showAnswer: false,
-			answerStatus: 'none'
+			answerStatus: 'none',
+			onlyPractiseIncorrect: false
 		};
 
 		this.getCurrentQuestion = this.getCurrentQuestion.bind(this);
 		this.handleAnswerSubmit = this.handleAnswerSubmit.bind(this);
 		this.resetQuestions = this.resetQuestions.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.resetInPractiseIncorrectMode = this.resetInPractiseIncorrectMode.bind(this);
 	}
 
 	async componentDidMount() {
+		const allQuestions = await this.props.quizProps.questionGetter();
+		let questionsFiltered = this.getFilteredQuestions(allQuestions);
+		if (this.state.onlyPractiseIncorrect) {
+			const incorrectCounts = this.getQuestionsWithIncorrectCounts();
+			questionsFiltered = allQuestions.filter((q) =>
+				Object.keys(incorrectCounts[this.props.quizProps.quizId]).includes(q.question)
+			);
+		}
 		this.setState({
-			questions: await this.props.quizProps.questionGetter(),
+			questionsAll: allQuestions,
+			questions: questionsFiltered,
 			loadingData: false
 		});
+	}
+
+	getFilteredQuestions(allQuestions) {
+		if (this.state.onlyPractiseIncorrect) {
+			const incorrectCounts = this.getQuestionsWithIncorrectCounts();
+			const questionsFiltered = allQuestions.filter((q) =>
+				Object.keys(incorrectCounts[this.props.quizProps.quizId]).includes(q.question)
+			);
+			return questionsFiltered;
+		} else {
+			return allQuestions;
+		}
+	}
+
+	getQuestionsWithIncorrectCounts() {
+		let incorrectCounter;
+		try {
+			incorrectCounter = JSON.parse(
+				window.localStorage.getItem(INCORRECT_COUNTER_LOCAL_STORAGE_KEY) || '{}'
+			);
+		} catch (e) {
+			incorrectCounter = {};
+		}
+		return incorrectCounter;
+	}
+
+	existsQuestionsWithIncorrectCounts() {
+		const { quizId } = this.props.quizProps;
+		const incorrectCounterQuiz = this.getQuestionsWithIncorrectCounts()[quizId];
+
+		if (incorrectCounterQuiz && Object.keys(incorrectCounterQuiz).length > 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	getCurrentQuestion() {
@@ -59,12 +108,48 @@ class Quiz extends Component {
 		}
 	}
 
+	updateIncorrectCount(question, delta) {
+		const incorrectCounter = this.getQuestionsWithIncorrectCounts();
+
+		// to-do: refactor this - feels buggy
+		const { quizId } = this.props.quizProps;
+		if (!(quizId in incorrectCounter)) {
+			incorrectCounter[quizId] = {};
+		}
+		const newVal = (incorrectCounter[quizId][question] || 0) + delta;
+
+		if (newVal > 0) {
+			incorrectCounter[quizId][question] = newVal;
+		} else {
+			delete incorrectCounter[quizId][question];
+		}
+
+		console.log(incorrectCounter[quizId]);
+
+		window.localStorage.setItem(
+			INCORRECT_COUNTER_LOCAL_STORAGE_KEY,
+			JSON.stringify(incorrectCounter)
+		);
+	}
+
 	handleAnswerSubmit(answerIsCorrect) {
 		// need to pass answerStatus to the QuestionBox
 		if (answerIsCorrect) {
 			this.setState({ answerStatus: 'correct' });
+			if (!this.state.repeatCorrectAnswerMode) {
+				this.updateIncorrectCount(
+					this.state.questions[this.state.currentQuestionIdx].question,
+					-1
+				);
+			}
 		} else {
 			this.setState({ answerStatus: 'incorrect' });
+			if (!this.state.repeatCorrectAnswerMode) {
+				this.updateIncorrectCount(
+					this.state.questions[this.state.currentQuestionIdx].question,
+					1
+				);
+			}
 		}
 
 		// Only update the score if we're not in repeatCorrectAnswerMode mode
@@ -89,14 +174,25 @@ class Quiz extends Component {
 		this.setState({ correct: 0, incorrect: 0 });
 	}
 
+	resetInPractiseIncorrectMode() {
+		this.setState({ onlyPractiseIncorrect: true }, this.resetQuestions);
+	}
+
 	resetQuestions() {
-		this.setState({ currentQuestionIdx: 0 });
+		this.setState({
+			onlyPractiseIncorrect: false,
+			currentQuestionIdx: 0,
+			questions: this.getFilteredQuestions(this.state.questionsAll)
+		});
 		this.resetScores();
 	}
 
 	getDisplay(remaining) {
 		const { loadingData, practiceMode, answerStatus } = this.state;
 		const { questionPrefix, questionSuffix, subsetCountsAsCorrect } = this.props.quizProps;
+
+		const numInIncorrectCounter = this.existsQuestionsWithIncorrectCounts();
+
 		if (remaining > 0) {
 			return (
 				<QuestionBox
@@ -124,6 +220,14 @@ class Quiz extends Component {
 					<button className="Quiz-restart-btn" onClick={this.resetQuestions}>
 						Start Over
 					</button>
+					{numInIncorrectCounter && (
+						<button
+							className="Quiz-restart-btn"
+							onClick={this.resetInPractiseIncorrectMode}
+						>
+							Practise the Ones You Didn't Get!
+						</button>
+					)}
 				</div>
 			);
 		}
