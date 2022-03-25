@@ -17,11 +17,12 @@ import {
 	getNumRemainingQuestions
 } from './quizHelpers';
 
-// import useLocalStorageState from './hooks/useLocalStorageState'; // use this next
+import useLocalStorageState from './hooks/useLocalStorageState'; // use this next
 
 import './Quiz.css';
 
-const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = 'incorrectCounter';
+const LOCAL_STORAGE_PREFIX = 'quiz_';
+const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = `${LOCAL_STORAGE_PREFIX}incorrectCounter`;
 
 /*
 
@@ -51,12 +52,24 @@ THINGS I'M UNSURE ABOUT (from the class->function+hooks refactor)
 function Quiz(props) {
 	const { quizProps } = props;
 	const { quizId } = quizProps;
-	const [ questionsAll, setQuestionsAll ] = useState([]);
-	const [ questions, setQuestions ] = useState([]); // might be better (ie. more space efficient) to just store the desired indices
 	const [ loadingData, setLoadingData ] = useState(true);
-	const [ correct, setCorrect ] = useState(0);
-	const [ incorrect, setIncorrect ] = useState(0);
-	const [ currentQuestionIdx, setCurrentQuestionIdx ] = useState(0);
+	const [ questionsAll, setQuestionsAll ] = useState([]);
+	const [ questions, setQuestions ] = useLocalStorageState(
+		`${LOCAL_STORAGE_PREFIX}questions_${quizId}`,
+		[]
+	); // might be better (ie. more space efficient) to just store the desired indices
+	const [ currentQuestionIdx, setCurrentQuestionIdx ] = useLocalStorageState(
+		`${LOCAL_STORAGE_PREFIX}currentQuestionIdx_${quizId}`,
+		0
+	);
+	const [ correct, setCorrect ] = useLocalStorageState(
+		`${LOCAL_STORAGE_PREFIX}correctCount_${quizId}`,
+		0
+	);
+	const [ incorrect, setIncorrect ] = useLocalStorageState(
+		`${LOCAL_STORAGE_PREFIX}incorrectCount_${quizId}`,
+		0
+	);
 	const [ repeatCorrectAnswerMode, setRepeatCorrectAnswerMode ] = useState(false);
 	const [ practiceMode, setPracticeMode ] = useState(true);
 	const [ answerStatus, setAnswerStatus ] = useState('none');
@@ -83,7 +96,11 @@ function Quiz(props) {
 			setQuestions(questionsFiltered);
 			setLoadingData(false);
 		};
-		getQuestions(); // todo need to catch this?
+
+		// only get questions if they're not already defined in localStorage
+		if (questions.length === 0) {
+			getQuestions(); // todo need to catch this?
+		}
 	}, []); // when should useEffect be called??
 
 	const handleAnswerSubmit = (answerIsCorrect) => {
