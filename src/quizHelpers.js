@@ -1,6 +1,6 @@
-export function getFilteredQuestions(allQuestions, onlyPractiseIncorrect, quizId) {
+export function getFilteredQuestions(allQuestions, onlyPractiseIncorrect, quizId, localStorageKey) {
 	if (onlyPractiseIncorrect) {
-		const incorrectCounts = getQuestionsWithIncorrectCounts();
+		const incorrectCounts = getQuestionsWithIncorrectCounts(localStorageKey);
 		const questionsFiltered = allQuestions.filter((q) =>
 			Object.keys(incorrectCounts[quizId]).includes(q.question)
 		);
@@ -20,8 +20,8 @@ export function getQuestionsWithIncorrectCounts(localStorageKey) {
 	return incorrectCounter;
 }
 
-export function existsQuestionsWithIncorrectCounts(quizId) {
-	const incorrectCounterQuiz = getQuestionsWithIncorrectCounts()[quizId];
+export function existsQuestionsWithIncorrectCounts(quizId, localStorageKey) {
+	const incorrectCounterQuiz = getQuestionsWithIncorrectCounts(localStorageKey)[quizId];
 
 	if (incorrectCounterQuiz && Object.keys(incorrectCounterQuiz).length > 0) {
 		return true;
@@ -55,7 +55,7 @@ export function updateScore(
 }
 
 export function updateIncorrectCount(question, delta, quizId, localStorageKey) {
-	const incorrectCounter = getQuestionsWithIncorrectCounts();
+	const incorrectCounter = getQuestionsWithIncorrectCounts(localStorageKey);
 	console.log('incorrectCounter', incorrectCounter);
 
 	// to-do: refactor this - feels buggy
