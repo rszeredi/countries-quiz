@@ -5,11 +5,21 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 import ScoreCard from './ScoreCard';
-
-import './Quiz.css';
 import QuestionBox from './QuestionBox';
 
+import {
+	getFilteredQuestions,
+	getQuestionsWithIncorrectCounts,
+	existsQuestionsWithIncorrectCounts,
+	getCurrentQuestion,
+	updateScore,
+	updateIncorrectCount,
+	getNumRemainingQuestions
+} from './quizHelpers';
+
 // import useLocalStorageState from './hooks/useLocalStorageState'; // use this next
+
+import './Quiz.css';
 
 const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = 'incorrectCounter';
 
@@ -29,82 +39,6 @@ THINGS I'M UNSURE ABOUT
 3. Am I using useEffect in the correct way?
 
 */
-
-function getFilteredQuestions(allQuestions, onlyPractiseIncorrect, quizId) {
-	if (onlyPractiseIncorrect) {
-		const incorrectCounts = getQuestionsWithIncorrectCounts();
-		const questionsFiltered = allQuestions.filter((q) =>
-			Object.keys(incorrectCounts[quizId]).includes(q.question)
-		);
-		return questionsFiltered;
-	} else {
-		return allQuestions;
-	}
-}
-
-function getQuestionsWithIncorrectCounts() {
-	let incorrectCounter;
-	try {
-		incorrectCounter = JSON.parse(
-			window.localStorage.getItem(INCORRECT_COUNTER_LOCAL_STORAGE_KEY) || '{}'
-		);
-	} catch (e) {
-		incorrectCounter = {};
-	}
-	return incorrectCounter;
-}
-
-function existsQuestionsWithIncorrectCounts(quizId) {
-	const incorrectCounterQuiz = getQuestionsWithIncorrectCounts()[quizId];
-
-	if (incorrectCounterQuiz && Object.keys(incorrectCounterQuiz).length > 0) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-function getCurrentQuestion(questions, currentQuestionIdx) {
-	const { question, answer } = questions[currentQuestionIdx];
-	return { questionMainText: question, answer: answer };
-}
-
-function getNumRemainingQuestions(questions, currentQuestionIdx) {
-	return questions.length - currentQuestionIdx;
-}
-
-function updateScore(answerIsCorrect, currentCorrect, setCorrect, currentIncorrect, setIncorrect) {
-	if (answerIsCorrect) {
-		setCorrect(currentCorrect + 1); // does this actually work (ie. is currentCorrect guaranteed to be updated?) Consider creating an "updateScore" custom hook
-		// this.setState((curSt) => ({ correct: curSt.correct + 1 }));
-	} else {
-		setIncorrect(currentIncorrect + 1);
-	}
-}
-
-function updateIncorrectCount(question, delta, quizId) {
-	const incorrectCounter = getQuestionsWithIncorrectCounts();
-	console.log('incorrectCounter', incorrectCounter);
-
-	// to-do: refactor this - feels buggy
-	if (!(quizId in incorrectCounter)) {
-		incorrectCounter[quizId] = {};
-	}
-	const newVal = (incorrectCounter[quizId][question] || 0) + delta;
-
-	if (newVal > 0) {
-		incorrectCounter[quizId][question] = newVal;
-	} else {
-		delete incorrectCounter[quizId][question];
-	}
-
-	console.log(incorrectCounter[quizId]);
-
-	window.localStorage.setItem(
-		INCORRECT_COUNTER_LOCAL_STORAGE_KEY,
-		JSON.stringify(incorrectCounter)
-	);
-}
 
 function Quiz(props) {
 	const { quizProps } = props;
@@ -128,7 +62,9 @@ function Quiz(props) {
 			console.log('allQuestions', allQuestions);
 			let questionsFiltered = getFilteredQuestions(allQuestions);
 			if (onlyPractiseIncorrect) {
-				const incorrectCounts = getQuestionsWithIncorrectCounts();
+				const incorrectCounts = getQuestionsWithIncorrectCounts(
+					INCORRECT_COUNTER_LOCAL_STORAGE_KEY
+				);
 				questionsFiltered = allQuestions.filter((q) =>
 					Object.keys(incorrectCounts[quizId]).includes(q.question)
 				);
@@ -147,7 +83,12 @@ function Quiz(props) {
 		if (answerIsCorrect) {
 			setAnswerStatus('correct');
 			if (!repeatCorrectAnswerMode) {
-				updateIncorrectCount(questions[currentQuestionIdx].question, -1, quizId);
+				updateIncorrectCount(
+					questions[currentQuestionIdx].question,
+					-1,
+					quizId,
+					INCORRECT_COUNTER_LOCAL_STORAGE_KEY
+				);
 			}
 		} else {
 			setAnswerStatus('incorrect');
