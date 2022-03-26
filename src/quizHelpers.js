@@ -1,8 +1,10 @@
 export function getFilteredQuestions(allQuestions, onlyPractiseIncorrect, quizId, localStorageKey) {
 	if (onlyPractiseIncorrect) {
 		const incorrectCounts = getQuestionsWithIncorrectCounts(localStorageKey);
-		const questionsFiltered = allQuestions.filter((q) =>
-			Object.keys(incorrectCounts[quizId]).includes(q.question)
+		const questionsFiltered = allQuestions.filter(
+			(q) =>
+				!incorrectCounts[quizId] ||
+				Object.keys(incorrectCounts[quizId]).includes(q.question)
 		);
 		return questionsFiltered;
 	} else {
@@ -56,7 +58,6 @@ export function updateScore(
 
 export function updateIncorrectCount(question, delta, quizId, localStorageKey) {
 	const incorrectCounter = getQuestionsWithIncorrectCounts(localStorageKey);
-	console.log('incorrectCounter', incorrectCounter);
 
 	// to-do: refactor this - feels buggy
 	if (!(quizId in incorrectCounter)) {
@@ -70,7 +71,7 @@ export function updateIncorrectCount(question, delta, quizId, localStorageKey) {
 		delete incorrectCounter[quizId][question];
 	}
 
-	console.log(incorrectCounter[quizId]);
+	console.log('incorrectCounter[quizId]', incorrectCounter[quizId]);
 
 	window.localStorage.setItem(localStorageKey, JSON.stringify(incorrectCounter));
 }

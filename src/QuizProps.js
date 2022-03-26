@@ -29,7 +29,8 @@ class QuizProps {
 	}
 }
 
-function getTestData() {
+async function getTestData() {
+	await new Promise((r) => setTimeout(r, 1000));
 	return [
 		{ question: 'Australia', answer: 'Canberra' },
 		{ question: 'France', answer: 'Paris' },

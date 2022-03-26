@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -47,11 +47,22 @@ THINGS I'M UNSURE ABOUT (from the class->function+hooks refactor)
 
 4. Do I have too many state variables?
 
+5. How much can I store in localStorage?
+
 */
 
 function Quiz(props) {
+	// We can then use this variable to prevent the side effect from taking place during the initial render.
+	// https://www.thearmchaircritic.org/tech-journal/prevent-useeffects-callback-firing-during-initial-render
+	const isMounted = useRef(false); // https://typeofnan.dev/how-to-prevent-useeffect-from-running-on-mount-in-react/
+
 	const { quizProps } = props;
 	const { quizId } = quizProps;
+	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
+		quizId,
+		INCORRECT_COUNTER_LOCAL_STORAGE_KEY
+	);
+
 	const [ loadingData, setLoadingData ] = useState(true);
 	const [ questionsAll, setQuestionsAll ] = useState([]);
 	const [ questions, setQuestions ] = useLocalStorageState(
@@ -71,37 +82,70 @@ function Quiz(props) {
 		0
 	);
 	const [ repeatCorrectAnswerMode, setRepeatCorrectAnswerMode ] = useState(false);
-	const [ practiceMode, setPracticeMode ] = useState(true);
+	const [ practiceMode, setPracticeMode ] = useState(false);
 	const [ answerStatus, setAnswerStatus ] = useState('none');
 	const [ onlyPractiseIncorrect, setOnlyPractiseIncorrect ] = useState(false);
 
 	useEffect(() => {
-		console.log('useEffect');
-
-		const getQuestions = async () => {
-			const allQuestions = await quizProps.questionGetter();
-			console.log('allQuestions', allQuestions);
-			let questionsFiltered = getFilteredQuestions(allQuestions);
-			if (onlyPractiseIncorrect) {
-				const incorrectCounts = getQuestionsWithIncorrectCounts(
-					INCORRECT_COUNTER_LOCAL_STORAGE_KEY
-				);
-				questionsFiltered = allQuestions.filter((q) =>
-					Object.keys(incorrectCounts[quizId]).includes(q.question)
-				);
-			}
-
-			// should set state inside the async function according to : https://devtrium.com/posts/async-functions-useeffect
-			setQuestionsAll(allQuestions);
-			setQuestions(questionsFiltered);
-			setLoadingData(false);
-		};
+		console.log('useEffect initial');
 
 		// only get questions if they're not already defined in localStorage
 		if (questions.length === 0) {
-			getQuestions(); // todo need to catch this?
+			getQuestionsFromQuizPropsGetter(onlyPractiseIncorrect); // todo need to catch this?
 		}
 	}, []); // when should useEffect be called??
+
+	const getQuestionsFromQuizPropsGetter = async (onlyPractiseIncorrect) => {
+		const allQuestions = await quizProps.questionGetter();
+		let questionsFiltered = getFilteredQuestions(
+			allQuestions,
+			onlyPractiseIncorrect,
+			quizId,
+			INCORRECT_COUNTER_LOCAL_STORAGE_KEY
+		);
+		if (onlyPractiseIncorrect) {
+			const incorrectCounts = getQuestionsWithIncorrectCounts(
+				INCORRECT_COUNTER_LOCAL_STORAGE_KEY
+			);
+			questionsFiltered = allQuestions.filter((q) =>
+				Object.keys(incorrectCounts[quizId]).includes(q.question)
+			);
+		}
+
+		// should set state inside the async function according to : https://devtrium.com/posts/async-functions-useeffect
+		setQuestionsAll(allQuestions);
+		setQuestions(questionsFiltered);
+		// setLoadingData(false);
+	};
+
+	// useEffect(
+	// 	() => {
+	// 		console.log('loadingData useEffect', loadingData);
+	// 	},
+	// 	[ loadingData ]
+	// );
+
+	useEffect(
+		() => {
+			if (questionsAll.length) {
+				setLoadingData(false);
+			} else {
+				setLoadingData(true);
+			}
+		},
+		[ questionsAll ]
+	);
+
+	useEffect(
+		() => {
+			if (questions.length) {
+				setLoadingData(false);
+			} else {
+				setLoadingData(true);
+			}
+		},
+		[ questions ]
+	);
 
 	const handleAnswerSubmit = (answerIsCorrect) => {
 		// need to pass answerStatus to the QuestionBox
@@ -149,28 +193,50 @@ function Quiz(props) {
 		setIncorrect(0);
 	};
 
-	const resetGame = (practiseIncorrectModeOnNext) => {
+	const resetGame = async (practiseIncorrectModeOnNext) => {
 		setOnlyPractiseIncorrect(practiseIncorrectModeOnNext);
 		setCurrentQuestionIdx(0);
-		setQuestions(
-			getFilteredQuestions(
-				questionsAll,
-				practiseIncorrectModeOnNext,
-				quizId,
-				INCORRECT_COUNTER_LOCAL_STORAGE_KEY
-			)
-		);
-		resetScores();
-	};
 
-	const getDisplay = (numRemainingQuestions) => {
-		const { questionPrefix, questionSuffix, subsetCountsAsCorrect } = quizProps;
-		const numInIncorrectCounter = existsQuestionsWithIncorrectCounts(
+		// we don't load all questions every time Quiz renders - only if questions is empty (see useEffect). This saves some API calls
+		// when the game is reset, allQuestions should be reloaded so that we can serve up new questions
+
+		let questionsFromQuizPropsGetter;
+		if (!questionsAll.length) {
+			setLoadingData(true);
+			getQuestionsFromQuizPropsGetter(practiseIncorrectModeOnNext);
+		}
+
+		const questionsFiltered = getFilteredQuestions(
+			questionsAll || questionsFromQuizPropsGetter,
+			practiseIncorrectModeOnNext,
 			quizId,
 			INCORRECT_COUNTER_LOCAL_STORAGE_KEY
 		);
+		setQuestions(questionsFiltered);
+		resetScores();
+	};
 
-		if (numRemainingQuestions > 0) {
+	useEffect(
+		() => {
+			if (isMounted.current) {
+				console.log('resetting game');
+				resetGame(onlyPractiseIncorrect);
+			} else {
+				isMounted.current = true;
+			}
+		},
+		[ onlyPractiseIncorrect ]
+	);
+
+	const getDisplay = (numRemainingQuestions) => {
+		const { questionPrefix, questionSuffix, subsetCountsAsCorrect } = quizProps;
+		if (loadingData) {
+			return (
+				<div className="Quiz-loading">
+					<h1>Loading...</h1>
+				</div>
+			);
+		} else if (numRemainingQuestions > 0) {
 			return (
 				<QuestionBox
 					{...getCurrentQuestion(questions, currentQuestionIdx)}
@@ -182,12 +248,6 @@ function Quiz(props) {
 					handleAnswerSubmit={handleAnswerSubmit}
 				/>
 			);
-		} else if (loadingData) {
-			return (
-				<div className="Quiz-loading">
-					<h1>Loading...</h1>
-				</div>
-			);
 		} else {
 			return (
 				<div className="Quiz-restart">
@@ -197,7 +257,7 @@ function Quiz(props) {
 					<button className="Quiz-restart-btn" onClick={() => resetGame(false)}>
 						Start Over
 					</button>
-					{numInIncorrectCounter && (
+					{questionsExistInIncorrectCounter && (
 						<button className="Quiz-restart-btn" onClick={() => resetGame(true)}>
 							Practise the Ones You Don't Know!
 						</button>
@@ -207,18 +267,18 @@ function Quiz(props) {
 		}
 	};
 
-	const handlePracticeModeChange = (event) => {
-		setPracticeMode(event.target.checked);
-	};
-
-	const getPractiseModeSwitch = () => {
+	const getSwitch = (label, state, stateSetter, disabled = false) => {
+		const handler = (event) => {
+			stateSetter(event.target.checked);
+		};
 		return (
 			<FormGroup>
 				<FormControlLabel
-					control={<Switch checked={practiceMode} />}
-					label="Practice Mode"
+					control={<Switch checked={state} />}
+					label={label}
 					labelPlacement="start"
-					onChange={handlePracticeModeChange}
+					onChange={handler}
+					disabled={disabled}
 				/>
 			</FormGroup>
 		);
@@ -228,7 +288,15 @@ function Quiz(props) {
 	return (
 		<div className="Quiz">
 			<h1>{quizProps.title}</h1>
-			<div className="Quiz-switch-container">{getPractiseModeSwitch()}</div>
+			<div className="Quiz-switch-container">
+				{getSwitch('Practice Mode', practiceMode, setPracticeMode)}
+				{getSwitch(
+					'Incorrect Only',
+					onlyPractiseIncorrect,
+					setOnlyPractiseIncorrect,
+					!questionsExistInIncorrectCounter // disabled - how to pass as parameter name?
+				)}
+			</div>
 			<ScoreCard correct={correct} incorrect={incorrect} remaining={numRemainingQuestions} />
 			{getDisplay(numRemainingQuestions)}
 		</div>
