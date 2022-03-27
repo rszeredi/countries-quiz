@@ -62,27 +62,6 @@ function parseCountryData(data, continent) {
 	);
 }
 
-// function capitalCityParser(countryData) {
-// 	return countryData.map((country) => ({
-// 		question: country.name.common,
-// 		answer: country['capital'][0]
-// 	}));
-// }
-
-// function currencyParser(countryData) {
-// 	return countryData.map((country) => ({
-// 		question: country.name.common,
-// 		answer: Object.values(country['currencies'])[0].name
-// 	}));
-// }
-
-// function populationParser(countryData) {
-// 	return countryData.map((country) => ({
-// 		question: country.name.common,
-// 		answer: Object.values(country['population']) // todo: what if it's undefined??
-// 	}));
-// }
-
 function capitalCityParser(countryData) {
 	return countryData['capital'][0];
 }
@@ -93,6 +72,10 @@ function currencyParser(countryData) {
 
 function populationParser(countryData) {
 	return countryData['population'];
+}
+
+function flagParser(countryData) {
+	return countryData['flag'];
 }
 
 function questionMaker(countriesData, answerParser) {
@@ -117,7 +100,7 @@ function makeCapitalCityQuizProps(continent) {
 			),
 		false,
 		true,
-		true
+		false
 	);
 }
 
@@ -155,10 +138,28 @@ function makePopulationQuizProps(continent) {
 	);
 }
 
+function makeFlagQuizProps(continent) {
+	return new QuizProps(
+		'Flags',
+		continent,
+		`flags-${continent.toLowerCase().replace(' ', '-')}`,
+		'What is the flag of ',
+		'?',
+		async () =>
+			getCountryQuizData('flag', continent.toLowerCase(), (data) =>
+				questionMaker(data, flagParser)
+			),
+		false,
+		false,
+		true
+	);
+}
+
 let quizzes = {
 	'Capital Cities': continents.map((c) => makeCapitalCityQuizProps(c)),
 	Currencies: continents.map((c) => makeCurrencyQuizProps(c)),
-	Population: continents.map((c) => makePopulationQuizProps(c))
+	Population: continents.map((c) => makePopulationQuizProps(c)),
+	Flags: continents.map((c) => makeFlagQuizProps(c))
 };
 
 if (INCLUDE_TEST_QUIZ) {

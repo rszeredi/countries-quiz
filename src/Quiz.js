@@ -246,6 +246,7 @@ function Quiz(props) {
 			return (
 				<QuestionBox
 					{...getCurrentQuestion(questions, currentQuestionIdx)}
+					isFlagsQuiz={quizId.startsWith('flag')}
 					questionPrefix={questionPrefix}
 					questionSuffix={questionSuffix}
 					practiceMode={practiceMode}

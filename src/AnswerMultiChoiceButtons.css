@@ -6,6 +6,11 @@
 	margin-top: 1rem;
 }
 
+.AnswerChoiceButton-flag {
+	font-size: 4rem !important;
+	padding: 0.2rem 0.5rem !important;
+}
+
 .AnswerMultiChoiceButtons .AnswerChoiceButton-btn-correct {
 	background-color: rgba(9, 213, 67, 70%);
 }

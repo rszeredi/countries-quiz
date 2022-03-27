@@ -6,7 +6,7 @@ import './AnswerMultiChoiceButtons.css';
 // AnswerMultiChoiceButtonsInner: tracks what answer was click, fake answers stay the same
 
 export default function AnswerMultiChoiceButtons(props) {
-	const { correctAnswer, handleAnswerSubmit, answerPool } = props;
+	const { correctAnswer, answerPool, isFlagsQuiz, handleAnswerSubmit } = props;
 	let fakeAnswers;
 	if (typeof correctAnswer === 'number') {
 		fakeAnswers = generateIncorrectMultiChoiceNumberOptions(correctAnswer);
@@ -29,13 +29,14 @@ export default function AnswerMultiChoiceButtons(props) {
 		<AnswerMultiChoiceButtonsInner
 			answerOptions={answerOptions}
 			correctAnswer={correctAnswer}
+			isFlagsQuiz={isFlagsQuiz}
 			handleAnswerSubmit={handleAnswerSubmit}
 		/>
 	);
 }
 
 function AnswerMultiChoiceButtonsInner(props) {
-	const { answerOptions, correctAnswer, handleAnswerSubmit } = props;
+	const { answerOptions, correctAnswer, isFlagsQuiz, handleAnswerSubmit } = props;
 	const [ answerStatus, setAnswerStatus ] = useState('none');
 
 	const [ selectedAnswer, setSelectedAnswer ] = useState('none');
@@ -53,15 +54,21 @@ function AnswerMultiChoiceButtonsInner(props) {
 	const getExtraClassNames = (answer) => {
 		console.log('selectedAnswer', selectedAnswer);
 		console.log('answer', answer);
+		let extraClassNameList = [];
+
+		if (isFlagsQuiz) {
+			extraClassNameList.push('AnswerChoiceButton-flag');
+		}
+
 		if (answerStatus === 'answered') {
 			if (answer == correctAnswer) {
 				// use == here because might be comparing number to string
-				return 'AnswerChoiceButton-btn-correct';
+				extraClassNameList.push('AnswerChoiceButton-btn-correct');
 			} else if (answer != correctAnswer && selectedAnswer == answer) {
-				return 'AnswerChoiceButton-btn-incorrect';
+				extraClassNameList.push('AnswerChoiceButton-btn-incorrect');
 			}
 		}
-		return '';
+		return extraClassNameList.join(' ');
 	};
 
 	return (
