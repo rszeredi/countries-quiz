@@ -17,12 +17,11 @@ import {
 	getNumRemainingQuestions
 } from './quizHelpers';
 
-import useLocalStorageState from './hooks/useLocalStorageState'; // use this next
+import useQuizState from './hooks/useQuizState';
 
 import './Quiz.css';
 
-const LOCAL_STORAGE_PREFIX = 'quiz_';
-const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = `${LOCAL_STORAGE_PREFIX}incorrectCounter`;
+const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = `incorrectCounter`;
 
 /*
 
@@ -58,33 +57,37 @@ function Quiz(props) {
 
 	const { quizProps } = props;
 	const { quizId } = quizProps;
+
+	const {
+		quizState,
+		setQuestionsAll,
+		setQuestions,
+		setCurrentQuestionIdx,
+		setCorrect,
+		setIncorrect,
+		setOnlyPractiseIncorrect,
+		setPracticeMode
+	} = useQuizState(quizId);
+	const {
+		questionsAll,
+		questions,
+		currentQuestionIdx,
+		correct,
+		incorrect,
+		onlyPractiseIncorrect,
+		practiceMode
+	} = quizState;
+	// console.log('quizState', quizState);
+
 	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
 		quizId,
 		INCORRECT_COUNTER_LOCAL_STORAGE_KEY
 	);
 
 	const [ loadingData, setLoadingData ] = useState(true);
-	const [ questionsAll, setQuestionsAll ] = useState([]);
-	const [ questions, setQuestions ] = useLocalStorageState(
-		`${LOCAL_STORAGE_PREFIX}questions_${quizId}`,
-		[]
-	); // might be better (ie. more space efficient) to just store the desired indices
-	const [ currentQuestionIdx, setCurrentQuestionIdx ] = useLocalStorageState(
-		`${LOCAL_STORAGE_PREFIX}currentQuestionIdx_${quizId}`,
-		0
-	);
-	const [ correct, setCorrect ] = useLocalStorageState(
-		`${LOCAL_STORAGE_PREFIX}correctCount_${quizId}`,
-		0
-	);
-	const [ incorrect, setIncorrect ] = useLocalStorageState(
-		`${LOCAL_STORAGE_PREFIX}incorrectCount_${quizId}`,
-		0
-	);
+
 	const [ repeatCorrectAnswerMode, setRepeatCorrectAnswerMode ] = useState(false);
-	const [ practiceMode, setPracticeMode ] = useState(false);
 	const [ answerStatus, setAnswerStatus ] = useState('none');
-	const [ onlyPractiseIncorrect, setOnlyPractiseIncorrect ] = useState(false);
 
 	useEffect(() => {
 		console.log('useEffect initial');
