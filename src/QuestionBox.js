@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AnswerForm from './AnswerForm';
+import AnswerMultiChoiceButtons from './AnswerMultiChoiceButtons';
 
 import './QuestionBox.css';
 
@@ -14,8 +15,10 @@ class QuestionBox extends Component {
 			answerStatus,
 			handleAnswerSubmit,
 			subsetCountsAsCorrect
+			// isMultiChoiceQuestion
 		} = this.props;
 
+		const isMultiChoiceQuestion = true;
 		return (
 			<div className="QuestionBox">
 				<div className="QuestionBox-content">
@@ -24,13 +27,20 @@ class QuestionBox extends Component {
 						<b>{questionMainText}</b>
 						{questionSuffix}
 					</div>
-					<AnswerForm
-						handleAnswerSubmit={handleAnswerSubmit}
-						practiceMode={practiceMode}
-						answerStatus={answerStatus}
-						correctAnswer={answer}
-						subsetCountsAsCorrect={subsetCountsAsCorrect}
-					/>
+					{isMultiChoiceQuestion ? (
+						<AnswerMultiChoiceButtons
+							correctAnswer={answer}
+							handleAnswerSubmit={handleAnswerSubmit}
+						/>
+					) : (
+						<AnswerForm
+							handleAnswerSubmit={handleAnswerSubmit}
+							practiceMode={practiceMode}
+							answerStatus={answerStatus}
+							correctAnswer={answer}
+							subsetCountsAsCorrect={subsetCountsAsCorrect}
+						/>
+					)}
 				</div>
 			</div>
 		);

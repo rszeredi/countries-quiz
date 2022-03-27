@@ -1,0 +1,22 @@
+.AnswerMultiChoiceButtons {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-around;
+	margin-top: 1rem;
+}
+
+.AnswerMultiChoiceButtons .AnswerChoiceButton-btn-correct {
+	background-color: rgba(9, 213, 67, 70%);
+}
+.AnswerMultiChoiceButtons .AnswerChoiceButton-btn-correct:hover {
+	background-color: rgba(9, 213, 67, 70%);
+}
+
+.AnswerMultiChoiceButtons .AnswerChoiceButton-btn-incorrect {
+	background-color: rgba(232, 70, 70, 70%);
+}
+
+.AnswerMultiChoiceButtons .AnswerChoiceButton-btn-incorrect:hover {
+	background-color: rgba(232, 70, 70, 70%);
+}

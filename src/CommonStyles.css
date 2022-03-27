@@ -1,0 +1,38 @@
+.btn {
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.btn-contents {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1.2rem 0.6rem;
+	text-decoration: none;
+	color: white;
+
+	font-size: 1.2rem;
+	border: 1px solid white;
+	width: 30%;
+	text-align: center;
+	margin: 1rem;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	box-shadow: 3px 3px 8px 2px #666;
+	transition: transform 0.1s;
+}
+
+.btn-contents:hover {
+	background-color: #ccc;
+}
+
+.btn-contents:active {
+	box-shadow: none;
+	transform: translate(3px, 3px);
+}
+
+.btn-contents:hover a {
+	color: black;
+}

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import './QuizMenu.css';
+import './CommonStyles.css';
 
 import quizzes from './QuizProps';
 
@@ -15,7 +16,7 @@ export default function QuizMenu() {
 				</h2>
 			);
 			const buttons = (
-				<div key={`buttons-${category}`} className="QuizMenu-variant-buttons">
+				<div key={`buttons-${category}`} className="btn">
 					{quizzes[category].map((quiz) => (
 						<QuizLink
 							quizId={quiz.quizId}
@@ -40,7 +41,7 @@ export default function QuizMenu() {
 
 function QuizLink(props) {
 	return (
-		<Link className="QuizMenu-quiz-link" to={'/' + props.quizId}>
+		<Link className="btn-contents" to={'/' + props.quizId}>
 			{props.quizLabelName}
 		</Link>
 	);
