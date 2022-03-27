@@ -3,54 +3,45 @@ import classNames from 'classnames';
 import './AnswerMultiChoiceButtons.css';
 
 export default function AnswerChoiceButton(props) {
-	const { answerChoiceText, correctAnswer, handleAnswerSubmit, practiceMode } = props;
-
-	const [ answerStatus, setAnswerStatus ] = useState('none');
+	const {
+		answerChoiceText: answerChoiceValue,
+		correctAnswer,
+		updateAnswerUIAndScores,
+		extraClassNames
+	} = props;
 
 	const isCorrectAnswer = () => {
-		console.log('answerChoiceText', answerChoiceText);
-		console.log('correctAnswer', correctAnswer);
-		return answerChoiceText === correctAnswer;
+		return answerChoiceValue === correctAnswer;
 	};
 
-	const handleClick = () => {
+	const handleClick = (e) => {
 		const answerIsCorrect = isCorrectAnswer();
-		setAnswerStatus(answerIsCorrect ? 'correct' : 'incorrect');
-
-		setTimeout(() => {
-			handleAnswerSubmit(answerIsCorrect);
-			if (answerIsCorrect || !practiceMode) {
-				setAnswerStatus('none');
-			} else {
-				setAnswerStatus('practising');
-			}
-		}, 700);
+		const selectedAnswer = parseInt(e.target.getAttribute('data-value'));
+		updateAnswerUIAndScores(answerIsCorrect, selectedAnswer);
 	};
-
-	function makeNumberHumanReadable(number) {
-		if (number > 1e9) {
-			const parsedNumber = parseFloat((number / 1e9).toFixed(1));
-			return `${parsedNumber}B`;
-		} else if (number > 1e6) {
-			const parsedNumber = Math.round(number / 1e6);
-			return `${parsedNumber}M`;
-		} else if (number > 1e3) {
-			const parsedNumber = Math.round(number / 1e3);
-			return `${parsedNumber}K`;
-		} else {
-			return number;
-		}
-	}
 
 	return (
 		<div
-			className={classNames('btn-contents btn-multichoice', {
-				'AnswerChoiceButton-btn-correct': answerStatus === 'correct',
-				'AnswerChoiceButton-btn-incorrect': answerStatus === 'incorrect'
-			})}
+			className={`btn-contents btn-multichoice ${extraClassNames}`}
+			data-value={answerChoiceValue}
 			onClick={handleClick}
 		>
-			{makeNumberHumanReadable(answerChoiceText)}
+			{makeNumberHumanReadable(answerChoiceValue)}
 		</div>
 	);
+}
+
+function makeNumberHumanReadable(number) {
+	if (number > 1e9) {
+		const parsedNumber = parseFloat((number / 1e9).toFixed(1));
+		return `${parsedNumber}B`;
+	} else if (number > 1e6) {
+		const parsedNumber = Math.round(number / 1e6);
+		return `${parsedNumber}M`;
+	} else if (number > 1e3) {
+		const parsedNumber = Math.round(number / 1e3);
+		return `${parsedNumber}K`;
+	} else {
+		return number;
+	}
 }
