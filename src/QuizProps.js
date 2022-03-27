@@ -51,11 +51,15 @@ async function getCountryQuizData(api_field, continent, countryDataParser) {
 }
 
 function parseCountryData(data, continent) {
-	return data
-		.filter((country) => country.unMember)
-		.filter(
-			(country) => continent === 'all' || country.continents[0].toLowerCase() === continent
-		);
+	return (
+		data
+			.filter((country) => country.unMember)
+			// .filter((country) => country.name.common === 'Estonia')
+			.filter(
+				(country) =>
+					continent === 'all' || country.continents[0].toLowerCase() === continent
+			)
+	);
 }
 
 // function capitalCityParser(countryData) {
