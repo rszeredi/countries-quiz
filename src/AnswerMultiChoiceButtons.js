@@ -6,15 +6,25 @@ import './AnswerMultiChoiceButtons.css';
 // AnswerMultiChoiceButtonsInner: tracks what answer was click, fake answers stay the same
 
 export default function AnswerMultiChoiceButtons(props) {
-	const { correctAnswer, handleAnswerSubmit } = props;
-	const answerOptions = generateIncorrectMultiChoiceOptions(correctAnswer)
-		.concat([ correctAnswer ])
-		.sort(() => Math.random() - 0.5);
+	const { correctAnswer, handleAnswerSubmit, answerPool } = props;
+	let fakeAnswers;
+	if (typeof correctAnswer === 'number') {
+		fakeAnswers = generateIncorrectMultiChoiceNumberOptions(correctAnswer);
+	} else if (answerPool) {
+		fakeAnswers = randomlySelectIncorrectAnswers(answerPool.filter((i) => i !== correctAnswer));
+	} else {
+		fakeAnswers = [ '1', '2', '3' ]; //  todo: handle this error
+	}
+	const answerOptions = fakeAnswers.concat([ correctAnswer ]).sort(() => Math.random() - 0.5);
+
 	console.log('answerOptions', answerOptions);
-	answerOptions.forEach((i) => {
-		const delta = ((i / correctAnswer - 1) * 100).toFixed(2);
-		console.log(`${delta}%  `);
-	});
+	if (typeof answerOptions[0] === 'number') {
+		answerOptions.forEach((i) => {
+			const delta = ((i / correctAnswer - 1) * 100).toFixed(2);
+			console.log(`${delta}%  `);
+		});
+	}
+
 	return (
 		<AnswerMultiChoiceButtonsInner
 			answerOptions={answerOptions}
@@ -41,10 +51,13 @@ function AnswerMultiChoiceButtonsInner(props) {
 	};
 
 	const getExtraClassNames = (answer) => {
+		console.log('selectedAnswer', selectedAnswer);
+		console.log('answer', answer);
 		if (answerStatus === 'answered') {
-			if (answer === correctAnswer) {
+			if (answer == correctAnswer) {
+				// use == here because might be comparing number to string
 				return 'AnswerChoiceButton-btn-correct';
-			} else if (answer !== correctAnswer && selectedAnswer === answer) {
+			} else if (answer != correctAnswer && selectedAnswer == answer) {
 				return 'AnswerChoiceButton-btn-incorrect';
 			}
 		}
@@ -107,55 +120,58 @@ function checkIfAcceptableDelta(
 	return true;
 }
 
-function generateIncorrectMultiChoiceOptions(correctAnswer, numToGenerate = 3) {
+function randomlySelectIncorrectAnswers(answerPool, num = 3) {
+	const answerPoolShuffled = answerPool.sort(() => Math.random() - 0.5);
+	return answerPoolShuffled.slice(0, num);
+}
+
+function generateIncorrectMultiChoiceNumberOptions(correctAnswer, numToGenerate = 3) {
 	console.log('generateIncorrectMultiChoiceOptions for: ', correctAnswer);
-	if (typeof correctAnswer === 'number') {
-		// return a number that is randomly between these percentage bounds
-		const [ lb, ub ] = correctAnswer < 10e6 ? [ 40, 71 ] : [ 20, 70 ];
+	// return a number that is randomly between these percentage bounds
+	const [ lb, ub ] = correctAnswer < 10e6 ? [ 40, 71 ] : [ 20, 70 ];
 
-		let options = [];
-		for (let i = 0; i < numToGenerate; i++) {
-			let scaledValue = scaleByRandomAmount(correctAnswer, lb, ub);
-			let { minRelativeDelta, minAbsoluteDelta } = getMinDelta(scaledValue, options);
+	let options = [];
+	for (let i = 0; i < numToGenerate; i++) {
+		let scaledValue = scaleByRandomAmount(correctAnswer, lb, ub);
+		let { minRelativeDelta, minAbsoluteDelta } = getMinDelta(scaledValue, options);
 
-			// console.log(i, 'current options   ', options);
-			// console.log(i, 'scaledValue   ', scaledValue);
-			// console.log(i, 'minRelativeDelta', minRelativeDelta);
-			// console.log(i, 'minAbsoluteDelta', minAbsoluteDelta);
+		// console.log(i, 'current options   ', options);
+		// console.log(i, 'scaledValue   ', scaledValue);
+		// console.log(i, 'minRelativeDelta', minRelativeDelta);
+		// console.log(i, 'minAbsoluteDelta', minAbsoluteDelta);
+		// console.log(
+		// 	i,
+		// 	'valid delta',
+		// 	checkIfAcceptableDelta(scaledValue, minRelativeDelta, minAbsoluteDelta)
+		// );
+
+		let j = 0;
+
+		// keep looking for an option while the generated option is within X% of one of the other options
+		while (!checkIfAcceptableDelta(scaledValue, minRelativeDelta, minAbsoluteDelta)) {
+			j++;
+			if (j > 10) {
+				console.log('break');
+				break;
+			}
+			scaledValue = scaleByRandomAmount(correctAnswer, lb, ub);
+			const deltas = getMinDelta(scaledValue, options);
+			minRelativeDelta = deltas['minRelativeDelta'];
+			minAbsoluteDelta = deltas['minAbsoluteDelta'];
+
+			// console.log('J    current options', options);
+			// console.log('J    new scaledValue', scaledValue);
+			// console.log(`J: ${j}    minRelativeDelta`, minRelativeDelta);
+			// console.log(`J: ${j}    minAbsoluteDelta`, minAbsoluteDelta);
 			// console.log(
-			// 	i,
-			// 	'valid delta',
+			// 	'passes?',
 			// 	checkIfAcceptableDelta(scaledValue, minRelativeDelta, minAbsoluteDelta)
 			// );
-
-			let j = 0;
-
-			// keep looking for an option while the generated option is within X% of one of the other options
-			while (!checkIfAcceptableDelta(scaledValue, minRelativeDelta, minAbsoluteDelta)) {
-				j++;
-				if (j > 10) {
-					console.log('break');
-					break;
-				}
-				scaledValue = scaleByRandomAmount(correctAnswer, lb, ub);
-				const deltas = getMinDelta(scaledValue, options);
-				minRelativeDelta = deltas['minRelativeDelta'];
-				minAbsoluteDelta = deltas['minAbsoluteDelta'];
-
-				// console.log('J    current options', options);
-				// console.log('J    new scaledValue', scaledValue);
-				// console.log(`J: ${j}    minRelativeDelta`, minRelativeDelta);
-				// console.log(`J: ${j}    minAbsoluteDelta`, minAbsoluteDelta);
-				// console.log(
-				// 	'passes?',
-				// 	checkIfAcceptableDelta(scaledValue, minRelativeDelta, minAbsoluteDelta)
-				// );
-			}
-			// console.log('SELECTED', scaledValue);
-			// console.log('broken while', j > 5);
-			options.push(Math.floor(scaledValue));
 		}
-
-		return options;
+		// console.log('SELECTED', scaledValue);
+		// console.log('broken while', j > 5);
+		options.push(Math.floor(scaledValue));
 	}
+
+	return options;
 }

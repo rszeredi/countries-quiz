@@ -16,7 +16,7 @@ export default function AnswerChoiceButton(props) {
 
 	const handleClick = (e) => {
 		const answerIsCorrect = isCorrectAnswer();
-		const selectedAnswer = parseInt(e.target.getAttribute('data-value'));
+		const selectedAnswer = e.target.getAttribute('data-value');
 		updateAnswerUIAndScores(answerIsCorrect, selectedAnswer);
 	};
 

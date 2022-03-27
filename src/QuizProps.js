@@ -117,7 +117,7 @@ function makeCapitalCityQuizProps(continent) {
 			),
 		false,
 		true,
-		false
+		true
 	);
 }
 
@@ -172,7 +172,7 @@ if (INCLUDE_TEST_QUIZ) {
 			getTestData,
 			false,
 			true,
-			false
+			true
 		)
 	];
 }

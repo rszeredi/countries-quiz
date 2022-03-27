@@ -68,6 +68,7 @@ function Quiz(props) {
 		setOnlyPractiseIncorrect,
 		setPracticeMode
 	} = useQuizState(quizId);
+
 	const {
 		questionsAll,
 		questions,
@@ -77,7 +78,9 @@ function Quiz(props) {
 		onlyPractiseIncorrect,
 		practiceMode
 	} = quizState;
-	// console.log('quizState', quizState);
+	console.log('quizState', quizState);
+	const answerPool = questions.map((q) => q.answer);
+	console.log('answerPool', answerPool);
 
 	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
 		quizId,
@@ -250,6 +253,7 @@ function Quiz(props) {
 					subsetCountsAsCorrect={subsetCountsAsCorrect}
 					isMultiChoiceQuestion={isMultiChoiceQuiz}
 					handleAnswerSubmit={handleAnswerSubmit}
+					answerPool={answerPool}
 				/>
 			);
 		} else {
