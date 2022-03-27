@@ -32,7 +32,7 @@ class AnswerForm extends Component {
 	}
 
 	isCorrectAnswer(subsetCountsAsCorrect = false) {
-		const normalizedCorrectAnswer = this.normalizeAnswer(this.props.correctAnswer);
+		const normalizedCorrectAnswer = this.normalizeAnswer(String(this.props.correctAnswer));
 		const normalizedUserAnswer = this.normalizeAnswer(this.state.answer);
 		if (subsetCountsAsCorrect) {
 			return normalizedCorrectAnswer.includes(normalizedUserAnswer);

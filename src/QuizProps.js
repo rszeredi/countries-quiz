@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const INCLUDE_TEST_QUIZ = true;
-const COUNTRIES_API_URL =
-	'https://restcountries.com/v3.1/all?fields=name,capital,unMember,continents,currencies';
+const COUNTRIES_API_URL_BASE = 'https://restcountries.com/v3.1/all?fields=name,unMember,continents';
 
 /*
 questionGetter: returns a list of objects with question and answer properties, such that
@@ -39,43 +38,59 @@ async function getTestData() {
 	];
 }
 
-async function getCountryQuizData(api_url, continent, countryDataParser) {
+async function getCountryQuizData(api_field, continent, countryDataParser) {
+	const api_url = COUNTRIES_API_URL_BASE + `,${api_field}`;
 	const response = await axios.get(api_url);
 	const countryData = parseCountryData(response.data, continent);
+
 	return countryDataParser(countryData).sort(() => Math.random() - 0.5);
 }
 
-async function getCapitalCityQuizData(api_url, continent) {
-	return getCountryQuizData(api_url, continent, capitalCityParser);
-}
-
-async function getCurrencyQuizData(api_url, continent) {
-	return getCountryQuizData(api_url, continent, currencyParser);
-}
-
 function parseCountryData(data, continent) {
-	return (
-		data
-			.filter((country) => country.unMember)
-			// .filter((country) => country.name.common === 'Vatican City')
-			.filter(
-				(country) =>
-					continent === 'all' || country.continents[0].toLowerCase() === continent
-			)
-	);
+	return data
+		.filter((country) => country.unMember)
+		.filter(
+			(country) => continent === 'all' || country.continents[0].toLowerCase() === continent
+		);
 }
+
+// function capitalCityParser(countryData) {
+// 	return countryData.map((country) => ({
+// 		question: country.name.common,
+// 		answer: country['capital'][0]
+// 	}));
+// }
+
+// function currencyParser(countryData) {
+// 	return countryData.map((country) => ({
+// 		question: country.name.common,
+// 		answer: Object.values(country['currencies'])[0].name
+// 	}));
+// }
+
+// function populationParser(countryData) {
+// 	return countryData.map((country) => ({
+// 		question: country.name.common,
+// 		answer: Object.values(country['population']) // todo: what if it's undefined??
+// 	}));
+// }
 
 function capitalCityParser(countryData) {
-	return countryData.map((country) => ({
-		question: country.name.common,
-		answer: country['capital'][0]
-	}));
+	return countryData['capital'][0];
 }
 
 function currencyParser(countryData) {
-	return countryData.map((country) => ({
+	return Object.values(countryData['currencies'])[0].name;
+}
+
+function populationParser(countryData) {
+	return countryData['population'];
+}
+
+function questionMaker(countriesData, answerParser) {
+	return countriesData.map((country) => ({
 		question: country.name.common,
-		answer: Object.values(country['currencies'])[0].name
+		answer: answerParser(country) // todo: what if it's undefined??
 	}));
 }
 
@@ -88,7 +103,10 @@ function makeCapitalCityQuizProps(continent) {
 		`capital-cities-${continent.toLowerCase().replace(' ', '-')}`,
 		'What is the capital city of ',
 		'?',
-		() => getCapitalCityQuizData(COUNTRIES_API_URL, continent.toLowerCase())
+		async () =>
+			getCountryQuizData('capital', continent.toLowerCase(), (data) =>
+				questionMaker(data, capitalCityParser)
+			)
 	);
 }
 
@@ -99,14 +117,33 @@ function makeCurrencyQuizProps(continent) {
 		`currencies-${continent.toLowerCase().replace(' ', '-')}`,
 		'What is the official currency of ',
 		'?',
-		() => getCurrencyQuizData(COUNTRIES_API_URL, continent.toLowerCase()),
+		async () =>
+			getCountryQuizData('currencies', continent.toLowerCase(), (data) =>
+				questionMaker(data, currencyParser)
+			),
+		true
+	);
+}
+
+function makePopulationQuizProps(continent) {
+	return new QuizProps(
+		'Population',
+		continent,
+		`population-${continent.toLowerCase().replace(' ', '-')}`,
+		'What is the population of ',
+		'?',
+		async () =>
+			getCountryQuizData('population', continent.toLowerCase(), (data) =>
+				questionMaker(data, populationParser)
+			),
 		true
 	);
 }
 
 let quizzes = {
 	'Capital Cities': continents.map((c) => makeCapitalCityQuizProps(c)),
-	Currencies: continents.map((c) => makeCurrencyQuizProps(c))
+	Currencies: continents.map((c) => makeCurrencyQuizProps(c)),
+	Population: continents.map((c) => makePopulationQuizProps(c))
 };
 
 if (INCLUDE_TEST_QUIZ) {
