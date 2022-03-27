@@ -24,6 +24,21 @@ function generateIncorrectMultiChoiceOptions(correctAnswer, numToGenerate = 3) {
 	}
 }
 
+function makeNumberHumanReadable(number) {
+	if (number > 1e9) {
+		const parsedNumber = parseFloat((number / 1e9).toFixed(1));
+		return `${parsedNumber}B`;
+	} else if (number > 1e6) {
+		const parsedNumber = Math.round(number / 1e6);
+		return `${parsedNumber}M`;
+	} else if (number > 1e3) {
+		const parsedNumber = Math.round(number / 1e3);
+		return `${parsedNumber}K`;
+	} else {
+		return number;
+	}
+}
+
 export default function AnswerMultiChoiceButtons(props) {
 	const { correctAnswer, handleAnswerSubmit } = props;
 

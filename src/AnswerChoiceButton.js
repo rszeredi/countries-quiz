@@ -27,6 +27,21 @@ export default function AnswerChoiceButton(props) {
 		}, 700);
 	};
 
+	function makeNumberHumanReadable(number) {
+		if (number > 1e9) {
+			const parsedNumber = parseFloat((number / 1e9).toFixed(1));
+			return `${parsedNumber}B`;
+		} else if (number > 1e6) {
+			const parsedNumber = Math.round(number / 1e6);
+			return `${parsedNumber}M`;
+		} else if (number > 1e3) {
+			const parsedNumber = Math.round(number / 1e3);
+			return `${parsedNumber}K`;
+		} else {
+			return number;
+		}
+	}
+
 	return (
 		<div
 			className={classNames('btn-contents btn-multichoice', {
@@ -35,7 +50,7 @@ export default function AnswerChoiceButton(props) {
 			})}
 			onClick={handleClick}
 		>
-			{answerChoiceText}
+			{makeNumberHumanReadable(answerChoiceText)}
 		</div>
 	);
 }
