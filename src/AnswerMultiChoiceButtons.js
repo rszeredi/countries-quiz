@@ -33,13 +33,6 @@ function AnswerMultiChoiceButtonsInner(props) {
 		setTimeout(() => {
 			handleAnswerSubmit(answerIsCorrect);
 			setAnswerStatus('none');
-
-			// TODO: remove practise mode option for multichoice
-			// if (answerIsCorrect || !practiceMode) {
-			// 	setAnswerStatus('none');
-			// } else {
-			// 	setAnswerStatus('practising');
-			// }
 		}, 700);
 	};
 

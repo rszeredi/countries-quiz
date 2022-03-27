@@ -15,7 +15,9 @@ class QuizProps {
 		questionPrefix,
 		questionSuffix,
 		questionGetter,
-		subsetCountsAsCorrect
+		subsetCountsAsCorrect,
+		practiceModeAllowed,
+		isMultiChoiceQuiz
 	) {
 		this.category = category;
 		this.variant = variant;
@@ -25,6 +27,8 @@ class QuizProps {
 		this.questionSuffix = questionSuffix;
 		this.questionGetter = questionGetter;
 		this.subsetCountsAsCorrect = subsetCountsAsCorrect;
+		this.practiceModeAllowed = practiceModeAllowed;
+		this.isMultiChoiceQuiz = isMultiChoiceQuiz;
 	}
 }
 
@@ -106,7 +110,10 @@ function makeCapitalCityQuizProps(continent) {
 		async () =>
 			getCountryQuizData('capital', continent.toLowerCase(), (data) =>
 				questionMaker(data, capitalCityParser)
-			)
+			),
+		false,
+		true,
+		false
 	);
 }
 
@@ -121,7 +128,9 @@ function makeCurrencyQuizProps(continent) {
 			getCountryQuizData('currencies', continent.toLowerCase(), (data) =>
 				questionMaker(data, currencyParser)
 			),
-		true
+		true,
+		true,
+		false
 	);
 }
 
@@ -136,6 +145,8 @@ function makePopulationQuizProps(continent) {
 			getCountryQuizData('population', continent.toLowerCase(), (data) =>
 				questionMaker(data, populationParser)
 			),
+		false,
+		false,
 		true
 	);
 }
@@ -154,7 +165,10 @@ if (INCLUDE_TEST_QUIZ) {
 			'test',
 			'What is the capital city of ',
 			'?',
-			getTestData
+			getTestData,
+			false,
+			true,
+			false
 		)
 	];
 }

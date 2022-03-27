@@ -14,11 +14,10 @@ class QuestionBox extends Component {
 			answer,
 			answerStatus,
 			handleAnswerSubmit,
-			subsetCountsAsCorrect
-			// isMultiChoiceQuestion
+			subsetCountsAsCorrect,
+			isMultiChoiceQuestion
 		} = this.props;
 
-		const isMultiChoiceQuestion = true;
 		return (
 			<div className="QuestionBox">
 				<div className="QuestionBox-content">

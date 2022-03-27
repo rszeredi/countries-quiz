@@ -56,7 +56,7 @@ function Quiz(props) {
 	const isMounted = useRef(false); // https://typeofnan.dev/how-to-prevent-useeffect-from-running-on-mount-in-react/
 
 	const { quizProps } = props;
-	const { quizId } = quizProps;
+	const { quizId, practiceModeAllowed, isMultiChoiceQuiz } = quizProps;
 
 	const {
 		quizState,
@@ -248,6 +248,7 @@ function Quiz(props) {
 					practiceMode={practiceMode}
 					answerStatus={answerStatus}
 					subsetCountsAsCorrect={subsetCountsAsCorrect}
+					isMultiChoiceQuestion={isMultiChoiceQuiz}
 					handleAnswerSubmit={handleAnswerSubmit}
 				/>
 			);
@@ -292,7 +293,7 @@ function Quiz(props) {
 		<div className="Quiz">
 			<h1>{quizProps.title}</h1>
 			<div className="Quiz-switch-container">
-				{getSwitch('Practice Mode', practiceMode, setPracticeMode)}
+				{practiceModeAllowed && getSwitch('Practice Mode', practiceMode, setPracticeMode)}
 				{getSwitch(
 					'Incorrect Only',
 					onlyPractiseIncorrect,
