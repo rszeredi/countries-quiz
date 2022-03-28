@@ -20,6 +20,7 @@ import {
 import useQuizState from './hooks/useQuizState';
 
 import './Quiz.css';
+import { Link } from 'react-router-dom';
 
 const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = `incorrectCounter`;
 
@@ -296,6 +297,11 @@ function Quiz(props) {
 	const numRemainingQuestions = getNumRemainingQuestions(questions, currentQuestionIdx);
 	return (
 		<div className="Quiz">
+			<div className="Quiz-back-button">
+				<Link to={quizProps.makeCategoryRouteString()}>
+					<i className="fa fa-thin fa-arrow-left" /> Back to quiz menu
+				</Link>
+			</div>
 			<h1>{quizProps.title}</h1>
 			<div className="Quiz-switch-container">
 				{practiceModeAllowed && getSwitch('Practice Mode', practiceMode, setPracticeMode)}

@@ -34,6 +34,10 @@ class QuizProps {
 		const catPath = this.category.toLowerCase().replace(' ', '-');
 		return '/' + catPath + '/' + this.variant.replace(' ', '-').toLowerCase();
 	}
+
+	makeCategoryRouteString() {
+		return '/' + this.category.toLowerCase().replace(' ', '-');
+	}
 }
 
 async function getTestData() {
