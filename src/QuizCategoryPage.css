@@ -1,0 +1,40 @@
+.QuizCategoryPage-category-heading {
+	margin: 2rem auto;
+	text-align: center;
+}
+
+.QuizCategoryPage-links {
+	margin: auto;
+	display: flex;
+	/* flex-direction: column; */
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.QuizCategoryPage-quiz-link {
+	width: 80%;
+}
+
+@media (min-width: 600px) {
+	.QuizCategoryPage-quiz-link {
+		width: 40% !important;
+	}
+
+	.QuizCategoryPage-quiz-category-link {
+		width: 50% !important;
+	}
+}
+
+@media (min-width: 1000px) {
+	.QuizCategoryPage-links {
+		width: 60%;
+	}
+
+	.QuizCategoryPage-quiz-link {
+		width: 40% !important;
+	}
+
+	.QuizCategoryPage-quiz-category-link {
+		width: 30% !important;
+	}
+}

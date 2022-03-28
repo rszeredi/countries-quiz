@@ -11,22 +11,22 @@ export default function QuizMenu() {
 		let links = [];
 		Object.keys(quizzes).forEach((category) => {
 			links.push(
-				<h2 key={`h2-${category}`} className="QuizMenu-category-heading">
+				<Link
+					className="btn-contents QuizMenu-quiz-category-link"
+					to={'/' + category.toLowerCase().replace(' ', '-')}
+					key={category}
+				>
 					{category}
-				</h2>
+				</Link>
 			);
-			const buttons = (
-				<div key={`buttons-${category}`} className="btn">
-					{quizzes[category].map((quiz) => (
-						<QuizLink
-							quizId={quiz.quizId}
-							key={quiz.quizId}
-							quizLabelName={quiz.variant}
-						/>
-					))}
-				</div>
-			);
-			links.push(buttons);
+			// const buttons = (
+			// 	<div key={`buttons-${category}`} className="btn">
+			// 		{quizzes[category].map((quiz) => (
+			// 			<QuizLink quizProps={quiz} key={quiz.quizId} />
+			// 		))}
+			// 	</div>
+			// );
+			// links.push(buttons);
 		});
 		return links;
 	};
@@ -39,10 +39,11 @@ export default function QuizMenu() {
 	);
 }
 
-function QuizLink(props) {
-	return (
-		<Link className="btn-contents" to={'/' + props.quizId}>
-			{props.quizLabelName}
-		</Link>
-	);
-}
+// function QuizLink(props) {
+// 	const { quizProps } = props;
+// 	return (
+// 		<Link className="btn-contents" to={quizProps.makeQuizRouteString()}>
+// 			{quizProps.variant}
+// 		</Link>
+// 	);
+// }

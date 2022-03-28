@@ -30,6 +30,10 @@ class QuizProps {
 		this.practiceModeAllowed = practiceModeAllowed;
 		this.isMultiChoiceQuiz = isMultiChoiceQuiz;
 	}
+	makeQuizRouteString() {
+		const catPath = this.category.toLowerCase().replace(' ', '-');
+		return '/' + catPath + '/' + this.variant.replace(' ', '-').toLowerCase();
+	}
 }
 
 async function getTestData() {

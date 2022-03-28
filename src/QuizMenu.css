@@ -7,9 +7,15 @@
 	color: rgb(244, 162, 175);
 }
 .QuizMenu-links {
+	margin: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	flex-wrap: wrap;
+}
+
+.QuizMenu-quiz-category-link {
+	width: 80% !important;
 }
 
 /* .QuizMenu-links {
@@ -57,14 +63,26 @@
 	color: black;
 } */
 
-/* @media (min-width: 800px) {
+@media (min-width: 600px) {
 	.QuizMenu-quiz-link {
-		width: 40%;
+		width: 40% !important;
 	}
-} */
+
+	.QuizMenu-quiz-category-link {
+		width: 50% !important;
+	}
+}
 
 @media (min-width: 1000px) {
+	.QuizMenu-links {
+		width: 60%;
+	}
+
 	.QuizMenu-quiz-link {
-		width: 30%;
+		width: 50% !important;
+	}
+
+	.QuizMenu-quiz-category-link {
+		width: 30% !important;
 	}
 }
