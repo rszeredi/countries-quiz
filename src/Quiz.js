@@ -14,15 +14,30 @@ import {
 	getCurrentQuestion,
 	updateScore,
 	updateIncorrectCount,
-	getNumRemainingQuestions
+	getNumRemainingQuestions,
+	INCORRECT_COUNTER_LOCAL_STORAGE_KEY
 } from './quizHelpers';
 
 import useQuizState from './hooks/useQuizState';
 
 import './Quiz.css';
 import { Link } from 'react-router-dom';
+import QuestionHistorySummary from './QuestionHistorySummary';
 
-const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = `incorrectCounter`;
+const SCORE_MESSAGES = [
+	[ 100, "You're a Genius!" ],
+	[ 95, 'Impressive!' ],
+	[ 90, 'You beauty!' ],
+	[ 80, 'Great Work!' ],
+	[ 70, 'Solid Effort' ],
+	[ 60, 'Not bad, not bad' ],
+	[ 50, 'You gave it your best shot' ],
+	[ 40, 'Pretty average' ],
+	[ 30, 'You might need to study a little...' ],
+	[ 20, 'Did you even try?' ],
+	[ 10, 'Could be worse...' ],
+	[ 0, 'Are you asleep?' ]
+];
 
 /*
 
@@ -273,8 +288,8 @@ function Quiz(props) {
 		} else if (questionsExistInIncorrectCounter) {
 			return (
 				<div className="Quiz-end-of-quiz-options">
-					{resetInStudyModeAllButton}
 					{resetInStudyModeButton}
+					{resetInStudyModeAllButton}
 				</div>
 			);
 		} else {
@@ -283,6 +298,41 @@ function Quiz(props) {
 					{goToQuizModeButton}
 					{resetInStudyModeAllButton}
 				</div>
+			);
+		}
+	};
+
+	const getScoreMessage = (score) => {
+		for (let [ lb, msg ] of SCORE_MESSAGES) {
+			console.log(lb);
+			if (score >= lb) {
+				return msg;
+			}
+		}
+	};
+
+	const getSummary = () => {
+		if (!isInStudyMode) {
+			// show score as a percentage
+			const scorePercentage = Math.round(100 * correct / (incorrect + correct));
+			return (
+				<div className="Quiz-summary">
+					<div className="Quiz-summary-msg">{getScoreMessage(scorePercentage)}</div>
+					<div className="Quiz-summary-score">{scorePercentage}%</div>
+				</div>
+			);
+		} else if (!questionsExistInIncorrectCounter) {
+			return <h3>You're a Genius!</h3>;
+		} else {
+			const incorrectCounterThisQuiz = getQuestionsWithIncorrectCounts(
+				INCORRECT_COUNTER_LOCAL_STORAGE_KEY
+			)[quizId];
+			return (
+				<QuestionHistorySummary
+					title="Check out the questions you've missed"
+					incorrectCounterThisQuiz={incorrectCounterThisQuiz}
+					quizId={quizId}
+				/>
 			);
 		}
 	};
@@ -315,7 +365,7 @@ function Quiz(props) {
 				<div className="Quiz-restart">
 					{/* <i className="fa-solid fa-arrow-rotate-left" /> */}
 					<i className="fa-solid arrow-left" />
-					<h3>Finished all questions!</h3>
+					{getSummary()}
 					{getEndOfQuestionButtons()}
 				</div>
 			);

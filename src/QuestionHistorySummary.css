@@ -1,0 +1,28 @@
+.QuestionHistorySummary-incorrect-heading {
+	border-bottom: 1px solid #ccc;
+	font-size: 2rem;
+	font-weight: bold;
+	text-align: center;
+	padding-bottom: 0.6rem;
+	margin-bottom: 1rem;
+	/* width: 70%;
+	margin */
+}
+
+.QuestionHistorySummary-incorrect-questions {
+	display: flex;
+	flex-direction: column;
+	width: 90%;
+	margin: 2rem auto;
+}
+
+.QuestionHistorySummary-incorrect-questions-row {
+	font-size: 1.5rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.QuestionHistorySummary-incorrect-questions-row-header {
+	font-size: 0.8rem;
+	margin-bottom: 0.5rem;
+}

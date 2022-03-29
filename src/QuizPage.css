@@ -3,6 +3,10 @@
 	margin: auto;
 }
 
+.Quiz-back-button {
+	margin-top: 1rem;
+}
+
 .QuizPage-mode-btns-holder {
 	display: flex;
 	justify-content: flex-start;
@@ -29,6 +33,10 @@
 
 .QuizPage-mode-link-emoji {
 	font-size: 3rem;
+}
+
+.QuizPage-question-history {
+	margin-top: 3rem !important;
 }
 
 @media (min-width: 600px) {

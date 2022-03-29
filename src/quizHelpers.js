@@ -1,3 +1,5 @@
+export const INCORRECT_COUNTER_LOCAL_STORAGE_KEY = `incorrectCounter`;
+
 export function getFilteredQuestions(allQuestions, onlyPractiseIncorrect, quizId, localStorageKey) {
 	if (onlyPractiseIncorrect) {
 		const incorrectCounts = getQuestionsWithIncorrectCounts(localStorageKey);
