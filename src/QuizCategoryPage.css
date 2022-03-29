@@ -25,7 +25,7 @@
 }
 
 .QuizCategoryPage-quiz-link {
-	/* width: 80%; */
+	width: 80% !important;
 }
 
 .QuizCategoryPage-back-button {
@@ -51,19 +51,28 @@
 		margin-top: 50px;
 	}
 
+	.QuizCategoryPage-links {
+		width: 100%;
+	}
+
 	.QuizCategoryPage-quiz-link {
-		/* width: 45% !important; */
-		/* margin: 0.67em 0; */
+		width: 40% !important;
+	}
+
+	/*
+	.QuizCategoryPage-quiz-link {
+		width: 40% !important;
+		margin: 0.67em 0;
 	}
 
 	.QuizCategoryPage-quiz-category-link {
 		/* width: 50% !important; */
-	}
+	/* } */
 }
 
 @media (min-width: 1000px) {
 	.QuizCategoryPage-links {
-		width: 60%;
+		width: 100%;
 	}
 
 	.QuizCategoryPage-quiz-link {
@@ -71,6 +80,6 @@
 	}
 
 	.QuizCategoryPage-quiz-category-link {
-		width: 30% !important;
+		width: 80% !important;
 	}
 }

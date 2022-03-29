@@ -8,7 +8,6 @@ class QuizState {
 		currentQuestionIdx,
 		correct,
 		incorrect,
-		onlyPractiseIncorrect,
 		practiceMode
 	) {
 		this.quizId = quizId;
@@ -17,7 +16,6 @@ class QuizState {
 		this.currentQuestionIdx = currentQuestionIdx;
 		this.correct = correct;
 		this.incorrect = incorrect;
-		this.onlyPractiseIncorrect = onlyPractiseIncorrect;
 		this.practiceMode = practiceMode;
 	}
 }
@@ -35,7 +33,6 @@ export default function useQuizState(quizId) {
 	const setCurrentQuestionIdx = (newVal) => setProperty('currentQuestionIdx', newVal);
 	const setCorrect = (newVal) => setProperty('correct', newVal);
 	const setIncorrect = (newVal) => setProperty('incorrect', newVal);
-	const setOnlyPractiseIncorrect = (newVal) => setProperty('onlyPractiseIncorrect', newVal);
 	const setPracticeMode = (newVal) => setProperty('practiceMode', newVal);
 	return {
 		quizState,
@@ -44,7 +41,6 @@ export default function useQuizState(quizId) {
 		setCurrentQuestionIdx,
 		setCorrect,
 		setIncorrect,
-		setOnlyPractiseIncorrect,
 		setPracticeMode
 	};
 }

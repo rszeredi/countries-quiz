@@ -1,15 +1,17 @@
 export function getFilteredQuestions(allQuestions, onlyPractiseIncorrect, quizId, localStorageKey) {
 	if (onlyPractiseIncorrect) {
 		const incorrectCounts = getQuestionsWithIncorrectCounts(localStorageKey);
-		const questionsFiltered = allQuestions.filter(
-			(q) =>
-				!incorrectCounts[quizId] ||
+		if (incorrectCounts && incorrectCounts[quizId]) {
+			const questionsFiltered = allQuestions.filter((q) =>
 				Object.keys(incorrectCounts[quizId]).includes(q.question)
-		);
-		return questionsFiltered;
-	} else {
-		return allQuestions;
+			);
+			return questionsFiltered;
+		}
 	}
+
+	// if not in only practising incorrect, or if there are currently no tracked incorrect questions
+	// then return all of the original questions
+	return allQuestions;
 }
 
 export function getQuestionsWithIncorrectCounts(localStorageKey) {

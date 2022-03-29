@@ -17,7 +17,7 @@
 	border: 1px solid white;
 	width: 30%;
 	text-align: center;
-	margin: 1rem;
+	margin: 1rem auto;
 	border-radius: 0.5rem;
 	cursor: pointer;
 	box-shadow: 3px 3px 8px 2px #666;

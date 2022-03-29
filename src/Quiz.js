@@ -56,7 +56,7 @@ function Quiz(props) {
 	// https://www.thearmchaircritic.org/tech-journal/prevent-useeffects-callback-firing-during-initial-render
 	const isMounted = useRef(false); // https://typeofnan.dev/how-to-prevent-useeffect-from-running-on-mount-in-react/
 
-	const { quizProps } = props;
+	const { quizProps, isInStudyMode } = props;
 	const { quizId, practiceModeAllowed, isMultiChoiceQuiz } = quizProps;
 
 	const {
@@ -66,7 +66,6 @@ function Quiz(props) {
 		setCurrentQuestionIdx,
 		setCorrect,
 		setIncorrect,
-		setOnlyPractiseIncorrect,
 		setPracticeMode
 	} = useQuizState(quizId);
 
@@ -76,7 +75,6 @@ function Quiz(props) {
 		currentQuestionIdx,
 		correct,
 		incorrect,
-		onlyPractiseIncorrect,
 		practiceMode
 	} = quizState;
 	console.log('quizState', quizState);
@@ -98,26 +96,18 @@ function Quiz(props) {
 
 		// only get questions if they're not already defined in localStorage
 		if (questions.length === 0) {
-			getQuestionsFromQuizPropsGetter(onlyPractiseIncorrect); // todo need to catch this?
+			getQuestionsFromQuizPropsGetter(isInStudyMode); // todo need to catch this?
 		}
 	}, []); // when should useEffect be called??
 
-	const getQuestionsFromQuizPropsGetter = async (onlyPractiseIncorrect) => {
+	const getQuestionsFromQuizPropsGetter = async (isInStudyMode) => {
 		const allQuestions = await quizProps.questionGetter();
-		let questionsFiltered = getFilteredQuestions(
+		const questionsFiltered = getFilteredQuestions(
 			allQuestions,
-			onlyPractiseIncorrect,
+			isInStudyMode,
 			quizId,
 			INCORRECT_COUNTER_LOCAL_STORAGE_KEY
 		);
-		if (onlyPractiseIncorrect) {
-			const incorrectCounts = getQuestionsWithIncorrectCounts(
-				INCORRECT_COUNTER_LOCAL_STORAGE_KEY
-			);
-			questionsFiltered = allQuestions.filter((q) =>
-				Object.keys(incorrectCounts[quizId]).includes(q.question)
-			);
-		}
 
 		// should set state inside the async function according to : https://devtrium.com/posts/async-functions-useeffect
 		setQuestionsAll(allQuestions);
@@ -201,7 +191,7 @@ function Quiz(props) {
 	};
 
 	const resetGame = async (practiseIncorrectModeOnNext) => {
-		setOnlyPractiseIncorrect(practiseIncorrectModeOnNext);
+		// setOnlyPractiseIncorrect(practiseIncorrectModeOnNext);
 		setCurrentQuestionIdx(0);
 
 		// we don't load all questions every time Quiz renders - only if questions is empty (see useEffect). This saves some API calls
@@ -223,17 +213,79 @@ function Quiz(props) {
 		resetScores();
 	};
 
-	useEffect(
-		() => {
-			if (isMounted.current) {
-				console.log('resetting game');
-				resetGame(onlyPractiseIncorrect);
-			} else {
-				isMounted.current = true;
-			}
-		},
-		[ onlyPractiseIncorrect ]
+	// useEffect(
+	// 	() => {
+	// 		if (isMounted.current) {
+	// 			console.log('resetting game');
+	// 			resetGame(onlyPractiseIncorrect);
+	// 		} else {
+	// 			isMounted.current = true;
+	// 		}
+	// 	},
+	// 	[ onlyPractiseIncorrect ]
+	// );
+	const restartQuizButton = (
+		<button className="Quiz-restart-btn" onClick={() => resetGame(false)}>
+			{isInStudyMode ? 'Study All Again' : 'Try Quiz Again'}
+		</button>
 	);
+
+	const goToStudyMode = (
+		<Link
+			to={quizProps.makeQuizRouteString() + '/study'}
+			className="Quiz-restart-btn"
+			onClick={() => resetGame(true)}
+		>
+			Study the Ones You Missed
+		</Link>
+	);
+
+	const resetInStudyModeAllButton = (
+		<button className="Quiz-restart-btn" onClick={() => resetGame(false)}>
+			Study All Again
+		</button>
+	);
+
+	const resetInStudyModeButton = (
+		<button className="Quiz-restart-btn" onClick={() => resetGame(true)}>
+			Study the Ones You Don't Know
+		</button>
+	);
+
+	const goToQuizModeButton = (
+		<Link
+			to={quizProps.makeQuizRouteString() + '/quiz'}
+			className="Quiz-restart-btn"
+			onClick={() => resetGame(false)}
+		>
+			Quiz Yourself!
+		</Link>
+	);
+
+	const getEndOfQuestionButtons = () => {
+		if (!isInStudyMode) {
+			return (
+				<div className="Quiz-end-of-quiz-options">
+					{restartQuizButton}
+					{goToStudyMode}
+				</div>
+			);
+		} else if (questionsExistInIncorrectCounter) {
+			return (
+				<div className="Quiz-end-of-quiz-options">
+					{resetInStudyModeAllButton}
+					{resetInStudyModeButton}
+				</div>
+			);
+		} else {
+			return (
+				<div className="Quiz-end-of-quiz-options">
+					{goToQuizModeButton}
+					{resetInStudyModeAllButton}
+				</div>
+			);
+		}
+	};
 
 	const getDisplay = (numRemainingQuestions) => {
 		const { questionPrefix, questionSuffix, subsetCountsAsCorrect } = quizProps;
@@ -263,15 +315,8 @@ function Quiz(props) {
 				<div className="Quiz-restart">
 					{/* <i className="fa-solid fa-arrow-rotate-left" /> */}
 					<i className="fa-solid arrow-left" />
-					Finished all questions!
-					<button className="Quiz-restart-btn" onClick={() => resetGame(false)}>
-						Start Over
-					</button>
-					{questionsExistInIncorrectCounter && (
-						<button className="Quiz-restart-btn" onClick={() => resetGame(true)}>
-							Practise the Ones You Don't Know!
-						</button>
-					)}
+					<h3>Finished all questions!</h3>
+					{getEndOfQuestionButtons()}
 				</div>
 			);
 		}
@@ -298,19 +343,21 @@ function Quiz(props) {
 	return (
 		<div className="Quiz">
 			<div className="Quiz-back-button">
-				<Link to={quizProps.makeCategoryRouteString()}>
-					<i className="fa fa-thin fa-arrow-left" /> Back to quiz menu
+				<Link to={quizProps.makeQuizRouteString()}>
+					<i className="fa fa-thin fa-arrow-left" /> Back
 				</Link>
 			</div>
 			<h1>{quizProps.title}</h1>
 			<div className="Quiz-switch-container">
-				{practiceModeAllowed && getSwitch('Practice Mode', practiceMode, setPracticeMode)}
-				{getSwitch(
+				{isInStudyMode &&
+					practiceModeAllowed &&
+					getSwitch('Practice Mode', practiceMode, setPracticeMode)}
+				{/* {getSwitch(
 					'Incorrect Only',
 					onlyPractiseIncorrect,
 					setOnlyPractiseIncorrect,
 					!questionsExistInIncorrectCounter // disabled - how to pass as parameter name?
-				)}
+				)} */}
 			</div>
 			<ScoreCard correct={correct} incorrect={incorrect} remaining={numRemainingQuestions} />
 			{getDisplay(numRemainingQuestions)}

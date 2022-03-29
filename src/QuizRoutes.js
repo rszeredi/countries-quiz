@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router';
 import Quiz from './Quiz';
 import QuizCategoryPage from './QuizCategoryPage';
 import QuizMenu from './QuizMenu';
+import QuizPage from './QuizPage';
 
 import quizzes from './QuizProps';
 
@@ -23,11 +24,31 @@ export default function QuizRoutes() {
 				/>
 			);
 			for (let quiz of quizList) {
+				const baseRoute = quiz.makeQuizRouteString();
+				// make a route for the "home" page of each quiz
 				routes.push(
 					<Route
-						path={quiz.makeQuizRouteString()}
-						element={<Quiz quizProps={quiz} />}
-						key={quiz.quizId}
+						path={baseRoute}
+						element={<QuizPage quizProps={quiz} />}
+						key={`${quiz.quizId}`}
+					/>
+				);
+
+				// make a route for test mode
+				routes.push(
+					<Route
+						path={baseRoute + '/quiz'}
+						element={<Quiz quizProps={quiz} isInStudyMode={false} />}
+						key={`quiz-${quiz.quizId}`}
+					/>
+				);
+
+				// make another route for study mode
+				routes.push(
+					<Route
+						path={baseRoute + '/study'}
+						element={<Quiz quizProps={quiz} isInStudyMode={true} />}
+						key={`study-${quiz.quizId}`}
 					/>
 				);
 			}

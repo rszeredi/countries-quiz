@@ -108,7 +108,7 @@ function makeCapitalCityQuizProps(continent) {
 			),
 		false,
 		true,
-		false
+		true
 	);
 }
 

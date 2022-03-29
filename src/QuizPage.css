@@ -1,0 +1,44 @@
+.QuizPage {
+	width: 90%;
+	margin: auto;
+}
+
+.QuizPage-mode-btns-holder {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	margin-top: 2rem;
+}
+
+.QuizPage-mode-link {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	padding: 1.4rem;
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	/* width: 35%; */
+	/* height: 40%; */
+	font-size: 1.6rem;
+}
+.QuizPage-mode-link div {
+	/* margin-top: 1rem; */
+}
+
+.QuizPage-mode-link-emoji {
+	font-size: 3rem;
+}
+
+@media (min-width: 600px) {
+	.QuizPage {
+		width: 60%;
+	}
+}
+
+@media (min-width: 1000px) {
+	.QuizPage {
+		width: 40%;
+	}
+}
