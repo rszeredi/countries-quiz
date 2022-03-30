@@ -33,6 +33,13 @@ export default function QuizPage(props) {
 		setIncorrectCounterState(newIncorrectCounter);
 	};
 
+	const resetButton = (
+		<ActionButton
+			btnContent="Reset Quiz Progress"
+			extraClassNames="QuizPage-question-history-reset-btn"
+		/>
+	);
+
 	return (
 		<div className="QuizPage">
 			<div className="Quiz-back-button">
@@ -64,6 +71,7 @@ export default function QuizPage(props) {
 					</div>
 
 					<ConfirmationModal
+						btnComponent={resetButton}
 						confirmationText="Are you sure?"
 						confirmationSubText="You will lose all of your progress"
 						acceptText="Yes"

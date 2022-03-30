@@ -17,7 +17,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function ConfirmationModal(props) {
 	const [ open, setOpen ] = React.useState(false);
-	const { confirmationText, confirmationSubText, acceptText, rejectText, handleAccept } = props;
+	const {
+		btnComponent,
+		confirmationText,
+		confirmationSubText,
+		acceptText,
+		rejectText,
+		handleAccept
+	} = props;
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -34,11 +41,7 @@ function ConfirmationModal(props) {
 
 	return (
 		<div className="ConfirmationModal">
-			<ActionButton
-				btnContent="Reset Quiz Progress"
-				handleClick={handleClickOpen}
-				extraClassNames="QuizPage-question-history-reset-btn"
-			/>
+			<div onClick={handleClickOpen}>{btnComponent}</div>
 			<Dialog
 				open={open}
 				TransitionComponent={Transition}
