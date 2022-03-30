@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -24,7 +25,8 @@ import './Quiz.css';
 import { Link } from 'react-router-dom';
 import QuestionHistorySummary from './QuestionHistorySummary';
 import ActionButton from './ActionButton';
-import useToggleState from './hooks/useToggleState';
+// import useToggleState from './hooks/useToggleState';
+import ConfirmationModal from './ConfirmationModal';
 
 const SCORE_MESSAGES = [
 	[ 100, "You're a Genius!" ],
@@ -74,7 +76,9 @@ function Quiz(props) {
 	const isMounted = useRef(false); // https://typeofnan.dev/how-to-prevent-useeffect-from-running-on-mount-in-react/
 
 	const { quizProps, isInStudyMode } = props;
+
 	const { quizId, practiceModeAllowed, isMultiChoiceQuiz } = quizProps;
+	const navigate = useNavigate();
 
 	const {
 		quizState,
@@ -84,7 +88,7 @@ function Quiz(props) {
 		setCorrect,
 		setIncorrect,
 		setPracticeMode
-	} = useQuizState(quizId);
+	} = useQuizState(quizId, isInStudyMode);
 
 	const {
 		questionsAll,
@@ -98,10 +102,6 @@ function Quiz(props) {
 	console.log('quizState', quizState);
 	const answerPool = questions.map((q) => q.answer);
 	console.log('answerPool', answerPool);
-
-	const [ showingQuizHistoryResetConfirmation, setQuizHistoryResetConfirmation ] = useToggleState(
-		false
-	);
 
 	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
 		quizId,
@@ -260,7 +260,7 @@ function Quiz(props) {
 					to={quizProps.makeQuizRouteString() + '/study'}
 					// onClick={() => resetGame(true)}
 				>
-					Study the Ones You Missed
+					Go to Study Mode
 				</Link>
 			}
 			handleClick={() => resetGame(true)}
@@ -292,6 +292,9 @@ function Quiz(props) {
 		/>
 	);
 
+	const numRemainingQuestions = getNumRemainingQuestions(questions, currentQuestionIdx);
+
+	console.log('numRemainingQuestions', numRemainingQuestions);
 	const getEndOfQuestionButtons = () => {
 		if (!isInStudyMode) {
 			return (
@@ -404,14 +407,31 @@ function Quiz(props) {
 		);
 	};
 
-	const numRemainingQuestions = getNumRemainingQuestions(questions, currentQuestionIdx);
+	const handleQuitQuiz = () => {
+		resetGame(false);
+		navigate(quizProps.makeQuizRouteString());
+	};
+
+	const backButton = (
+		<div className="Quiz-back-button">
+			<i className="fa fa-thin fa-arrow-left" /> Back
+		</div>
+	);
+
 	return (
 		<div className="Quiz">
-			<div className="Quiz-back-button">
-				<Link to={quizProps.makeQuizRouteString()}>
-					<i className="fa fa-thin fa-arrow-left" /> Back
-				</Link>
-			</div>
+			{!isInStudyMode && numRemainingQuestions > 0 ? (
+				<ConfirmationModal
+					btnComponent={backButton}
+					confirmationText="Are you sure?"
+					confirmationSubText="You will lose all of your progress"
+					acceptText="Yes"
+					rejectText="No"
+					handleAccept={handleQuitQuiz}
+				/>
+			) : (
+				<div onClick={handleQuitQuiz}>{backButton}</div>
+			)}
 			<h1>{quizProps.title}</h1>
 			<div className="Quiz-switch-container">
 				{isInStudyMode &&

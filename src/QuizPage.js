@@ -73,7 +73,7 @@ export default function QuizPage(props) {
 					<ConfirmationModal
 						btnComponent={resetButton}
 						confirmationText="Are you sure?"
-						confirmationSubText="You will lose all of your progress"
+						confirmationSubText="This can't be undone"
 						acceptText="Yes"
 						rejectText="No"
 						handleAccept={resetIncorrectCounts}

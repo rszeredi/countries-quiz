@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 
-function useLocalStorageState(key, defaultVal) {
+function useLocalStorageState(key, defaultVal, actuallyUseLocalStorage = true) {
 	// initialize a piece of state, based off of value in localStorage (or default)
 	const [ state, setState ] = useState(() => {
 		let val;
-		try {
-			val = JSON.parse(window.localStorage.getItem(key) || String(defaultVal));
-		} catch (e) {
+		if (!actuallyUseLocalStorage) {
 			val = defaultVal;
+		} else {
+			try {
+				val = JSON.parse(window.localStorage.getItem(key) || String(defaultVal));
+			} catch (e) {
+				val = defaultVal;
+			}
 		}
 		return val;
 	});
@@ -16,7 +20,9 @@ function useLocalStorageState(key, defaultVal) {
 	// this listens for changes on state
 	useEffect(
 		() => {
-			window.localStorage.setItem(key, JSON.stringify(state));
+			if (actuallyUseLocalStorage) {
+				window.localStorage.setItem(key, JSON.stringify(state));
+			}
 		},
 		[ state ]
 	);

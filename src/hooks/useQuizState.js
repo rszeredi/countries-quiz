@@ -20,9 +20,15 @@ class QuizState {
 	}
 }
 
-export default function useQuizState(quizId) {
+export default function useQuizState(quizId, pickUpWhereLeftOff) {
 	const emptyQuizState = new QuizState(quizId, [], [], 0, 0, 0, false, false);
-	const [ quizState, setQuizState ] = useLocalStorageState(quizId, emptyQuizState);
+	const [ quizState, setQuizState ] = useLocalStorageState(
+		quizId,
+		emptyQuizState,
+		pickUpWhereLeftOff
+	);
+
+	// reset quizState if not picking up where we left off
 
 	const setProperty = (propertyName, newVal) => {
 		setQuizState((currQuizState) => ({ ...currQuizState, [propertyName]: newVal }));
