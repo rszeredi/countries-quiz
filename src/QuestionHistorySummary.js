@@ -4,7 +4,10 @@ import './QuestionHistorySummary.css';
 
 export default function QuestionHistorySummary(props) {
 	const { title, quizId, incorrectCounterThisQuiz } = props;
-	console.log('incorrectCounterThisQuiz', incorrectCounterThisQuiz);
+	const incorrectCounterThisQuizSorted = console.log(
+		'incorrectCounterThisQuiz',
+		incorrectCounterThisQuiz
+	);
 	return (
 		<div className="QuestionHistorySummary">
 			<div className="QuestionHistorySummary-incorrect-heading">{title}</div>
@@ -13,15 +16,17 @@ export default function QuestionHistorySummary(props) {
 					<div>Question</div>
 					<div># times missed</div>
 				</div>
-				{Object.entries(incorrectCounterThisQuiz).map(([ q, count ]) => (
-					<div
-						key={`${quizId}-${q}`}
-						className="QuestionHistorySummary-incorrect-questions-row"
-					>
-						<div>{q}</div>
-						<div>{count}</div>
-					</div>
-				))}
+				{Object.entries(incorrectCounterThisQuiz)
+					.sort((x, y) => y[1] - x[1])
+					.map(([ q, count ]) => (
+						<div
+							key={`${quizId}-${q}`}
+							className="QuestionHistorySummary-incorrect-questions-row"
+						>
+							<div>{q}</div>
+							<div>{count}</div>
+						</div>
+					))}
 			</div>
 		</div>
 	);

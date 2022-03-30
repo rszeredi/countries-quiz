@@ -1,0 +1,28 @@
+.ActionButton {
+	margin: 1rem auto;
+	outline: none;
+	background-color: white;
+	border-radius: 3rem;
+	border: none;
+	font-size: 1.2rem;
+	padding: 1rem 1.6rem;
+	font-family: inherit;
+	box-shadow: none;
+	cursor: pointer;
+
+	box-shadow: 3px 3px 8px 2px #666;
+	transition: transform 0.1s;
+}
+
+.ActionButton:hover {
+	background-color: #ccc;
+}
+
+.ActionButton:active {
+	box-shadow: none;
+	transform: translate(3px, 3px);
+}
+
+.ActionButton:hover a {
+	color: black;
+}

@@ -23,6 +23,7 @@ import useQuizState from './hooks/useQuizState';
 import './Quiz.css';
 import { Link } from 'react-router-dom';
 import QuestionHistorySummary from './QuestionHistorySummary';
+import ActionButton from './ActionButton';
 
 const SCORE_MESSAGES = [
 	[ 100, "You're a Genius!" ],
@@ -240,41 +241,49 @@ function Quiz(props) {
 	// 	[ onlyPractiseIncorrect ]
 	// );
 	const restartQuizButton = (
-		<button className="Quiz-restart-btn" onClick={() => resetGame(false)}>
-			{isInStudyMode ? 'Study All Again' : 'Try Quiz Again'}
-		</button>
+		<ActionButton
+			btnContent={isInStudyMode ? 'Study All Again' : 'Try Quiz Again'}
+			handleClick={() => resetGame(false)}
+		/>
 	);
 
 	const goToStudyMode = (
-		<Link
-			to={quizProps.makeQuizRouteString() + '/study'}
-			className="Quiz-restart-btn"
-			onClick={() => resetGame(true)}
-		>
-			Study the Ones You Missed
-		</Link>
+		<ActionButton
+			btnContent={
+				<Link
+					to={quizProps.makeQuizRouteString() + '/study'}
+					// onClick={() => resetGame(true)}
+				>
+					Study the Ones You Missed
+				</Link>
+			}
+			handleClick={() => resetGame(true)}
+		/>
 	);
 
 	const resetInStudyModeAllButton = (
-		<button className="Quiz-restart-btn" onClick={() => resetGame(false)}>
-			Study All Again
-		</button>
+		<ActionButton btnContent="Study All Again" handleClick={() => resetGame(false)} />
 	);
 
 	const resetInStudyModeButton = (
-		<button className="Quiz-restart-btn" onClick={() => resetGame(true)}>
-			Study the Ones You Don't Know
-		</button>
+		<ActionButton
+			btnContent="Study the Ones You Don't Know"
+			handleClick={() => resetGame(true)}
+		/>
 	);
 
 	const goToQuizModeButton = (
-		<Link
-			to={quizProps.makeQuizRouteString() + '/quiz'}
-			className="Quiz-restart-btn"
-			onClick={() => resetGame(false)}
-		>
-			Quiz Yourself!
-		</Link>
+		<ActionButton
+			btnContent={
+				<Link
+					to={quizProps.makeQuizRouteString() + '/quiz'}
+					onClick={() => resetGame(false)}
+				>
+					Quiz Yourself!
+				</Link>
+			}
+			handleClick={() => resetGame(false)}
+		/>
 	);
 
 	const getEndOfQuestionButtons = () => {

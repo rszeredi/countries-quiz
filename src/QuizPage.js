@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { resetQuestionsWithIncorrectCounts } from './quizHelpers';
 
 import {
 	getQuestionsWithIncorrectCounts,
@@ -8,15 +9,28 @@ import {
 import QuestionHistorySummary from './QuestionHistorySummary';
 
 import './QuizPage.css';
+import ActionButton from './ActionButton';
+import useLocalStorageState from './hooks/useLocalStorageState';
 
 export default function QuizPage(props) {
 	const { quizProps } = props;
 	const { quizId } = quizProps;
 	const baseRoute = quizProps.makeQuizRouteString();
 
-	const incorrectCounterThisQuiz = getQuestionsWithIncorrectCounts(
-		INCORRECT_COUNTER_LOCAL_STORAGE_KEY
-	)[quizId];
+	const [ incorrectCounterState, setIncorrectCounterState ] = useLocalStorageState(
+		INCORRECT_COUNTER_LOCAL_STORAGE_KEY,
+		{}
+	);
+	const incorrectCounterThisQuiz = incorrectCounterState[quizId];
+	console.log('incorrectCounterThisQuiz', incorrectCounterThisQuiz);
+
+	const resetIncorrectCounts = () => {
+		const incorrectCounter = getQuestionsWithIncorrectCounts(
+			INCORRECT_COUNTER_LOCAL_STORAGE_KEY
+		);
+		const { [quizId]: omitted, ...newIncorrectCounter } = incorrectCounter;
+		setIncorrectCounterState(newIncorrectCounter);
+	};
 
 	return (
 		<div className="QuizPage">
@@ -37,13 +51,23 @@ export default function QuizPage(props) {
 					<div className="QuizPage-mode-link-emoji">🤓</div>
 				</Link>
 			</div>
-			<div className="QuizPage-question-history">
-				<QuestionHistorySummary
-					title="Check out the questions you've missed"
-					incorrectCounterThisQuiz={incorrectCounterThisQuiz}
-					quizId={quizId}
-				/>
-			</div>
+			{incorrectCounterThisQuiz &&
+			Object.keys(incorrectCounterThisQuiz).length > 0 && (
+				<div className="QuizPage-question-history-container">
+					<div className="QuizPage-question-history">
+						<QuestionHistorySummary
+							title="Check out the questions you've missed"
+							incorrectCounterThisQuiz={incorrectCounterThisQuiz}
+							quizId={quizId}
+						/>
+					</div>
+					<ActionButton
+						btnContent="Reset Quiz Progress"
+						handleClick={resetIncorrectCounts}
+						extraClassNames="QuizPage-question-history-reset-btn"
+					/>
+				</div>
+			)}
 		</div>
 	);
 }

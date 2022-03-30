@@ -76,6 +76,12 @@ export function updateIncorrectCount(question, delta, quizId, localStorageKey) {
 	}
 
 	console.log('incorrectCounter[quizId]', incorrectCounter[quizId]);
+	writeIncorrectCounterToLocalStorage(incorrectCounter);
+}
 
-	window.localStorage.setItem(localStorageKey, JSON.stringify(incorrectCounter));
+function writeIncorrectCounterToLocalStorage(incorrectCounter) {
+	window.localStorage.setItem(
+		INCORRECT_COUNTER_LOCAL_STORAGE_KEY,
+		JSON.stringify(incorrectCounter)
+	);
 }
