@@ -1,0 +1,7 @@
+/* .ConfirmationModal * {
+	font-family: inherit !important;
+} */
+
+.MuiPaper-elevation24.MuiDialog-paper {
+	border-radius: 1rem;
+}

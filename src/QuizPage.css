@@ -48,6 +48,10 @@
 	color: white;
 }
 
+.QuizPage-question-history-reset-btn:hover {
+	color: black;
+}
+
 .QuizPage-question-history {
 	margin-top: 2rem !important;
 }

@@ -11,6 +11,7 @@ import QuestionHistorySummary from './QuestionHistorySummary';
 import './QuizPage.css';
 import ActionButton from './ActionButton';
 import useLocalStorageState from './hooks/useLocalStorageState';
+import ConfirmationModal from './ConfirmationModal';
 
 export default function QuizPage(props) {
 	const { quizProps } = props;
@@ -61,10 +62,13 @@ export default function QuizPage(props) {
 							quizId={quizId}
 						/>
 					</div>
-					<ActionButton
-						btnContent="Reset Quiz Progress"
-						handleClick={resetIncorrectCounts}
-						extraClassNames="QuizPage-question-history-reset-btn"
+
+					<ConfirmationModal
+						confirmationText="Are you sure?"
+						confirmationSubText="You will lose all of your progress"
+						acceptText="Yes"
+						rejectText="No"
+						handleAccept={resetIncorrectCounts}
 					/>
 				</div>
 			)}

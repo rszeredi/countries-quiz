@@ -24,6 +24,7 @@ import './Quiz.css';
 import { Link } from 'react-router-dom';
 import QuestionHistorySummary from './QuestionHistorySummary';
 import ActionButton from './ActionButton';
+import useToggleState from './hooks/useToggleState';
 
 const SCORE_MESSAGES = [
 	[ 100, "You're a Genius!" ],
@@ -93,9 +94,14 @@ function Quiz(props) {
 		incorrect,
 		practiceMode
 	} = quizState;
+
 	console.log('quizState', quizState);
 	const answerPool = questions.map((q) => q.answer);
 	console.log('answerPool', answerPool);
+
+	const [ showingQuizHistoryResetConfirmation, setQuizHistoryResetConfirmation ] = useToggleState(
+		false
+	);
 
 	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
 		quizId,
