@@ -17,7 +17,8 @@ class QuizProps {
 		questionGetter,
 		subsetCountsAsCorrect,
 		practiceModeAllowed,
-		isMultiChoiceQuiz
+		multiChoiceAllowed,
+		typeAnswerAllowed
 	) {
 		this.category = category;
 		this.variant = variant;
@@ -28,7 +29,8 @@ class QuizProps {
 		this.questionGetter = questionGetter;
 		this.subsetCountsAsCorrect = subsetCountsAsCorrect;
 		this.practiceModeAllowed = practiceModeAllowed;
-		this.isMultiChoiceQuiz = isMultiChoiceQuiz;
+		this.multiChoiceAllowed = multiChoiceAllowed;
+		this.typeAnswerAllowed = typeAnswerAllowed;
 	}
 	makeQuizRouteString() {
 		const catPath = this.category.toLowerCase().replace(' ', '-');
@@ -112,7 +114,8 @@ function makeCapitalCityQuizProps(continent) {
 			),
 		false,
 		true,
-		false
+		true,
+		true
 	);
 }
 
@@ -129,7 +132,8 @@ function makeCurrencyQuizProps(continent) {
 			),
 		true,
 		true,
-		false
+		true,
+		true
 	);
 }
 
@@ -146,7 +150,8 @@ function makePopulationQuizProps(continent) {
 			),
 		false,
 		false,
-		true
+		true,
+		false
 	);
 }
 
@@ -163,7 +168,8 @@ function makeFlagQuizProps(continent) {
 			),
 		false,
 		false,
-		true
+		true,
+		false
 	);
 }
 
@@ -184,6 +190,7 @@ if (INCLUDE_TEST_QUIZ) {
 			'?',
 			getTestData,
 			false,
+			true,
 			true,
 			true
 		)

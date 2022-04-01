@@ -5,6 +5,9 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 import ScoreCard from './ScoreCard';
 import QuestionBox from './QuestionBox';
 
@@ -77,7 +80,7 @@ function Quiz(props) {
 
 	const { quizProps, isInStudyMode } = props;
 
-	const { quizId, practiceModeAllowed, isMultiChoiceQuiz } = quizProps;
+	const { quizId, practiceModeAllowed, multiChoiceAllowed, typeAnswerAllowed } = quizProps;
 	const navigate = useNavigate();
 
 	const {
@@ -109,6 +112,7 @@ function Quiz(props) {
 	);
 
 	const [ loadingData, setLoadingData ] = useState(true);
+	const [ isMultiChoice, setIsMultiChoice ] = useState(true); // move this to quiz state, only allow for capital cities & currencies
 
 	const [ repeatCorrectAnswerMode, setRepeatCorrectAnswerMode ] = useState(false);
 	const [ answerStatus, setAnswerStatus ] = useState('none');
@@ -373,7 +377,7 @@ function Quiz(props) {
 					practiceMode={practiceMode}
 					answerStatus={answerStatus}
 					subsetCountsAsCorrect={subsetCountsAsCorrect}
-					isMultiChoiceQuestion={isMultiChoiceQuiz}
+					isMultiChoiceQuestion={isMultiChoice}
 					handleAnswerSubmit={handleAnswerSubmit}
 					answerPool={answerPool}
 				/>
@@ -407,6 +411,30 @@ function Quiz(props) {
 		);
 	};
 
+	const handleMultiChoiceChange = (event, newSetting) => {
+		if (newSetting !== null) {
+			setIsMultiChoice(newSetting);
+		}
+	};
+
+	const getMultiChoiceToggle = () => {
+		return (
+			<ToggleButtonGroup
+				color="primary"
+				value={isMultiChoice}
+				exclusive
+				onChange={handleMultiChoiceChange}
+			>
+				<ToggleButton className="Quiz-multi-choice-toggle" value={true}>
+					Multi-Choice
+				</ToggleButton>
+				<ToggleButton className="Quiz-multi-choice-toggle" value={false}>
+					Type
+				</ToggleButton>
+			</ToggleButtonGroup>
+		);
+	};
+
 	const handleQuitQuiz = () => {
 		resetGame(false);
 		navigate(quizProps.makeQuizRouteString());
@@ -432,17 +460,20 @@ function Quiz(props) {
 			) : (
 				<div onClick={handleQuitQuiz}>{backButton}</div>
 			)}
-			<h1>{quizProps.title}</h1>
-			<div className="Quiz-switch-container">
-				{isInStudyMode &&
-					practiceModeAllowed &&
-					getSwitch('Practice Mode', practiceMode, setPracticeMode)}
-				{/* {getSwitch(
+			<div className="Quiz-header">
+				<h1>{quizProps.title}</h1>
+				<div className="Quiz-switch-container">
+					{isInStudyMode &&
+						practiceModeAllowed &&
+						getSwitch('Practice Mode', practiceMode, setPracticeMode)}
+					{multiChoiceAllowed && typeAnswerAllowed && getMultiChoiceToggle()}
+					{/* {getSwitch(
 					'Incorrect Only',
 					onlyPractiseIncorrect,
 					setOnlyPractiseIncorrect,
 					!questionsExistInIncorrectCounter // disabled - how to pass as parameter name?
 				)} */}
+				</div>
 			</div>
 			<ScoreCard correct={correct} incorrect={incorrect} remaining={numRemainingQuestions} />
 			{getDisplay(numRemainingQuestions)}
