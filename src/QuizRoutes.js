@@ -14,12 +14,13 @@ export default function QuizRoutes() {
 		let routes = [];
 
 		for (let [ cat, quizList ] of Object.entries(quizzes)) {
-			const catPath = cat.toLowerCase().replace(' ', '-');
+			const [ catText, catEmoji ] = cat.split(':');
+			const catPath = catText.toLowerCase().replace(' ', '-');
 
 			routes.push(
 				<Route
 					path={'/' + catPath}
-					element={<QuizCategoryPage quizCategory={cat} quizList={quizList} />}
+					element={<QuizCategoryPage quizCategory={catText} quizList={quizList} />}
 					key={cat}
 				/>
 			);

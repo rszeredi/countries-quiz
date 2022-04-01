@@ -10,13 +10,17 @@ export default function QuizMenu() {
 	const buildLinks = () => {
 		let links = [];
 		Object.keys(quizzes).forEach((category) => {
+			const [ catText, catEmoji ] = category.split(':');
+			const catPath = catText.toLowerCase().replace(' ', '-');
+
 			links.push(
 				<Link
 					className="btn-contents QuizMenu-quiz-category-link"
-					to={'/' + category.toLowerCase().replace(' ', '-')}
+					to={'/' + catPath}
 					key={category}
 				>
-					{category}
+					<div className="QuizMenu-category-text">{catText}</div>
+					<div className="QuizMenu-category-emoji">{catEmoji}</div>
 				</Link>
 			);
 			// const buttons = (

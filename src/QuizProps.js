@@ -108,7 +108,7 @@ function makeCapitalCityQuizProps(continent) {
 			),
 		false,
 		true,
-		true
+		false
 	);
 }
 
@@ -164,14 +164,14 @@ function makeFlagQuizProps(continent) {
 }
 
 let quizzes = {
-	'Capital Cities': continents.map((c) => makeCapitalCityQuizProps(c)),
-	Currencies: continents.map((c) => makeCurrencyQuizProps(c)),
-	Population: continents.map((c) => makePopulationQuizProps(c)),
-	Flags: continents.map((c) => makeFlagQuizProps(c))
+	'Capital Cities:🌃': continents.map((c) => makeCapitalCityQuizProps(c)),
+	'Currencies:💰': continents.map((c) => makeCurrencyQuizProps(c)),
+	'Population:👥': continents.map((c) => makePopulationQuizProps(c)),
+	'Flags:🇦🇺': continents.map((c) => makeFlagQuizProps(c))
 };
 
 if (INCLUDE_TEST_QUIZ) {
-	quizzes['For Testing'] = [
+	quizzes['For Testing: 🧐'] = [
 		new QuizProps(
 			'Capital Cities',
 			'Test',
