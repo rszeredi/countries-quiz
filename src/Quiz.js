@@ -420,11 +420,11 @@ function Quiz(props) {
 
 	return (
 		<div className="Quiz">
-			{!isInStudyMode && numRemainingQuestions > 0 ? (
+			{!isInStudyMode && numRemainingQuestions > 0 && currentQuestionIdx > 0 ? (
 				<ConfirmationModal
 					btnComponent={backButton}
 					confirmationText="Are you sure?"
-					confirmationSubText="You will lose all of your progress"
+					confirmationSubText="This will reset your quiz score."
 					acceptText="Yes"
 					rejectText="No"
 					handleAccept={handleQuitQuiz}

@@ -21,6 +21,7 @@
 .btn-contents.QuizMenu-quiz-category-link {
 	width: 80% !important;
 	margin: 0;
+	background-color: rgba(64, 37, 199, 0.29);
 	/* margin: 1.2rem; */
 }
 

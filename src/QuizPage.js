@@ -35,7 +35,7 @@ export default function QuizPage(props) {
 
 	const resetButton = (
 		<ActionButton
-			btnContent="Reset Quiz Progress"
+			btnContent="Reset History"
 			extraClassNames="QuizPage-question-history-reset-btn"
 		/>
 	);
@@ -73,7 +73,7 @@ export default function QuizPage(props) {
 					<ConfirmationModal
 						btnComponent={resetButton}
 						confirmationText="Are you sure?"
-						confirmationSubText="This can't be undone"
+						confirmationSubText="This can't be undone."
 						acceptText="Yes"
 						rejectText="No"
 						handleAccept={resetIncorrectCounts}
