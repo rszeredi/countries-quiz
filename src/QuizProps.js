@@ -32,7 +32,11 @@ class QuizProps {
 	}
 	makeQuizRouteString() {
 		const catPath = this.category.toLowerCase().replace(' ', '-');
-		return '/' + catPath + '/' + this.variant.replace(' ', '-').toLowerCase();
+		return '/' + catPath + '/' + this.makeVariantString();
+	}
+
+	makeVariantString() {
+		return this.variant.replace(' ', '-').toLowerCase();
 	}
 
 	makeCategoryRouteString() {
