@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AnswerChoiceButton from './AnswerChoiceButton';
 import './AnswerMultiChoiceButtons.css';
 
@@ -6,18 +6,43 @@ import './AnswerMultiChoiceButtons.css';
 // AnswerMultiChoiceButtonsInner: tracks what answer was click, fake answers stay the same
 
 export default function AnswerMultiChoiceButtons(props) {
-	const { correctAnswer, answerPool, isFlagsQuiz, handleAnswerSubmit } = props;
-	let fakeAnswers;
-	if (typeof correctAnswer === 'number') {
-		fakeAnswers = generateIncorrectMultiChoiceNumberOptions(correctAnswer);
-	} else if (answerPool) {
-		fakeAnswers = randomlySelectIncorrectAnswers(answerPool.filter((i) => i !== correctAnswer));
-	} else {
-		fakeAnswers = [ '1', '2', '3' ]; //  todo: handle this error
-	}
-	const answerOptions = fakeAnswers.concat([ correctAnswer ]).sort(() => Math.random() - 0.5);
+	const {
+		correctAnswer,
+		answerPool,
+		isFlagsQuiz,
+		repeatCorrectAnswerMode,
+		practiceMode,
+		handleAnswerSubmit
+	} = props;
 
-	console.log('answerOptions', answerOptions);
+	const [ answerOptions, setAnswerOptions ] = useState([]);
+
+	useEffect(() => {
+		getFakeAnswersAndSetAnswerOptions();
+	}, []);
+
+	useEffect(
+		() => {
+			if (!repeatCorrectAnswerMode) getFakeAnswersAndSetAnswerOptions();
+		},
+		[ repeatCorrectAnswerMode, correctAnswer ]
+	);
+
+	const getFakeAnswersAndSetAnswerOptions = () => {
+		let fakeAnswers;
+		if (typeof correctAnswer === 'number') {
+			fakeAnswers = generateIncorrectMultiChoiceNumberOptions(correctAnswer);
+		} else if (answerPool) {
+			fakeAnswers = randomlySelectIncorrectAnswers(
+				answerPool.filter((i) => i !== correctAnswer)
+			);
+		} else {
+			fakeAnswers = [ '1', '2', '3' ]; //  todo: handle this error
+		}
+		setAnswerOptions(fakeAnswers.concat([ correctAnswer ]).sort(() => Math.random() - 0.5));
+	};
+
+	// console.log('answerOptions', answerOptions);
 	if (typeof answerOptions[0] === 'number') {
 		answerOptions.forEach((i) => {
 			const delta = ((i / correctAnswer - 1) * 100).toFixed(2);
@@ -30,13 +55,22 @@ export default function AnswerMultiChoiceButtons(props) {
 			answerOptions={answerOptions}
 			correctAnswer={correctAnswer}
 			isFlagsQuiz={isFlagsQuiz}
+			repeatCorrectAnswerMode={repeatCorrectAnswerMode}
+			practiceMode={practiceMode}
 			handleAnswerSubmit={handleAnswerSubmit}
 		/>
 	);
 }
 
 function AnswerMultiChoiceButtonsInner(props) {
-	const { answerOptions, correctAnswer, isFlagsQuiz, handleAnswerSubmit } = props;
+	const {
+		answerOptions,
+		correctAnswer,
+		isFlagsQuiz,
+		repeatCorrectAnswerMode,
+		practiceMode,
+		handleAnswerSubmit
+	} = props;
 	const [ answerStatus, setAnswerStatus ] = useState('none');
 
 	const [ selectedAnswer, setSelectedAnswer ] = useState('none');
@@ -52,8 +86,8 @@ function AnswerMultiChoiceButtonsInner(props) {
 	};
 
 	const getExtraClassNames = (answer) => {
-		console.log('selectedAnswer', selectedAnswer);
-		console.log('answer', answer);
+		// console.log('selectedAnswer', selectedAnswer);
+		// console.log('answer', answer);
 		let extraClassNameList = [];
 
 		if (isFlagsQuiz) {
@@ -61,7 +95,7 @@ function AnswerMultiChoiceButtonsInner(props) {
 		}
 
 		if (answerStatus === 'answered') {
-			if (answer == correctAnswer) {
+			if (answer == correctAnswer && (selectedAnswer == answer || !practiceMode)) {
 				// use == here because might be comparing number to string
 				extraClassNameList.push('AnswerChoiceButton-btn-correct');
 			} else if (answer != correctAnswer && selectedAnswer == answer) {

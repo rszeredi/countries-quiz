@@ -104,7 +104,6 @@ function Quiz(props) {
 
 	console.log('quizState', quizState);
 	const answerPool = questionsAll.map((q) => q.answer);
-	console.log('answerPool', answerPool);
 
 	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
 		quizId,
@@ -116,6 +115,28 @@ function Quiz(props) {
 
 	const [ repeatCorrectAnswerMode, setRepeatCorrectAnswerMode ] = useState(false);
 	const [ answerStatus, setAnswerStatus ] = useState('none');
+
+	/* 
+	answerStatus:
+	none: when a new question has been served and we are waiting for user to answer
+	correct: user answered correctly, and we wait some time before moving to next question (at which point answerStatus gets set back to none)
+	incorrect: same as above but if user answered incorrectly
+	answered: I guess I ended up with another answerStatus state variable inside AnswerMultiChoiceButtons, woops! 
+			Probably my initial thinking was that answerStatus should be pushed up to the parent (to try to have stateless children) but I 
+			think since this is mainly for UI purposes it might be ok to have it within the Answer child components
+
+	repeatCorrectAnswerMode:
+	This is used when in "Typing" mode and the user answered incorrectly, we show them the correct answer
+	and prompt them to type it
+	I'm not sure whether this state should leave up here? Though it is used to determine whether or not to update the score.
+	Also, I realized I created a sort of duplicates (two of them) for this inside both:
+			1. AnswerForm: answerStatus === 'practising'. This is used to determine whether or not to show the correct answer inside AnswerForm. (So it's not quite the same as answerStatus here in Quiz)
+			2. AnswerMultiChoiceButtons: This is used to determine how to color the buttons (ie. by adding class names)
+
+	For multichoice: there's a similar mode where the user needs to click the correct answer (ie. we don't tell them)
+	For this I will create a new state variable within MultiChoiceButtons and pass in practiceMode from Quiz.js
+
+	*/
 
 	useEffect(() => {
 		console.log('useEffect initial');
@@ -298,7 +319,6 @@ function Quiz(props) {
 
 	const numRemainingQuestions = getNumRemainingQuestions(questions, currentQuestionIdx);
 
-	console.log('numRemainingQuestions', numRemainingQuestions);
 	const getEndOfQuestionButtons = () => {
 		if (!isInStudyMode) {
 			return (
@@ -376,6 +396,7 @@ function Quiz(props) {
 					questionSuffix={questionSuffix}
 					practiceMode={practiceMode}
 					answerStatus={answerStatus}
+					repeatCorrectAnswerMode={repeatCorrectAnswerMode}
 					subsetCountsAsCorrect={subsetCountsAsCorrect}
 					isMultiChoiceQuestion={isMultiChoice}
 					handleAnswerSubmit={handleAnswerSubmit}

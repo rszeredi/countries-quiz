@@ -13,6 +13,7 @@ class QuestionBox extends Component {
 			practiceMode,
 			answer,
 			answerStatus,
+			repeatCorrectAnswerMode,
 			handleAnswerSubmit,
 			subsetCountsAsCorrect,
 			isMultiChoiceQuestion,
@@ -33,6 +34,8 @@ class QuestionBox extends Component {
 							correctAnswer={answer}
 							isFlagsQuiz={isFlagsQuiz}
 							handleAnswerSubmit={handleAnswerSubmit}
+							repeatCorrectAnswerMode={repeatCorrectAnswerMode}
+							practiceMode={practiceMode}
 							answerPool={answerPool}
 						/>
 					) : (
