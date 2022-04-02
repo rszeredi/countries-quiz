@@ -103,7 +103,7 @@ function Quiz(props) {
 	} = quizState;
 
 	console.log('quizState', quizState);
-	const answerPool = questions.map((q) => q.answer);
+	const answerPool = questionsAll.map((q) => q.answer);
 	console.log('answerPool', answerPool);
 
 	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
@@ -344,7 +344,7 @@ function Quiz(props) {
 				</div>
 			);
 		} else if (!questionsExistInIncorrectCounter) {
-			return <h3>You're a Genius!</h3>;
+			return <h3>Nothing left to study!</h3>;
 		} else {
 			const incorrectCounterThisQuiz = getQuestionsWithIncorrectCounts(
 				INCORRECT_COUNTER_LOCAL_STORAGE_KEY
@@ -425,11 +425,11 @@ function Quiz(props) {
 				exclusive
 				onChange={handleMultiChoiceChange}
 			>
+				<ToggleButton className="Quiz-multi-choice-toggle" value={false}>
+					Typing
+				</ToggleButton>
 				<ToggleButton className="Quiz-multi-choice-toggle" value={true}>
 					Multi-Choice
-				</ToggleButton>
-				<ToggleButton className="Quiz-multi-choice-toggle" value={false}>
-					Type
 				</ToggleButton>
 			</ToggleButtonGroup>
 		);
