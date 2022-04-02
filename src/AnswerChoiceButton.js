@@ -6,7 +6,8 @@ export default function AnswerChoiceButton(props) {
 		answerChoiceText: answerChoiceValue,
 		correctAnswer,
 		updateAnswerUIAndScores,
-		extraClassNames
+		extraClassNames,
+		disabled
 	} = props;
 
 	const isCorrectAnswer = () => {
@@ -14,6 +15,7 @@ export default function AnswerChoiceButton(props) {
 	};
 
 	const handleClick = (e) => {
+		if (disabled) return;
 		const answerIsCorrect = isCorrectAnswer();
 		const selectedAnswer = e.target.getAttribute('data-value');
 		updateAnswerUIAndScores(answerIsCorrect, selectedAnswer);

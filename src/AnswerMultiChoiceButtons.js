@@ -95,6 +95,7 @@ function AnswerMultiChoiceButtonsInner(props) {
 		}
 
 		if (answerStatus === 'answered') {
+			extraClassNameList.push('btn-multichoice-disabled');
 			if (answer == correctAnswer && (selectedAnswer == answer || !practiceMode)) {
 				// use == here because might be comparing number to string
 				extraClassNameList.push('AnswerChoiceButton-btn-correct');
@@ -114,6 +115,7 @@ function AnswerMultiChoiceButtonsInner(props) {
 					correctAnswer={correctAnswer}
 					updateAnswerUIAndScores={updateAnswerUIAndScores}
 					extraClassNames={getExtraClassNames(answer)}
+					disabled={answerStatus === 'answered'}
 				/>
 			))}
 		</div>
