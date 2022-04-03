@@ -3,6 +3,11 @@
 	margin: 10px auto;
 }
 
+.QuizCategoryPage-contents {
+	/* width: fit-content; */
+	margin: 10px auto;
+}
+
 .QuizCategoryPage-category-heading {
 	margin: 2rem auto;
 	text-align: center;
@@ -54,6 +59,7 @@
 	background-image: url('./images/europe.jpeg');
 	background-size: cover;
 	background-position: bottom;
+	image-rendering: -webkit-optimize-contrast;
 }
 
 .QuizCategoryPage-background-asia {

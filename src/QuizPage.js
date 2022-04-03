@@ -42,44 +42,46 @@ export default function QuizPage(props) {
 
 	return (
 		<div className="QuizPage">
-			<div className="Quiz-back-button">
-				<Link to={quizProps.makeCategoryRouteString()}>
-					<i className="fa fa-thin fa-arrow-left" /> Back to quiz menu
-				</Link>
-			</div>
-			<h1>{quizProps.title}</h1>
-			<div className="QuizPage-mode-btns-holder">
-				<Link className="btn-contents QuizPage-mode-link" to={baseRoute + '/quiz'}>
-					Quiz
-					<div className="QuizPage-mode-link-emoji">🧐</div>
-				</Link>
+			<div className="QuizPage-contents">
+				<div className="Quiz-back-button">
+					<Link to={quizProps.makeCategoryRouteString()}>
+						<i className="fa fa-thin fa-arrow-left" /> Back to quiz menu
+					</Link>
+				</div>
+				<h1>{quizProps.title}</h1>
+				<div className="QuizPage-mode-btns-holder">
+					<Link className="btn-contents QuizPage-mode-link" to={baseRoute + '/quiz'}>
+						Quiz
+						<div className="QuizPage-mode-link-emoji">🧐</div>
+					</Link>
 
-				<Link className="btn-contents QuizPage-mode-link" to={baseRoute + '/study'}>
-					Study
-					<div className="QuizPage-mode-link-emoji">🤓</div>
-				</Link>
-			</div>
-			{incorrectCounterThisQuiz &&
-			Object.keys(incorrectCounterThisQuiz).length > 0 && (
-				<div className="QuizPage-question-history-container">
-					<div className="QuizPage-question-history">
-						<QuestionHistorySummary
-							title="Check out the questions you've missed"
-							incorrectCounterThisQuiz={incorrectCounterThisQuiz}
-							quizId={quizId}
+					<Link className="btn-contents QuizPage-mode-link" to={baseRoute + '/study'}>
+						Study
+						<div className="QuizPage-mode-link-emoji">🤓</div>
+					</Link>
+				</div>
+				{incorrectCounterThisQuiz &&
+				Object.keys(incorrectCounterThisQuiz).length > 0 && (
+					<div className="QuizPage-question-history-container">
+						<div className="QuizPage-question-history">
+							<QuestionHistorySummary
+								title="Check out the questions you've missed"
+								incorrectCounterThisQuiz={incorrectCounterThisQuiz}
+								quizId={quizId}
+							/>
+						</div>
+
+						<ConfirmationModal
+							btnComponent={resetButton}
+							confirmationText="Are you sure?"
+							confirmationSubText="This can't be undone."
+							acceptText="Yes"
+							rejectText="No"
+							handleAccept={resetIncorrectCounts}
 						/>
 					</div>
-
-					<ConfirmationModal
-						btnComponent={resetButton}
-						confirmationText="Are you sure?"
-						confirmationSubText="This can't be undone."
-						acceptText="Yes"
-						rejectText="No"
-						handleAccept={resetIncorrectCounts}
-					/>
-				</div>
-			)}
+				)}
+			</div>
 		</div>
 	);
 }

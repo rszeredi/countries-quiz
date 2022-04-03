@@ -13,8 +13,10 @@ class AnswerForm extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	componentDidUpdate() {
-		this.inputValue.focus();
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.answerStatus !== this.state.answerStatus) {
+			this.inputValue.focus();
+		}
 	}
 
 	handleChange(e) {

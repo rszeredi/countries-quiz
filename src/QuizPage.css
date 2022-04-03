@@ -3,6 +3,11 @@
 	margin: auto;
 }
 
+.QuizPage-contents {
+	width: fit-content;
+	margin: auto;
+}
+
 .Quiz-back-button {
 	margin-top: 1rem;
 }
@@ -23,6 +28,7 @@
 	border-radius: 50%;
 	width: 100px;
 	height: 100px;
+	margin: 0 1.5rem;
 	/* width: 35%; */
 	/* height: 40%; */
 	font-size: 1.6rem;
@@ -40,6 +46,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
+	width: 100%;
 }
 
 .QuizPage-question-history-reset-btn {
@@ -65,12 +72,12 @@
 
 @media (min-width: 600px) {
 	.QuizPage {
-		width: 60%;
+		width: 70%;
 	}
 }
 
 @media (min-width: 1000px) {
 	.QuizPage {
-		width: 40%;
+		width: 50%;
 	}
 }

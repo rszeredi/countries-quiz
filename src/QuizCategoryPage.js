@@ -47,13 +47,15 @@ export default function QuizCategoryPage(props) {
 
 	return (
 		<div className="QuizCategoryPage">
-			<div className="QuizCategoryPage-back-button">
-				<Link to="/">
-					<i className="fa fa-thin fa-arrow-left" /> Back to quiz menu
-				</Link>
+			<div className="QuizCategoryPage-contents">
+				<div className="QuizCategoryPage-back-button">
+					<Link to="/">
+						<i className="fa fa-thin fa-arrow-left" /> Back to quiz menu
+					</Link>
+				</div>
+				<h1 className="QuizCategoryPage-category-heading">{quizCategory}</h1>
+				<div className="QuizCategoryPage-links">{buttons}</div>
 			</div>
-			<h1 className="QuizCategoryPage-category-heading">{quizCategory}</h1>
-			<div className="QuizCategoryPage-links">{buttons}</div>
 		</div>
 	);
 }
