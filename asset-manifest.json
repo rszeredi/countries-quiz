@@ -1,15 +1,26 @@
 {
   "files": {
-    "main.css": "/countries-quiz/static/css/main.5733af2e.css",
-    "main.js": "/countries-quiz/static/js/main.f1ff3896.js",
+    "main.css": "/countries-quiz/static/css/main.8f205933.css",
+    "main.js": "/countries-quiz/static/js/main.08d674f1.js",
     "static/js/787.39742a89.chunk.js": "/countries-quiz/static/js/787.39742a89.chunk.js",
+    "static/media/europe.jpeg": "/countries-quiz/static/media/europe.49ff5da11a32733fbcdd.jpeg",
+    "static/media/north-america.jpeg": "/countries-quiz/static/media/north-america.c1a623a4bd0ac2b63152.jpeg",
+    "static/media/oceania.jpeg": "/countries-quiz/static/media/oceania.7a730242808d53bdb851.jpeg",
+    "static/media/africa.jpeg": "/countries-quiz/static/media/africa.581ec071b4e4a2cdb983.jpeg",
+    "static/media/asia.jpeg": "/countries-quiz/static/media/asia.d83c7936dc28893c1f38.jpeg",
+    "static/media/south-america.jpeg": "/countries-quiz/static/media/south-america.c30a2c2864aa93bc103a.jpeg",
+    "static/media/fontawesome-webfont.svg?v=4.7.0": "/countries-quiz/static/media/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
+    "static/media/fontawesome-webfont.eot": "/countries-quiz/static/media/fontawesome-webfont.8b43027f47b20503057d.eot",
+    "static/media/fontawesome-webfont.ttf?v=4.7.0": "/countries-quiz/static/media/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf",
+    "static/media/fontawesome-webfont.woff?v=4.7.0": "/countries-quiz/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
+    "static/media/fontawesome-webfont.woff2?v=4.7.0": "/countries-quiz/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
     "index.html": "/countries-quiz/index.html",
-    "main.5733af2e.css.map": "/countries-quiz/static/css/main.5733af2e.css.map",
-    "main.f1ff3896.js.map": "/countries-quiz/static/js/main.f1ff3896.js.map",
+    "main.8f205933.css.map": "/countries-quiz/static/css/main.8f205933.css.map",
+    "main.08d674f1.js.map": "/countries-quiz/static/js/main.08d674f1.js.map",
     "787.39742a89.chunk.js.map": "/countries-quiz/static/js/787.39742a89.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5733af2e.css",
-    "static/js/main.f1ff3896.js"
+    "static/css/main.8f205933.css",
+    "static/js/main.08d674f1.js"
   ]
 }
