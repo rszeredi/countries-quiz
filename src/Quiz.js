@@ -143,7 +143,9 @@ function Quiz(props) {
 
 		// only get questions if they're not already defined in localStorage
 		if (questions.length === 0) {
-			getQuestionsFromQuizPropsGetter(isInStudyMode); // todo need to catch this?
+			getQuestionsFromQuizPropsGetter(isInStudyMode).catch((err) => {
+				console.error(err);
+			});
 		}
 	}, []); // when should useEffect be called??
 
@@ -260,6 +262,9 @@ function Quiz(props) {
 		resetScores();
 	};
 
+	const resetGameWithAllQuestions = () => resetGame(false);
+	const resetGameWithIncorrectOnly = () => resetGame(true);
+
 	// useEffect(
 	// 	() => {
 	// 		if (isMounted.current) {
@@ -274,7 +279,7 @@ function Quiz(props) {
 	const restartQuizButton = (
 		<ActionButton
 			btnContent={isInStudyMode ? 'Study All Again' : 'Try Quiz Again'}
-			handleClick={() => resetGame(false)}
+			handleClick={resetGameWithAllQuestions}
 		/>
 	);
 
@@ -283,23 +288,23 @@ function Quiz(props) {
 			btnContent={
 				<Link
 					to={quizProps.makeQuizRouteString() + '/study'}
-					// onClick={() => resetGame(true)}
+					// onClick={resetGameWithIncorrectOnly}
 				>
 					Go to Study Mode
 				</Link>
 			}
-			handleClick={() => resetGame(true)}
+			handleClick={resetGameWithIncorrectOnly}
 		/>
 	);
 
 	const resetInStudyModeAllButton = (
-		<ActionButton btnContent="Study All Again" handleClick={() => resetGame(false)} />
+		<ActionButton btnContent="Study All Again" handleClick={resetGameWithAllQuestions} />
 	);
 
 	const resetInStudyModeButton = (
 		<ActionButton
 			btnContent="Study the Ones You Don't Know"
-			handleClick={() => resetGame(true)}
+			handleClick={resetGameWithIncorrectOnly}
 		/>
 	);
 
@@ -308,12 +313,12 @@ function Quiz(props) {
 			btnContent={
 				<Link
 					to={quizProps.makeQuizRouteString() + '/quiz'}
-					onClick={() => resetGame(false)}
+					onClick={resetGameWithAllQuestions}
 				>
 					Quiz Yourself!
 				</Link>
 			}
-			handleClick={() => resetGame(false)}
+			handleClick={resetGameWithAllQuestions}
 		/>
 	);
 
