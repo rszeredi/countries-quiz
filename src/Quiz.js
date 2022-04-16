@@ -83,7 +83,9 @@ function Quiz(props) {
 			setQuestions(questionsFiltered);
 			setLoadingData(false);
 		};
-		getQuestions(); // todo need to catch this?
+		getQuestions().catch((err) => {
+			console.error(err);
+		});
 	}, []); // when should useEffect be called??
 
 	const handleAnswerSubmit = (answerIsCorrect) => {
@@ -146,6 +148,9 @@ function Quiz(props) {
 		resetScores();
 	};
 
+	const resetGameWithAllQuestions = () => resetGame(false);
+	const resetGameWithIncorrectOnly = () => resetGame(true);
+
 	const getDisplay = (numRemainingQuestions) => {
 		const { questionPrefix, questionSuffix, subsetCountsAsCorrect } = quizProps;
 		const numInIncorrectCounter = existsQuestionsWithIncorrectCounts(
@@ -177,11 +182,11 @@ function Quiz(props) {
 					{/* <i className="fa-solid fa-arrow-rotate-left" /> */}
 					<i className="fa-solid arrow-left" />
 					Finished all questions!
-					<button className="Quiz-restart-btn" onClick={() => resetGame(false)}>
+					<button className="Quiz-restart-btn" onClick={resetGameWithAllQuestions}>
 						Start Over
 					</button>
 					{numInIncorrectCounter && (
-						<button className="Quiz-restart-btn" onClick={() => resetGame(true)}>
+						<button className="Quiz-restart-btn" onClick={resetGameWithIncorrectOnly}>
 							Practise the Ones You Don't Know!
 						</button>
 					)}
