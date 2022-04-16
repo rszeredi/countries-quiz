@@ -5,6 +5,7 @@ import './QuizMenu.css';
 import './CommonStyles.css';
 
 import quizzes from './QuizProps';
+import ActionButton from './ActionButton';
 
 export default function QuizMenu() {
 	const buildLinks = () => {
@@ -35,10 +36,20 @@ export default function QuizMenu() {
 		return links;
 	};
 
+	const clearLocalStorage = () => {
+		console.log('will clear localStorage');
+		localStorage.clear();
+	};
+
 	return (
-		<div>
+		<div className="QuizMenu">
 			<h1 className="QuizMenu">Choose a Quiz!</h1>
 			<div className="QuizMenu-links">{buildLinks()}</div>
+			<ActionButton
+				btnContent="Reset History"
+				extraClassNames="QuizMenu-reset-btn"
+				handleClick={clearLocalStorage}
+			/>
 		</div>
 	);
 }
