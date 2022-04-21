@@ -17,22 +17,33 @@
 	flex-wrap: wrap;
 	row-gap: 3rem;
 	column-gap: 1rem;
-	width: 70%;
+	width: 96%;
 }
 
 .btn-contents.QuizMenu-quiz-category-link {
 	width: 80% !important;
 	margin: 0;
 	background-color: rgba(102, 57, 9, 0.29);
+
+	/* flex-direction: column; */
 	/* margin: 1.2rem; */
 }
 
+.Quizmenu-category-link-content {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+}
+
 .QuizMenu-category-text {
-	margin-bottom: 0.4rem;
+	/* margin: 0 1rem; */
 }
 
 .QuizMenu-category-emoji {
 	font-size: 2.5rem;
+	/* margin: 0 1rem; */
+	margin-left: 1rem;
 }
 
 /* .QuizMenu-links {

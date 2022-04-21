@@ -20,8 +20,11 @@ export default function QuizMenu() {
 					to={'/' + catPath}
 					key={category}
 				>
-					<div className="QuizMenu-category-text">{catText}</div>
-					<div className="QuizMenu-category-emoji">{catEmoji}</div>
+					<div className="Quizmenu-category-link-content">
+						{/* <div className="QuizMenu-category-emoji">{catEmoji}</div> */}
+						<div className="QuizMenu-category-text">{catText}</div>
+						<div className="QuizMenu-category-emoji">{catEmoji}</div>
+					</div>
 				</Link>
 			);
 			// const buttons = (
