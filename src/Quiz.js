@@ -103,7 +103,12 @@ function Quiz(props) {
 	} = quizState;
 
 	console.log('quizState', quizState);
-	const answerPool = questionsAll.map((q) => q.answer);
+
+	const onlyUnique = (value, index, self) => {
+		return self.indexOf(value) === index;
+	};
+
+	const answerPool = questionsAll.map((q) => q.answer).filter(onlyUnique);
 
 	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
 		quizId,
