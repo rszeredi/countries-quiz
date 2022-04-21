@@ -23,7 +23,7 @@ export default function QuizPage(props) {
 		{}
 	);
 	const incorrectCounterThisQuiz = incorrectCounterState[quizId];
-	console.log('incorrectCounterThisQuiz', incorrectCounterThisQuiz);
+	// console.log('incorrectCounterThisQuiz', incorrectCounterThisQuiz);
 
 	const resetIncorrectCounts = () => {
 		const incorrectCounter = getQuestionsWithIncorrectCounts(

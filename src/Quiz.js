@@ -108,7 +108,7 @@ function Quiz(props) {
 		practiceMode
 	} = quizState;
 
-	console.log('quizState', quizState);
+	// console.log('quizState', quizState);
 
 	const onlyUnique = (value, index, self) => {
 		return self.indexOf(value) === index;
@@ -362,7 +362,7 @@ function Quiz(props) {
 
 	const getScoreMessage = (score) => {
 		for (let [ lb, msg ] of SCORE_MESSAGES) {
-			console.log(lb);
+			// console.log(lb);
 			if (score >= lb) {
 				return msg;
 			}

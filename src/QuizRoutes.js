@@ -8,7 +8,7 @@ import QuizPage from './QuizPage';
 import quizzes from './QuizProps';
 
 export default function QuizRoutes() {
-	console.log(quizzes);
+	// console.log(quizzes);
 
 	const createRoutes = () => {
 		let routes = [];

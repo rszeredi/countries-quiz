@@ -75,7 +75,7 @@ export function updateIncorrectCount(question, delta, quizId, localStorageKey) {
 		delete incorrectCounter[quizId][question];
 	}
 
-	console.log('incorrectCounter[quizId]', incorrectCounter[quizId]);
+	// console.log('incorrectCounter[quizId]', incorrectCounter[quizId]);
 	writeIncorrectCounterToLocalStorage(incorrectCounter);
 }
 

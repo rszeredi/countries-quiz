@@ -37,7 +37,7 @@ export default function QuizMenu() {
 	};
 
 	const clearLocalStorage = () => {
-		console.log('will clear localStorage');
+		// console.log('will clear localStorage');
 		localStorage.clear();
 	};
 

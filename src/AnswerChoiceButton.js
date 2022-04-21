@@ -22,7 +22,6 @@ export default function AnswerChoiceButton(props) {
 		const selectedAnswer = e.target.getAttribute('data-value');
 		updateAnswerUIAndScores(answerIsCorrect, selectedAnswer);
 	};
-	console.log('quizCategory', quizCategory);
 
 	return (
 		<div

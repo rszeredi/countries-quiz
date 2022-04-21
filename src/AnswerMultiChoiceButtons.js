@@ -47,7 +47,7 @@ export default function AnswerMultiChoiceButtons(props) {
 	if (typeof answerOptions[0] === 'number') {
 		answerOptions.forEach((i) => {
 			const delta = ((i / correctAnswer - 1) * 100).toFixed(2);
-			console.log(`${delta}%  `);
+			// console.log(`${delta}%  `);
 		});
 	}
 

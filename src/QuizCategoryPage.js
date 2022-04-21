@@ -23,7 +23,7 @@ export default function QuizCategoryPage(props) {
 
 	const makeQuizLink = (quizProps) => {
 		const variant = quizProps.makeVariantString();
-		console.log('variant', variant);
+		// console.log('variant', variant);
 
 		return (
 			// key={quiz.quizId}
