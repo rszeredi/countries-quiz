@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const INCLUDE_TEST_QUIZ = true;
+const INCLUDE_TEST_QUIZ = false;
 const COUNTRIES_API_URL_BASE = 'https://restcountries.com/v3.1/all?fields=name,unMember,continents';
 
 /*

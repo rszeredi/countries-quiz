@@ -46,13 +46,15 @@ export default function QuizMenu() {
 
 	return (
 		<div className="QuizMenu">
-			<h1 className="QuizMenu">Choose a Quiz!</h1>
-			<div className="QuizMenu-links">{buildLinks()}</div>
-			<ActionButton
-				btnContent="Reset History"
-				extraClassNames="QuizMenu-reset-btn"
-				handleClick={clearLocalStorage}
-			/>
+			<div className="QuizMenu-contents">
+				<h1 className="QuizMenu-heading">Choose a Quiz!</h1>
+				<div className="QuizMenu-links">{buildLinks()}</div>
+				<ActionButton
+					btnContent="Reset History"
+					extraClassNames="QuizMenu-reset-btn"
+					handleClick={clearLocalStorage}
+				/>
+			</div>
 		</div>
 	);
 }

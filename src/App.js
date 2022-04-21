@@ -19,7 +19,7 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="App">
-				<NavBar />
+				{/* <NavBar /> */}
 				<QuizRoutes />
 			</div>
 		</ThemeProvider>
