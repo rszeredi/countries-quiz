@@ -1,3 +1,3 @@
-Check it out at:
+Check out the app at:
 
-rszeredi.github.io/countries-quiz
+https://rszeredi.github.io/countries-quiz
