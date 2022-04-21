@@ -18,7 +18,8 @@ class QuestionBox extends Component {
 			subsetCountsAsCorrect,
 			isMultiChoiceQuestion,
 			answerPool,
-			isFlagsQuiz
+			isFlagsQuiz,
+			quizCategory
 		} = this.props;
 
 		return (
@@ -33,6 +34,7 @@ class QuestionBox extends Component {
 						<AnswerMultiChoiceButtons
 							correctAnswer={answer}
 							isFlagsQuiz={isFlagsQuiz}
+							quizCategory={quizCategory}
 							handleAnswerSubmit={handleAnswerSubmit}
 							repeatCorrectAnswerMode={repeatCorrectAnswerMode}
 							practiceMode={practiceMode}

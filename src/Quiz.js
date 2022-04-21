@@ -80,7 +80,13 @@ function Quiz(props) {
 
 	const { quizProps, isInStudyMode } = props;
 
-	const { quizId, practiceModeAllowed, multiChoiceAllowed, typeAnswerAllowed } = quizProps;
+	const {
+		quizId,
+		category,
+		practiceModeAllowed,
+		multiChoiceAllowed,
+		typeAnswerAllowed
+	} = quizProps;
 	const navigate = useNavigate();
 
 	const {
@@ -402,6 +408,7 @@ function Quiz(props) {
 				<QuestionBox
 					{...getCurrentQuestion(questions, currentQuestionIdx)}
 					isFlagsQuiz={quizId.startsWith('flag')}
+					quizCategory={category}
 					questionPrefix={questionPrefix}
 					questionSuffix={questionSuffix}
 					practiceMode={practiceMode}

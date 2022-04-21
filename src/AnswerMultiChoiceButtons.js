@@ -10,6 +10,7 @@ export default function AnswerMultiChoiceButtons(props) {
 		correctAnswer,
 		answerPool,
 		isFlagsQuiz,
+		quizCategory,
 		repeatCorrectAnswerMode,
 		practiceMode,
 		handleAnswerSubmit
@@ -55,6 +56,7 @@ export default function AnswerMultiChoiceButtons(props) {
 			answerOptions={answerOptions}
 			correctAnswer={correctAnswer}
 			isFlagsQuiz={isFlagsQuiz}
+			quizCategory={quizCategory}
 			repeatCorrectAnswerMode={repeatCorrectAnswerMode}
 			practiceMode={practiceMode}
 			handleAnswerSubmit={handleAnswerSubmit}
@@ -68,6 +70,7 @@ function AnswerMultiChoiceButtonsInner(props) {
 		correctAnswer,
 		isFlagsQuiz,
 		repeatCorrectAnswerMode,
+		quizCategory,
 		practiceMode,
 		handleAnswerSubmit
 	} = props;
@@ -111,6 +114,7 @@ function AnswerMultiChoiceButtonsInner(props) {
 			{answerOptions.map((answer) => (
 				<AnswerChoiceButton
 					key={answer}
+					quizCategory={quizCategory}
 					answerChoiceText={answer}
 					correctAnswer={correctAnswer}
 					updateAnswerUIAndScores={updateAnswerUIAndScores}
