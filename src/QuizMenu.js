@@ -6,6 +6,7 @@ import './CommonStyles.css';
 
 import quizzes from './QuizProps';
 import ActionButton from './ActionButton';
+import ConfirmationModal from './ConfirmationModal';
 
 export default function QuizMenu() {
 	const buildLinks = () => {
@@ -44,15 +45,23 @@ export default function QuizMenu() {
 		localStorage.clear();
 	};
 
+	const resetAllButton = (
+		<ActionButton btnContent="Reset History" extraClassNames="QuizMenu-reset-btn" />
+	);
+
 	return (
 		<div className="QuizMenu">
 			<div className="QuizMenu-contents">
 				<h1 className="QuizMenu-heading">Choose a Quiz!</h1>
 				<div className="QuizMenu-links">{buildLinks()}</div>
-				<ActionButton
-					btnContent="Reset History"
-					extraClassNames="QuizMenu-reset-btn"
-					handleClick={clearLocalStorage}
+
+				<ConfirmationModal
+					btnComponent={resetAllButton}
+					confirmationText="Are you sure?"
+					confirmationSubText="This can't be undone."
+					acceptText="Yes"
+					rejectText="No"
+					handleAccept={clearLocalStorage}
 				/>
 			</div>
 		</div>
