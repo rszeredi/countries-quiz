@@ -26,6 +26,7 @@ export default function AnswerChoiceButton(props) {
 	return (
 		<div
 			className={`btn-contents btn-multichoice ${extraClassNames}`}
+			style={{ fontSize: doesFontNeedToBeShrunk(answerChoiceValue) ? '0.95rem' : '1.2rem' }}
 			data-value={answerChoiceValue}
 			onClick={handleClick}
 		>
@@ -41,6 +42,19 @@ function capitalize(s) {
 			return word[0].toUpperCase() + word.substring(1);
 		})
 		.join(' ');
+}
+
+function doesFontNeedToBeShrunk(answerText) {
+	// if single word, more than 8 characters, and does not end in ille (eg. Brazzaville), then shrink
+	if (
+		Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0) > 700 ||
+		answerText.length <= 8 ||
+		// answerText.includes(' ') ||
+		// answerText.includes('-') ||
+		answerText.includes('ill')
+	)
+		return false;
+	else return true;
 }
 
 function convertAnswerForDisplay(answerChoiceValue, quizCategory) {
