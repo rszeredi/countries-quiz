@@ -83,6 +83,14 @@
 	.QuizPage-contents {
 		width: fit-content;
 	}
+
+	.QuizPage-mode-link:first-child {
+		margin-right: 2rem;
+	}
+
+	.QuizPage-mode-link:last-child {
+		margin-left: 2rem;
+	}
 }
 
 @media (min-width: 1000px) {
