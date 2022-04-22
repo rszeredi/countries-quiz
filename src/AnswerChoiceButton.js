@@ -21,6 +21,9 @@ export default function AnswerChoiceButton(props) {
 		const answerIsCorrect = isCorrectAnswer();
 		const selectedAnswer = e.target.getAttribute('data-value');
 		updateAnswerUIAndScores(answerIsCorrect, selectedAnswer);
+
+		// possible fix for persisted focus on mobile?
+		e.target.blur();
 	};
 
 	return (
