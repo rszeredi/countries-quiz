@@ -1,13 +1,10 @@
 import { type } from '@testing-library/user-event/dist/type';
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './AnswerMultiChoiceButtons.css';
 
 import { removeCountryFromCurrency, capitalize } from './quizHelpers';
 
 export default function AnswerChoiceButton(props) {
-	const answerButton = useRef(null);
-
-	useEffect(() => answerButton.current.blur(), [ correctAnswer ]); // possible fix for persisted focus on mobile?
 	const {
 		answerChoiceText: answerChoiceValue,
 		correctAnswer,
@@ -16,6 +13,15 @@ export default function AnswerChoiceButton(props) {
 		disabled,
 		quizCategory
 	} = props;
+
+	const answerButtonRef = useRef(null);
+
+	useEffect(
+		() => {
+			if (answerButtonRef.current) answerButtonRef.current.blur();
+		},
+		[ correctAnswer ]
+	); // possible fix for persisted focus on mobile?
 
 	const isCorrectAnswer = () => {
 		return answerChoiceValue === correctAnswer;
@@ -32,6 +38,7 @@ export default function AnswerChoiceButton(props) {
 
 	return (
 		<div
+			ref={answerButtonRef}
 			className={`btn-contents btn-multichoice ${extraClassNames}`}
 			style={{ fontSize: doesFontNeedToBeShrunk(answerDisplay) ? '0.95rem' : '1.2rem' }}
 			data-value={answerChoiceValue}
