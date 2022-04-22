@@ -5,6 +5,9 @@ import './AnswerMultiChoiceButtons.css';
 import { removeCountryFromCurrency, capitalize } from './quizHelpers';
 
 export default function AnswerChoiceButton(props) {
+	const answerButton = useRef(null);
+
+	useEffect(() => answerButton.current.blur(), [ correctAnswer ]); // possible fix for persisted focus on mobile?
 	const {
 		answerChoiceText: answerChoiceValue,
 		correctAnswer,
@@ -23,9 +26,6 @@ export default function AnswerChoiceButton(props) {
 		const answerIsCorrect = isCorrectAnswer();
 		const selectedAnswer = e.target.getAttribute('data-value');
 		updateAnswerUIAndScores(answerIsCorrect, selectedAnswer);
-
-		// possible fix for persisted focus on mobile?
-		e.target.blur();
 	};
 
 	const answerDisplay = convertAnswerForDisplay(answerChoiceValue, quizCategory);
