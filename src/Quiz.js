@@ -110,12 +110,6 @@ function Quiz(props) {
 
 	// console.log('quizState', quizState);
 
-	const onlyUnique = (value, index, self) => {
-		return self.indexOf(value) === index;
-	};
-
-	const answerPool = questionsAll.map((q) => q.answer).filter(onlyUnique);
-
 	const questionsExistInIncorrectCounter = existsQuestionsWithIncorrectCounts(
 		quizId,
 		INCORRECT_COUNTER_LOCAL_STORAGE_KEY
@@ -417,7 +411,7 @@ function Quiz(props) {
 					subsetCountsAsCorrect={subsetCountsAsCorrect}
 					isMultiChoiceQuestion={isMultiChoice}
 					handleAnswerSubmit={handleAnswerSubmit}
-					answerPool={answerPool}
+					questionsAll={questionsAll}
 				/>
 			);
 		} else {

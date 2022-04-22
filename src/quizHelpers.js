@@ -85,3 +85,19 @@ function writeIncorrectCounterToLocalStorage(incorrectCounter) {
 		JSON.stringify(incorrectCounter)
 	);
 }
+
+export function capitalize(s) {
+	const words = s.split(' ');
+
+	return words
+		.map((word) => {
+			return word[0].toUpperCase() + word.substring(1);
+		})
+		.join(' ');
+}
+
+export function removeCountryFromCurrency(fullCurrencyString) {
+	// lazy solution: just return the last word
+	const words = fullCurrencyString.split(' ');
+	return words[words.length - 1];
+}

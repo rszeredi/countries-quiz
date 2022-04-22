@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import AnswerChoiceButton from './AnswerChoiceButton';
 import './AnswerMultiChoiceButtons.css';
 
+import { removeCountryFromCurrency } from './quizHelpers';
+
 // AnswerMultiChoiceButtons holds the logic for generating random fake answers
 // AnswerMultiChoiceButtonsInner: tracks what answer was click, fake answers stay the same
 
 export default function AnswerMultiChoiceButtons(props) {
 	const {
 		correctAnswer,
-		answerPool,
+		questionsAll,
 		isFlagsQuiz,
 		quizCategory,
 		repeatCorrectAnswerMode,
@@ -29,14 +31,32 @@ export default function AnswerMultiChoiceButtons(props) {
 		[ repeatCorrectAnswerMode, correctAnswer ]
 	);
 
+	const onlyUnique = (value, index, self) => {
+		return self.indexOf(value) === index;
+	};
+
+	const getAnswerPool = () => {
+		return questionsAll
+			.map((q) => q.answer)
+			.map((a) => (quizCategory === 'Currencies' ? removeCountryFromCurrency(a) : a))
+			.filter((a) => {
+				const correctAnswerTransformed =
+					quizCategory === 'Currencies'
+						? removeCountryFromCurrency(correctAnswer)
+						: correctAnswer;
+				return a !== correctAnswerTransformed;
+			})
+			.filter(onlyUnique);
+	};
+
 	const getFakeAnswersAndSetAnswerOptions = () => {
+		const answerPool = getAnswerPool();
+
 		let fakeAnswers;
 		if (typeof correctAnswer === 'number') {
 			fakeAnswers = generateIncorrectMultiChoiceNumberOptions(correctAnswer);
 		} else if (answerPool) {
-			fakeAnswers = randomlySelectIncorrectAnswers(
-				answerPool.filter((i) => i !== correctAnswer)
-			);
+			fakeAnswers = randomlySelectIncorrectAnswers(answerPool);
 		} else {
 			fakeAnswers = [ '1', '2', '3' ]; //  todo: handle this error
 		}
@@ -173,7 +193,7 @@ function randomlySelectIncorrectAnswers(answerPool, num = 3) {
 }
 
 function generateIncorrectMultiChoiceNumberOptions(correctAnswer, numToGenerate = 3) {
-	console.log('generateIncorrectMultiChoiceOptions for: ', correctAnswer);
+	// console.log('generateIncorrectMultiChoiceOptions for: ', correctAnswer);
 	// return a number that is randomly between these percentage bounds
 	const [ lb, ub ] = correctAnswer < 10e6 ? [ 40, 71 ] : [ 20, 70 ];
 

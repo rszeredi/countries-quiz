@@ -2,6 +2,8 @@ import { type } from '@testing-library/user-event/dist/type';
 import React, { useState } from 'react';
 import './AnswerMultiChoiceButtons.css';
 
+import { removeCountryFromCurrency, capitalize } from './quizHelpers';
+
 export default function AnswerChoiceButton(props) {
 	const {
 		answerChoiceText: answerChoiceValue,
@@ -26,25 +28,18 @@ export default function AnswerChoiceButton(props) {
 		e.target.blur();
 	};
 
+	const answerDisplay = convertAnswerForDisplay(answerChoiceValue, quizCategory);
+
 	return (
 		<div
 			className={`btn-contents btn-multichoice ${extraClassNames}`}
-			style={{ fontSize: doesFontNeedToBeShrunk(answerChoiceValue) ? '0.95rem' : '1.2rem' }}
+			style={{ fontSize: doesFontNeedToBeShrunk(answerDisplay) ? '0.95rem' : '1.2rem' }}
 			data-value={answerChoiceValue}
 			onClick={handleClick}
 		>
-			{convertAnswerForDisplay(answerChoiceValue, quizCategory)}
+			{answerDisplay}
 		</div>
 	);
-}
-function capitalize(s) {
-	const words = s.split(' ');
-
-	return words
-		.map((word) => {
-			return word[0].toUpperCase() + word.substring(1);
-		})
-		.join(' ');
 }
 
 function doesFontNeedToBeShrunk(answerText) {
@@ -67,12 +62,6 @@ function convertAnswerForDisplay(answerChoiceValue, quizCategory) {
 		return capitalize(removeCountryFromCurrency(answerChoiceValue));
 
 	return capitalize(answerChoiceValue);
-}
-
-function removeCountryFromCurrency(fullCurrencyString) {
-	// lazy solution: just return the last word
-	const words = fullCurrencyString.split(' ');
-	return capitalize(words[words.length - 1]);
 }
 
 function makeNumberHumanReadable(number) {
