@@ -1,5 +1,3 @@
-import { type } from '@testing-library/user-event/dist/type';
-import React, { useState, useRef, useEffect } from 'react';
 import './AnswerMultiChoiceButtons.css';
 
 import { removeCountryFromCurrency, capitalize } from './quizHelpers';
@@ -14,12 +12,6 @@ export default function AnswerChoiceButton(props) {
 		quizCategory
 	} = props;
 
-	const answerButtonRef = useRef(null);
-
-	useEffect(() => {
-		if (answerButtonRef.current) answerButtonRef.current.blur();
-	}, []); // possible fix for persisted focus on mobile?
-
 	const isCorrectAnswer = () => {
 		return answerChoiceValue === correctAnswer;
 	};
@@ -29,15 +21,12 @@ export default function AnswerChoiceButton(props) {
 		const answerIsCorrect = isCorrectAnswer();
 		const selectedAnswer = e.target.getAttribute('data-value');
 		updateAnswerUIAndScores(answerIsCorrect, selectedAnswer);
-		console.log('ANSWER TARGET', e.target);
-		console.log('answerButtonRef', answerButtonRef.current);
 	};
 
 	const answerDisplay = convertAnswerForDisplay(answerChoiceValue, quizCategory);
 
 	return (
 		<div
-			ref={answerButtonRef}
 			className={`btn-contents btn-multichoice ${extraClassNames}`}
 			style={{ fontSize: doesFontNeedToBeShrunk(answerDisplay) ? '0.95rem' : '1.2rem' }}
 			data-value={answerChoiceValue}
@@ -71,7 +60,7 @@ function convertAnswerForDisplay(answerChoiceValue, quizCategory) {
 }
 
 function makeNumberHumanReadable(number) {
-	console.log('makeNumberHumanReadable', number);
+	// console.log('makeNumberHumanReadable', number);
 	if (number > 1e9) {
 		const parsedNumber = parseFloat((number / 1e9).toFixed(1));
 		return `${parsedNumber}B`;
