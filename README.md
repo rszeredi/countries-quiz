@@ -29,7 +29,7 @@ This is my very first React app and uses the following tools:
   - localStorage to store users' progress
   - Material UI for the pop-up dialogs
 
-Data is retrieved from this awesome API: [restcountries](https://restcountries.com/v3.1/all)
+Data is retrieved from this awesome API: [restcountries](https://restcountries.com/)
   
 ## Demo
 <img src="https://raw.githubusercontent.com/rszeredi/countries-quiz/main/public/app_screenshots/IMG_2145.jpg" width="240px" alt="quiz menu screenshot" />
