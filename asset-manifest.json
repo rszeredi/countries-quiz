@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/countries-quiz/static/css/main.382f821e.css",
+    "main.css": "/countries-quiz/static/css/main.899de792.css",
     "main.js": "/countries-quiz/static/js/main.0a691453.js",
     "static/js/787.39742a89.chunk.js": "/countries-quiz/static/js/787.39742a89.chunk.js",
     "static/media/europe.jpeg": "/countries-quiz/static/media/europe.49ff5da11a32733fbcdd.jpeg",
@@ -15,12 +15,12 @@
     "static/media/fontawesome-webfont.woff?v=4.7.0": "/countries-quiz/static/media/fontawesome-webfont.f691f37e57f04c152e23.woff",
     "static/media/fontawesome-webfont.woff2?v=4.7.0": "/countries-quiz/static/media/fontawesome-webfont.20fd1704ea223900efa9.woff2",
     "index.html": "/countries-quiz/index.html",
-    "main.382f821e.css.map": "/countries-quiz/static/css/main.382f821e.css.map",
+    "main.899de792.css.map": "/countries-quiz/static/css/main.899de792.css.map",
     "main.0a691453.js.map": "/countries-quiz/static/js/main.0a691453.js.map",
     "787.39742a89.chunk.js.map": "/countries-quiz/static/js/787.39742a89.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.382f821e.css",
+    "static/css/main.899de792.css",
     "static/js/main.0a691453.js"
   ]
 }
