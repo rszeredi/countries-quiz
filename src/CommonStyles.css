@@ -24,8 +24,10 @@
 	transition: transform 0.1s;
 }
 
-.btn-contents:hover {
-	background-color: #ccc;
+@media (hover: hover) {
+	.btn-contents:hover {
+		background-color: #ccc;
+	}
 }
 
 .btn-contents:active {

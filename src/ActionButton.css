@@ -14,8 +14,10 @@
 	transition: transform 0.1s;
 }
 
-.ActionButton:hover {
-	background-color: #ccc;
+@media (hover: hover) {
+	.ActionButton:hover {
+		background-color: #ccc;
+	}
 }
 
 .ActionButton:active {

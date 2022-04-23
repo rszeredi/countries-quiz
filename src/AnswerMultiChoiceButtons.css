@@ -14,22 +14,20 @@
 .AnswerMultiChoiceButtons .AnswerChoiceButton-btn-correct {
 	background-color: rgba(9, 213, 67, 70%);
 }
+.AnswerMultiChoiceButtons .AnswerChoiceButton-btn-correct:hover {
+	background-color: rgba(9, 213, 67, 70%);
+}
 
 .AnswerMultiChoiceButtons .AnswerChoiceButton-btn-incorrect {
 	background-color: rgba(232, 70, 70, 70%);
 }
 
-@media (hover: hover) {
-	.AnswerMultiChoiceButtons .AnswerChoiceButton-btn-incorrect:hover {
-		background-color: rgba(232, 70, 70, 70%);
-	}
+.AnswerMultiChoiceButtons .AnswerChoiceButton-btn-incorrect:hover {
+	background-color: rgba(232, 70, 70, 70%);
+}
 
-	.AnswerMultiChoiceButtons .AnswerChoiceButton-btn-correct:hover {
-		background-color: rgba(9, 213, 67, 70%);
-	}
-	.btn-multichoice-disabled:hover {
-		cursor: default;
-	}
+.btn-multichoice-disabled:hover {
+	cursor: default;
 }
 
 .AnswerMultiChoiceButtons .btn-multichoice-disabled:active {
