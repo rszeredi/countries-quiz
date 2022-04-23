@@ -16,12 +16,9 @@ export default function AnswerChoiceButton(props) {
 
 	const answerButtonRef = useRef(null);
 
-	useEffect(
-		() => {
-			if (answerButtonRef.current) answerButtonRef.current.blur();
-		},
-		[ correctAnswer ]
-	); // possible fix for persisted focus on mobile?
+	useEffect(() => {
+		if (answerButtonRef.current) answerButtonRef.current.blur();
+	}, []); // possible fix for persisted focus on mobile?
 
 	const isCorrectAnswer = () => {
 		return answerChoiceValue === correctAnswer;
@@ -32,6 +29,8 @@ export default function AnswerChoiceButton(props) {
 		const answerIsCorrect = isCorrectAnswer();
 		const selectedAnswer = e.target.getAttribute('data-value');
 		updateAnswerUIAndScores(answerIsCorrect, selectedAnswer);
+		console.log('ANSWER TARGET', e.target);
+		console.log('answerButtonRef', answerButtonRef.current);
 	};
 
 	const answerDisplay = convertAnswerForDisplay(answerChoiceValue, quizCategory);
