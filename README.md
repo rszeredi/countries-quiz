@@ -31,6 +31,12 @@ This is my very first React app and uses the following tools:
 
 Data is retrieved from this awesome API: [restcountries](https://restcountries.com/v3.1/all)
   
+## Demo
+<img src="https://raw.githubusercontent.com/rszeredi/countries-quiz/main/public/app_screenshots/IMG_2145.jpg" width="240px" alt="quiz menu screenshot" />
+<img src="https://raw.githubusercontent.com/rszeredi/countries-quiz/main/public/app_screenshots/IMG_2152.jpg" width="240px" alt="progress tracker screenshot" />
+<img src="https://raw.githubusercontent.com/rszeredi/countries-quiz/main/public/app_screenshots/IMG_2147.jpg" width="240px" alt="multi-choice example" />
+<img src="https://raw.githubusercontent.com/rszeredi/countries-quiz/main/public/app_screenshots/IMG_2149.jpg" width="240px" alt="type your answer example" />
+  
 ## Setup / Installation
   - Download or clone the repository
   - Run `npm install`
