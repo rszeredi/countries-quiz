@@ -11,9 +11,9 @@
 I love country trivia and wanted to build an app to allow users to both test their knowledge, as well as practise the lesser-known facts (eg. what's the official currency of Ecuador?). Inspiration is taken from apps that I love: Quizlet and Sporcle!
 
   ### About the app
-  There are 4 categories of quizzes: capital cities, currencies, population, and flags. All have multi-choice modes, and the first two also feature a "type your answer" mode.
+  There are 4 categories of quizzes: capital cities, currencies, population, and flags. All have multi-choice style questions, and the first two also feature an option to type your answer.
 
-  Users can choose from two "modes":
+  Users can choose from two modes:
   
     - Quiz mode: test your knowledge by completing a quiz and see your score at the end
     - Study mode: choose whether you want to study all questions, or focus on the ones you've gotten incorrect in the past
