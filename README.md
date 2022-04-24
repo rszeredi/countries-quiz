@@ -24,8 +24,7 @@ This is my very first React app and uses the following tools:
     - A mixture of Functional components and Class components (note: this was not a design decision, it was purely for learning)
     - React Hooks 
     - Routing (with react-router-dom)
-  - Javascript
-  - CSS
+  - HTML, CSS, Javascript
   - localStorage to store users' progress
   - Material UI for the pop-up dialogs
 
