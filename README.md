@@ -7,7 +7,7 @@
   
 [🔗 Try out the app here!](https://rszeredi.github.io/countries-quiz)
   
-## About the project
+## About this project
 I love country trivia and wanted to build an app to allow users to both test their knowledge, as well as practise the lesser-known facts (eg. what's the official currency of Ecuador?). Inspiration is taken from apps that I love: Quizlet and Sporcle!
 
   ### About the app
@@ -19,7 +19,7 @@ I love country trivia and wanted to build an app to allow users to both test the
     - Study mode: choose whether you want to study all questions, or focus on the ones you've gotten incorrect in the past
   
 ## Techonologies Used
-This is my very first React app and uses the following tools:
+This is my very first React app! It uses the following tools:
   - React
     - A mixture of Functional components and Class components (note: this was not a design decision, it was purely for learning)
     - React Hooks 
