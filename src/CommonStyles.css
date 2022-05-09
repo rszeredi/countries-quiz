@@ -27,6 +27,7 @@
 @media (hover: hover) {
 	.btn-contents:hover {
 		background-color: #ccc;
+		color: black;
 	}
 }
 
