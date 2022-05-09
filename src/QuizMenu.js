@@ -49,6 +49,21 @@ export default function QuizMenu() {
 		<ActionButton btnContent="Reset History" extraClassNames="QuizMenu-reset-btn" />
 	);
 
+	const imgLoaders = (() => {
+		const continents = [
+			'europe',
+			'asia',
+			'north-america',
+			'south-america',
+			'africa',
+			'oceania'
+		];
+		const imgLoaders = continents.map((c) => (
+			<div key={c} className={`img-loader img-loader-${c}`} />
+		));
+		return <div className="img-loader-container">{imgLoaders}</div>;
+	})();
+
 	return (
 		<div className="QuizMenu">
 			<div className="QuizMenu-contents">
@@ -63,6 +78,9 @@ export default function QuizMenu() {
 					rejectText="No"
 					handleAccept={clearLocalStorage}
 				/>
+
+				{/* TODO: remove this hack */}
+				{imgLoaders}
 			</div>
 		</div>
 	);

@@ -7,6 +7,41 @@
 	justify-content: center;
 }
 
+/* TODO: remove this hack */
+.img-loader-container {
+	position: relative;
+}
+.img-loader {
+	/* display: none; */
+	visibility: hidden;
+	position: absolute;
+	z-index: 0;
+	width: 5px;
+	height: 5px;
+	background-size: cover;
+	background-position: bottom;
+}
+.img-loader-europe {
+	background-image: url('./images/europe.jpeg');
+}
+.img-loader-asia {
+	background-image: url('./images/asia.jpeg');
+}
+.img-loader-north-america {
+	background-image: url('./images/north-america.jpeg');
+}
+.img-loader-south-america {
+	background-image: url('./images/south-america.jpeg');
+}
+.img-loader-africa {
+	background-image: url('./images/africa.jpeg');
+}
+.img-loader-oceania {
+	background-image: url('./images/oceania.jpeg');
+}
+
+/* end of hack */
+
 .QuizMenu-contents {
 	display: flex;
 	flex-direction: column;
