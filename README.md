@@ -8,7 +8,7 @@
 [🔗 Try out the app here!](https://rszeredi.github.io/countries-quiz)
   
 ## About this project
-I love country trivia and so decided to build an app to allow users to test their knowledge, as well as practise the lesser-known facts (eg. what's the official currency of Ecuador?). Inspiration is taken from apps that I love: Quizlet and Sporcle!
+I love country trivia and so decided to build an app to allow users to test their knowledge, as well as practise the lesser-known facts (eg. what's the official currency of Ecuador? The US Dollar!). Inspiration is taken from some of my favorite apps: Quizlet and Sporcle.
 
   ### About the app
   There are 4 categories of quizzes: capital cities, currencies, population, and flags. All have multi-choice style questions, and the first two also feature an option to type your answer.
