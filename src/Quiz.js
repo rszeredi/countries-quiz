@@ -85,7 +85,8 @@ function Quiz(props) {
 		category,
 		practiceModeAllowed,
 		multiChoiceAllowed,
-		typeAnswerAllowed
+		typeAnswerAllowed,
+		isReverseQuiz
 	} = quizProps;
 	const navigate = useNavigate();
 
@@ -412,6 +413,7 @@ function Quiz(props) {
 					isMultiChoiceQuestion={isMultiChoice}
 					handleAnswerSubmit={handleAnswerSubmit}
 					questionsAll={questionsAll}
+					isReverseQuiz={isReverseQuiz}
 				/>
 			);
 		} else {

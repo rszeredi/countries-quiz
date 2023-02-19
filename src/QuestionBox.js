@@ -19,7 +19,8 @@ class QuestionBox extends Component {
 			isMultiChoiceQuestion,
 			isFlagsQuiz,
 			quizCategory,
-			questionsAll
+			questionsAll,
+			isReverseQuiz
 		} = this.props;
 
 		return (
@@ -27,7 +28,9 @@ class QuestionBox extends Component {
 				<div className="QuestionBox-content">
 					<div className="QuestionBox-question">
 						{questionPrefix}
-						<b>{questionMainText}</b>
+						<b style={isFlagsQuiz && isReverseQuiz ? { fontSize: '3rem' } : {}}>
+							{questionMainText}
+						</b>
 						{questionSuffix}
 					</div>
 					{isMultiChoiceQuestion ? (
@@ -39,6 +42,7 @@ class QuestionBox extends Component {
 							repeatCorrectAnswerMode={repeatCorrectAnswerMode}
 							practiceMode={practiceMode}
 							questionsAll={questionsAll}
+							isReverseQuiz={isReverseQuiz}
 						/>
 					) : (
 						<AnswerForm

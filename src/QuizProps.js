@@ -18,7 +18,8 @@ class QuizProps {
 		subsetCountsAsCorrect,
 		practiceModeAllowed,
 		multiChoiceAllowed,
-		typeAnswerAllowed
+		typeAnswerAllowed,
+		isReverseQuiz
 	) {
 		this.category = category;
 		this.variant = variant;
@@ -31,6 +32,7 @@ class QuizProps {
 		this.practiceModeAllowed = practiceModeAllowed;
 		this.multiChoiceAllowed = multiChoiceAllowed;
 		this.typeAnswerAllowed = typeAnswerAllowed;
+		this.isReverseQuiz = isReverseQuiz || false;
 	}
 	makeQuizRouteString() {
 		const catPath = this.category.toLowerCase().replace(' ', '-');
@@ -92,11 +94,20 @@ function flagParser(countryData) {
 	return countryData['flag'];
 }
 
-function questionMaker(countriesData, answerParser) {
-	return countriesData.map((country) => ({
-		question: country.name.common,
-		answer: answerParser(country) // todo: what if it's undefined??
-	}));
+function questionMaker(countriesData, answerParser, reverse = false) {
+	return countriesData.map((country) => {
+		const countryName = country.name.common;
+		const characteristic = answerParser(country); // todo: what if it's undefined??
+		return !reverse
+			? {
+					question: countryName,
+					answer: characteristic
+				}
+			: {
+					question: characteristic,
+					answer: countryName
+				};
+	});
 }
 
 const continents = [ 'Europe', 'Asia', 'Africa', 'North America', 'South America', 'Oceania' ];
@@ -155,29 +166,49 @@ function makePopulationQuizProps(continent) {
 	);
 }
 
-function makeFlagQuizProps(continent) {
-	return new QuizProps(
-		'Flags',
-		continent,
-		`flags-${continent.toLowerCase().replace(' ', '-')}`,
-		'What is the flag of ',
-		'?',
-		async () =>
-			getCountryQuizData('flag', continent.toLowerCase(), (data) =>
-				questionMaker(data, flagParser)
-			),
-		false,
-		false,
-		true,
-		false
-	);
+function makeFlagQuizProps(continent, reverse) {
+	getCountryQuizData('flag', continent.toLowerCase(), (data) =>
+		questionMaker(data, flagParser)
+	).then((x) => console.log('x', x));
+	return !reverse
+		? new QuizProps(
+				'Flags',
+				continent,
+				`flags-${continent.toLowerCase().replace(' ', '-')}`,
+				'What is the flag of ',
+				'?',
+				async () =>
+					getCountryQuizData('flag', continent.toLowerCase(), (data) =>
+						questionMaker(data, flagParser)
+					),
+				false,
+				false,
+				true,
+				false
+			)
+		: new QuizProps(
+				'Flags',
+				continent,
+				`flags-${continent.toLowerCase().replace(' ', '-')}-reversed`,
+				"Name this flag's country: ",
+				'',
+				async () =>
+					getCountryQuizData('flag', continent.toLowerCase(), (data) =>
+						questionMaker(data, flagParser, reverse)
+					),
+				false,
+				false,
+				true,
+				true,
+				true
+			);
 }
 
 let quizzes = {
 	'Capital Cities:🌃': continents.map((c) => makeCapitalCityQuizProps(c)),
 	'Currencies:💰': continents.map((c) => makeCurrencyQuizProps(c)),
 	'Population:👥': continents.map((c) => makePopulationQuizProps(c)),
-	'Flags:🇦🇺': continents.map((c) => makeFlagQuizProps(c))
+	'Flags:🇦🇺': continents.map((c) => makeFlagQuizProps(c, true))
 };
 
 if (INCLUDE_TEST_QUIZ) {

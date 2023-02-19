@@ -15,7 +15,8 @@ export default function AnswerMultiChoiceButtons(props) {
 		quizCategory,
 		repeatCorrectAnswerMode,
 		practiceMode,
-		handleAnswerSubmit
+		handleAnswerSubmit,
+		isReverseQuiz
 	} = props;
 
 	const [ answerOptions, setAnswerOptions ] = useState([]);
@@ -80,6 +81,7 @@ export default function AnswerMultiChoiceButtons(props) {
 			repeatCorrectAnswerMode={repeatCorrectAnswerMode}
 			practiceMode={practiceMode}
 			handleAnswerSubmit={handleAnswerSubmit}
+			isReverseQuiz={isReverseQuiz}
 		/>
 	);
 }
@@ -92,7 +94,8 @@ function AnswerMultiChoiceButtonsInner(props) {
 		repeatCorrectAnswerMode,
 		quizCategory,
 		practiceMode,
-		handleAnswerSubmit
+		handleAnswerSubmit,
+		isReverseQuiz
 	} = props;
 	const [ answerStatus, setAnswerStatus ] = useState('none');
 
@@ -113,7 +116,7 @@ function AnswerMultiChoiceButtonsInner(props) {
 		// console.log('answer', answer);
 		let extraClassNameList = [];
 
-		if (isFlagsQuiz) {
+		if (isFlagsQuiz && !isReverseQuiz) {
 			extraClassNameList.push('AnswerChoiceButton-flag');
 		}
 
